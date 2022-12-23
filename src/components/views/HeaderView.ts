@@ -1,0 +1,42 @@
+import createElem from '../../utils/utils';
+import AppController from '../app/app';
+
+export default class Header {
+    container: HTMLElement;
+    appController: AppController;
+
+    constructor(controller: AppController) {
+        this.appController = controller;
+        this.container = createElem('header', 'header');
+    }
+
+    private createNavigation() {
+        const navigation = createElem('nav', 'main-nav');
+        const navList = createElem('ul', 'main-nav__list');
+        const links = {
+            About: '/',
+            Store: '/store',
+            Cart: '/cart',
+        };
+
+        for (const link in links) {
+            const li = createElem('li');
+            const a = createElem('a', 'nav-link', link);
+            a.setAttribute('href', links[link as keyof typeof links]); // это нужно нормально типизировать потом
+            a.addEventListener('click', (e) => {
+                this.appController.router.setLocation(e);
+            });
+            li.append(a);
+            navList.append(li);
+        }
+
+        navigation.append(navList);
+        return navigation;
+    }
+
+    public createHeader() {
+        const navigation = this.createNavigation();
+        this.container.append(navigation);
+        return this.container;
+    }
+}
