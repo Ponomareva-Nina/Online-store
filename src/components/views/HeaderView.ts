@@ -14,17 +14,22 @@ export default class Header {
         const navigation = createElem('nav', 'main-nav');
         const navList = createElem('ul', 'main-nav__list');
         const links = {
-            About: '/',
-            Store: '/store',
-            Cart: '/cart',
+            About: '',
+            Store: 'store',
+            Cart: 'cart',
         };
 
         for (const link in links) {
             const li = createElem('li');
             const a = createElem('a', 'nav-link', link);
-            a.setAttribute('href', links[link as keyof typeof links]); // это нужно нормально типизировать потом
+            a.setAttribute('href', links[link as keyof typeof links]);
             a.addEventListener('click', (e) => {
-                this.appController.router.setLocation(e);
+                e.preventDefault();
+                if (e) {
+                    const target = e.target as HTMLElement;
+                    const url = target.getAttribute('href') || '';
+                    this.appController.router.navigate(url);
+                }
             });
             li.append(a);
             navList.append(li);
