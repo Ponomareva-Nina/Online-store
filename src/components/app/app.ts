@@ -14,6 +14,7 @@ export default class AppController implements AppControllerInterface {
     header: Header;
     mainContainer: HTMLElement;
     router: Router;
+    private static instance: InstanceType<typeof AppController>;
 
     constructor() {
         this.header = new Header(this);
@@ -22,6 +23,11 @@ export default class AppController implements AppControllerInterface {
         this.startPage = new StartPageView(this);
         this.storeView = new StoreView(this);
         this.router = new Router(this);
+
+        if (AppController.instance) {
+            return AppController.instance;
+        }
+        AppController.instance = this;
     }
 
     start() {
