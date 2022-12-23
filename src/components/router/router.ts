@@ -40,11 +40,13 @@ class Router implements RouterInterface {
     }
 
     init() {
+        this.navigate();
         window.addEventListener('popstate', () => {
             this.navigate();
         });
-        this.navigate();
-        console.log('hello');
+        window.addEventListener('DOMContentLoaded', () => {
+            this.navigate();
+        });
     }
 }
 
