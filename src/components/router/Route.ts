@@ -1,16 +1,24 @@
-import { viewComponent } from '../../types/interfaces';
+import { Props, viewComponent } from '../../types/interfaces';
 
 export default class Route {
-    name: string;
+    pageName: string;
     path: string;
     view: viewComponent;
-    props: object | null;
+    props: Props | null;
 
     constructor(name: string, path: string, view: viewComponent) {
-        this.name = name;
+        this.pageName = name;
         this.path = path;
         this.view = view;
         this.props = null;
+    }
+
+    setProps() {
+        // добавляет в this.props нужного пути значения (id / category / faculty / sort / price / stock)
+    }
+
+    getProps() {
+        return this.props;
     }
 
     getView() {

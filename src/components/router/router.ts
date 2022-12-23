@@ -11,59 +11,38 @@ class Router implements RouterInterface {
         this.routes = routes;
     }
 
-    private loadInitialRoute() {
-        console.log('hello');
-        const pathNameSplit = window.location.pathname.split('/');
-        const pathSegments = pathNameSplit.length > 1 ? pathNameSplit.slice(1) : '';
-
-        this.navigate(...pathSegments);
+    public updatePageUrl(path: string) {
+        window.history.pushState({}, '', path);
+        this.navigate();
     }
 
-    private matchUrlToRoute(urlSegments: string[]) {
-        const routeParams: Record<string, string> = {};
-
+    private match(pathname: string) {
         const matchedRoute = this.routes.find((route: Route) => {
-            const routePathSegments = route.path.split('/').slice(1);
-
-            if (routePathSegments.length !== urlSegments.length) {
-                return false;
+            if (route.pageName === pathname) {
+                return route;
+            } else {
+                const pathParams = pathname.split('/');
+                console.log(pathParams);
             }
-
-            const match = routePathSegments.every((routePathSegment, i: number) => {
-                return routePathSegment === urlSegments[i] || routePathSegment[0] === ':';
-            });
-
-            if (match) {
-                routePathSegments.forEach((segment, i: number) => {
-                    if (segment[0] === ':') {
-                        const propName = segment.slice(1);
-                        routeParams[propName] = decodeURIComponent(urlSegments[i]);
-                    }
-                });
-            }
-            return match;
         });
-        return { ...matchedRoute, params: routeParams };
+        return matchedRoute;
     }
 
-    public navigate(...urlSegments: string[]) {
-        const matchedRoute = this.matchUrlToRoute(urlSegments);
-        const url = `/#${urlSegments.join('/')}`;
-
-        window.history.pushState({}, '', url);
-
-        if (matchedRoute.view) {
-            this.appController.updatePage(matchedRoute.view);
-        } else {
+    public navigate() {
+        const pathname = window.location.href.split('#').length === 1 ? '' : window.location.href.split('#')[1];
+        const matchedRoute = this.match(pathname);
+        if (!matchedRoute) {
             alert('page 404');
+        } else {
+            this.appController.updatePage(matchedRoute.getView());
         }
     }
 
     public init() {
-        this.loadInitialRoute();
+        this.navigate();
 
         window.addEventListener('popstate', () => {
-            this.loadInitialRoute();
+            this.navigate();
         });
     }
 }
