@@ -1,20 +1,20 @@
-console.log('hello interfaces');
+import Router from '../components/router/router';
+import CartView from '../components/views/CartView';
+import Header from '../components/views/HeaderView';
+import StartPageView from '../components/views/StartPageView';
+import StoreView from '../components/views/StoreView';
+import { Routes } from './types';
 
-//types for router
-export interface IRouter {
-    loadRoute(): void;
-    _matchUrlToRoute(urlSegments: string[]): void;
-    _loadInitialRoute(): void;
+export interface RouterInterface {
+    routes: Routes;
+    navigate(): void;
 }
 
-type Params = {
-    productId?: string;
-};
-
-export type Routes = {
-    path: string;
-    param?: Params;
-    getTemplate: templateCallback;
-};
-
-type templateCallback = (params: Record<string, string>) => string;
+export interface AppControllerInterface {
+    router: Router;
+    cartView: CartView;
+    storeView: StoreView;
+    startPage: StartPageView;
+    header: Header;
+    mainContainer: HTMLElement;
+}
