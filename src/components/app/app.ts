@@ -5,7 +5,8 @@ import Header from '../views/HeaderView';
 import createElem from '../../utils/utils';
 import { AppControllerInterface, viewComponent } from '../../types/interfaces';
 import Route from '../router/Route';
-import Router from '../router/router';
+import Router from '../router/Router';
+import ProductPage from '../views/productPage';
 
 export default class AppController implements AppControllerInterface {
     cartView: CartView;
@@ -16,6 +17,7 @@ export default class AppController implements AppControllerInterface {
     private static instance: InstanceType<typeof AppController>;
     routes: Route[];
     router: Router;
+    productPage: ProductPage;
 
     constructor() {
         this.header = new Header(this);
@@ -23,11 +25,12 @@ export default class AppController implements AppControllerInterface {
         this.cartView = new CartView(this);
         this.startPage = new StartPageView(this);
         this.storeView = new StoreView(this);
+        this.productPage = new ProductPage(this);
         this.routes = [
-            new Route('startPage', '/', this.startPage),
-            new Route('storeView', '/store', this.storeView),
-            new Route('cartView', '/cart', this.cartView),
-            new Route('product', '/products/:productId', this.startPage),
+            new Route('', '#', this.startPage),
+            new Route('store', '#store', this.storeView),
+            new Route('cart', '#cart', this.cartView),
+            new Route('product', '#product/productId', this.productPage),
         ];
         this.router = new Router(this, this.routes);
 
@@ -38,7 +41,6 @@ export default class AppController implements AppControllerInterface {
     }
 
     start() {
-        console.log('start');
         document.body.append(this.header.createHeader(), this.mainContainer);
         this.router.init();
     }

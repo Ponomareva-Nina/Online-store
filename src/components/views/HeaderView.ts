@@ -14,9 +14,10 @@ export default class Header {
         const navigation = createElem('nav', 'main-nav');
         const navList = createElem('ul', 'main-nav__list');
         const links = {
-            About: '',
-            Store: 'store',
-            Cart: 'cart',
+            About: '#',
+            Store: '#store',
+            Cart: '#cart',
+            Product: '#product/2',
         };
 
         for (const link in links) {
@@ -27,8 +28,8 @@ export default class Header {
                 e.preventDefault();
                 if (e) {
                     const target = e.target as HTMLElement;
-                    const url = target.getAttribute('href') || '';
-                    this.appController.router.navigate(url);
+                    const href = target.getAttribute('href') || '';
+                    this.appController.router.updatePageUrl(href);
                 }
             });
             li.append(a);
