@@ -1,21 +1,19 @@
-import { Routes } from '../../types/interfaces';
-
-const routes: Routes[] = [
+const routes = [
     {
         path: '/',
-        getTemplate: () => '<h1>Home</h1>',
+        component: 'startPage',
     },
     {
-        path: '/about',
-        getTemplate: () => '<h1>About</h1>',
+        path: '/store',
+        component: 'storeView',
     },
     {
-        path: '/contact',
-        getTemplate: () => '<h1>Contact</h1>',
+        path: '/cart',
+        component: 'cartView',
     },
     {
         path: '/products/:productId',
-        getTemplate: (params) => `<h1>Product ${params.productId}</h1>`,
+        component: 'productPage',
     },
 ];
 
