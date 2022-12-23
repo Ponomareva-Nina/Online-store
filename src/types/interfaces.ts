@@ -18,8 +18,16 @@ export interface AppControllerInterface {
     mainContainer: HTMLElement;
 }
 
+export interface Props {
+    id?: number;
+    category?: Array<string>;
+    faculties?: Array<string>;
+    sort?: Array<string>;
+    price?: Array<string>;
+    stock?: Array<string>;
+}
 export interface viewComponent {
     container: DocumentFragment;
     appController: AppController;
-    render: () => DocumentFragment;
+    render: (props?: Props) => DocumentFragment;
 }
