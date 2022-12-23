@@ -1,59 +1,50 @@
-import { IRouter } from '../../types/interfaces';
-import { Routes } from '../../types/interfaces';
+import { RouterInterface } from '../../types/interfaces';
+import { routeComponents, Routes } from '../../types/types';
+import AppController from '../app/app';
+import routes from './routes';
 
-class Router implements IRouter {
-    routes: Routes[];
+class Router implements RouterInterface {
+    routes: Routes;
+    appController: AppController;
 
-    constructor(routes: Routes[]) {
+    constructor(controller: AppController) {
+        this.appController = controller;
         this.routes = routes;
-        this._loadInitialRoute();
     }
 
-    loadRoute(...urlSegments: string[]) {
-        const matchedRoute = this._matchUrlToRoute(urlSegments);
-        const url = `/${urlSegments.join('/')}`;
+    public setLocation(event: Event) {
+        event = event || window.event;
 
-        window.history.pushState({}, '', url);
+        if (event) {
+            const target = event.target as HTMLElement;
+            event.preventDefault();
+            window.history.pushState({}, '', target.getAttribute('href'));
+        }
 
-        const routerOutletElement = <HTMLElement>document.querySelectorAll('[data-router-outlet]')[0];
+        this.navigate();
+    }
 
-        if (routerOutletElement && matchedRoute.getTemplate) {
-            routerOutletElement.innerHTML = matchedRoute.getTemplate(matchedRoute.params);
+    navigate() {
+        let path = window.location.pathname;
+        if (path.length === 0) {
+            path = '/';
+        }
+
+        const route = routes.find((el) => el.path === path) || 404;
+        if (route !== 404) {
+            const pageId = route.component as routeComponents;
+            this.appController.updateCurrentPage(pageId);
+        } else {
+            alert('page 404');
         }
     }
 
-    _matchUrlToRoute(urlSegments: string[]) {
-        const routeParams: Record<string, string> = {};
-
-        const matchedRoute = this.routes.find((route: Routes) => {
-            const routePathSegments = route.path.split('/').slice(1);
-
-            if (routePathSegments.length !== urlSegments.length) {
-                return false;
-            }
-
-            const match = routePathSegments.every((routePathSegment, i: number) => {
-                return routePathSegment === urlSegments[i] || routePathSegment[0] === ':';
-            });
-
-            if (match) {
-                routePathSegments.forEach((segment, i: number) => {
-                    if (segment[0] === ':') {
-                        const propName = segment.slice(1);
-                        routeParams[propName] = decodeURIComponent(urlSegments[i]);
-                    }
-                });
-            }
-            return match;
+    init() {
+        window.addEventListener('popstate', () => {
+            this.navigate();
         });
-        return { ...matchedRoute, params: routeParams };
-    }
-
-    _loadInitialRoute() {
-        const pathNameSplit = window.location.pathname.split('/');
-        const pathSegments = pathNameSplit.length > 1 ? pathNameSplit.slice(1) : '';
-
-        this.loadRoute(...pathSegments);
+        this.navigate();
+        console.log('hello');
     }
 }
 
