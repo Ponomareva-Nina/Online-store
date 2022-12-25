@@ -1,14 +1,17 @@
-import { RouterInterface } from '../../types/interfaces';
+import { /* Props,*/ RouterInterface } from '../../types/interfaces';
+// import { PossibleUrlParams } from '../../types/types';
 import AppController from '../app/app';
 import Route from './Route';
 
 class Router implements RouterInterface {
     routes: Array<Route>;
     appController: AppController;
+    UrlSeparator: RegExp;
 
     constructor(controller: AppController, routes: Array<Route>) {
         this.appController = controller;
         this.routes = routes;
+        this.UrlSeparator = /\?|&|\//;
     }
 
     public updatePageUrl(path: string) {
@@ -16,37 +19,57 @@ class Router implements RouterInterface {
         this.navigate();
     }
 
-    public addProp() {
-        //добавляет пропс при клике в адресную строку (проверки:
+    public addParameterToUrl() {
+        //добавляет параметр в адресную строку (проверки:
         // 1 - если в пропсах нет ничего кроме id - то через ?, если есть - &)
         // 2 - если добавляем id - добавляем через /
         // 3 - если добавляем в свойство в котором уже не пустой массив/undefined - то через | стрелку
     }
 
-    private handleRouteWithProps(pathname: string) {
-        // читает пропсы из адресной строки и добавляет в объект props Route-а
-        const pathParams = pathname.split('/');
-        console.log(pathParams);
+    public deleteParameterFromUrl(/*param: string, value: string*/) {
+        //удаляет параметр
     }
 
-    private match(pathname: string) {
+    private isCorrectParameters(paramsArr: string[]) {
+        const values = ['id', 'category', 'faculty', 'sort', 'price', 'stock'];
+        const validationExp = new RegExp(values.join('|'));
+        const isCorrect = paramsArr.every((param) => {
+            console.log(param);
+            console.log(validationExp.test(param));
+            return validationExp.test(param);
+        });
+        return isCorrect;
+    }
+
+    private matchRouteWithParameters(path: string) {
+        const pathSegments = path.split(this.UrlSeparator);
+        if (!this.isCorrectParameters(pathSegments.splice(1))) {
+            return null;
+        } else {
+            const matchedRoute = this.routes.find((route: Route) => {
+                return route.pageName === pathSegments[0];
+            });
+
+            return matchedRoute;
+        }
+    }
+
+    private matchUrl(path: string) {
         const matchedRoute = this.routes.find((route: Route) => {
-            if (route.pageName === pathname) {
+            if (route.pageName === path) {
                 return route;
             }
         });
-
         if (matchedRoute) {
             return matchedRoute;
         } else {
-            const matchedRouteWithParams = this.handleRouteWithProps(pathname);
-            return matchedRouteWithParams;
+            return this.matchRouteWithParameters(path);
         }
     }
 
     public navigate() {
-        const pathname = window.location.href.split('#').length === 1 ? '' : window.location.href.split('#')[1];
-        const matchedRoute = this.match(pathname);
+        const path = window.location.href.split('#').length === 1 ? '' : window.location.href.split('#')[1];
+        const matchedRoute = this.matchUrl(path);
         if (!matchedRoute) {
             alert('page 404');
         } else {

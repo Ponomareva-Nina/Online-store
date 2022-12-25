@@ -22,7 +22,7 @@ export default class ProductPage implements viewComponent {
 
     public render(props?: Props) {
         if (props && props['id']) {
-            this.createPage(props['id']);
+            this.createPage(Number(props['id']));
         }
 
         return this.container;

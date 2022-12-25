@@ -20,11 +20,11 @@ export interface AppControllerInterface {
 
 export interface Props {
     id?: number;
-    category?: Array<string>;
-    faculties?: Array<string>;
-    sort?: Array<string>;
-    price?: Array<string>;
-    stock?: Array<string>;
+    category?: string[];
+    faculty?: string[];
+    sort?: string[];
+    price?: string[];
+    stock?: string[];
 }
 export interface viewComponent {
     container: DocumentFragment;
