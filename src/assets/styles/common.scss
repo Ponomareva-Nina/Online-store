@@ -12,7 +12,7 @@ $color-outCart: #F62B2B;
 
 @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600&family=Merienda:wght@400;700&display=swap');
 
-@mixin font-logo-title($size: 2.4rem, $color: $color-accent, $height: 145%) {
+@mixin font-logo-title($size: 1.5rem, $color: $color-accent, $height: 145%) {
     font-family: 'Merienda', sans-serif;
     font-size: $size;
     font-weight: 700;
@@ -22,7 +22,7 @@ $color-outCart: #F62B2B;
     text-transform: uppercase;
   }
 
-@mixin font-main($size: 2.4rem, $weight: 400, $color: $color-main, $height: 115%) {
+@mixin font-main($size: 1.5rem, $weight: 400, $color: $color-main, $height: 117%) {
   font-family: 'Crimson Pro', sans-serif;
   font-size: $size;
   font-weight: $weight;
@@ -57,7 +57,7 @@ input {
 }
 
 body {
-    font-size: 10px;
+    //font-size: 10px;
     scroll-behavior: smooth;
 }
 
@@ -67,8 +67,7 @@ ol {
 }
 
 a {
-    font: inherit;
-    color: inherit;
+    @include font-main(1.25rem, 400, $color-main, 165%);
     text-decoration: none;
     &:hover {
         cursor: pointer;
@@ -76,9 +75,118 @@ a {
 }
 
 button {
-    border: none;
     font: inherit;
+    border: none;
     &:hover {
         cursor: pointer;
     }
+}
+
+input,
+label {
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.btn {
+    width: 100px;
+    padding: 8px 0;
+    position: relative;
+    display: inline-block;
+    @include font-main();
+    vertical-align: middle;
+    background-image: url('./assets/images/btn_center.svg');
+    background-size: auto 100%;
+    background-repeat: repeat-x;
+    background-color: transparent;
+
+    &:hover, &:active {
+        background-image: url('./assets/images/btn-center-active.svg');
+        color: $color-dark;
+
+        &::before {
+            background-image: url('./assets/images/btn-left-active.svg');
+        }
+        &::after {
+            background-image: url('./assets/images/btn-right-active.svg');
+        }
+
+    }
+
+    &::before {
+        content: "";
+        position: absolute;
+        right: 100%;
+        bottom: 0;
+        top: 0;
+        left: -20px;
+        width: 24px;
+        height: 44px;
+        background-image: url('./assets/images/btn_left.svg');
+        background-size: auto 100%;
+        background-repeat: no-repeat;
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        left: 100%;
+        bottom: 0;
+        top: 0;
+        right: -20px;
+        width: 21px;
+        height: 44px;
+        background-image: url('./assets/images/btn-right.svg');
+        background-size: auto 100%;
+        background-repeat: no-repeat;
+        }
+
+}
+
+.wrapper {
+    width: 900px;
+    margin: 0 auto;
+    padding: 0 10px;
+}
+
+.input-container {
+    position: relative;
+}
+
+input[type=checkbox] {
+    display: none;
+    position: absolute;
+}
+label {
+    display: block;
+    padding-left: 25px;
+}
+
+input[type=checkbox] + label::before {
+	content: "";
+    width: 18px;
+	height: 23px;
+	left: 0;
+	position: absolute;
+	top: 0;
+    background-image: url('./assets/images/light-uncheck.svg');
+    background-repeat: no-repeat;
+}
+
+input[type=checkbox] + label::after {
+	content: "";
+	opacity: 0;
+	background-image: url('./assets/images/light-check.svg');
+	background-repeat: no-repeat;
+	height: 23px;
+	width: 18px;
+    position: absolute;
+	left: 0;
+	top: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+input[type=checkbox]:checked + label::after {
+	opacity: 1;
 }
