@@ -108,6 +108,7 @@ class Router implements RouterInterface {
         this.navigate();
 
         window.addEventListener('popstate', () => {
+            this.currentPath = window.location.href.split('#').length === 1 ? '' : window.location.href.split('#')[1];
             this.navigate();
         });
     }
