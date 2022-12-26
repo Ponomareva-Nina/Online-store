@@ -4,11 +4,15 @@ import CartView from '../components/views/CartView';
 import Header from '../components/views/HeaderView';
 import StartPageView from '../components/views/StartPageView';
 import StoreView from '../components/views/StoreView';
-import { PossibleUrlParams } from './types';
+import { MethodVoid, PossibleUrlParams } from './types';
 
 export interface RouterInterface {
     routes: Array<Route>;
-    navigate(...urlSegments: string[]): void;
+    navigate: MethodVoid;
+    init: MethodVoid;
+    changeCurrentPage: (path: string) => void;
+    deleteParameterFromUrl: (name: PossibleUrlParams, value: string) => void;
+    addParameterToUrl: (name: PossibleUrlParams, value: string) => void;
 }
 
 export interface AppControllerInterface {
