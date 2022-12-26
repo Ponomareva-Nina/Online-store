@@ -40,12 +40,12 @@ export default class AppController implements AppControllerInterface {
         AppController.instance = this;
     }
 
-    start() {
+    public start() {
         document.body.append(this.header.createHeader(), this.mainContainer);
         this.router.init();
     }
 
-    updatePage(view: viewComponent, params?: Props) {
+    public updatePage(view: viewComponent, params?: Props) {
         this.mainContainer.innerHTML = '';
         this.mainContainer.append(view.render(params));
     }
