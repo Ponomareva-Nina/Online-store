@@ -29,7 +29,7 @@ export default class Header {
                 if (e) {
                     const target = e.target as HTMLElement;
                     const href = target.getAttribute('href') || '';
-                    this.appController.router.updatePageUrl(href);
+                    this.appController.router.changeCurrentPage(href);
                 }
             });
             li.append(a);

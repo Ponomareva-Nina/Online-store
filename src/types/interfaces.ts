@@ -4,6 +4,7 @@ import CartView from '../components/views/CartView';
 import Header from '../components/views/HeaderView';
 import StartPageView from '../components/views/StartPageView';
 import StoreView from '../components/views/StoreView';
+import { PossibleUrlParams } from './types';
 
 export interface RouterInterface {
     routes: Array<Route>;
@@ -18,14 +19,9 @@ export interface AppControllerInterface {
     mainContainer: HTMLElement;
 }
 
-export interface Props {
-    id?: number;
-    category?: string[];
-    faculty?: string[];
-    sort?: string[];
-    price?: string[];
-    stock?: string[];
-}
+export type Props = {
+    [x in PossibleUrlParams]?: string[];
+};
 export interface viewComponent {
     container: DocumentFragment;
     appController: AppController;
