@@ -14,7 +14,7 @@ export default class Route {
         this.parameters = {};
     }
 
-    addParameter(name: PossibleUrlParams, value: string) {
+    public addParameter(name: PossibleUrlParams, value: string) {
         const paramsArr = this.parameters[name];
         if (paramsArr && Array.isArray(paramsArr)) {
             paramsArr.push(value);
@@ -25,18 +25,18 @@ export default class Route {
         }
     }
 
-    deleteParameter(name: PossibleUrlParams, value: string) {
+    public deleteParameter(name: PossibleUrlParams, value: string) {
         const index = this.parameters[name]?.indexOf(value) as number;
         if (index !== -1) {
             this.parameters[name]?.splice(index, 1);
         }
     }
 
-    getParameters() {
+    public getParameters() {
         return this.parameters;
     }
 
-    getView() {
+    public getView() {
         return this.view;
     }
 }
