@@ -26,9 +26,11 @@ export default class Route {
     }
 
     public deleteParameter(name: PossibleUrlParams, value: string) {
-        const index = this.parameters[name]?.indexOf(value) as number;
-        if (index !== -1) {
-            this.parameters[name]?.splice(index, 1);
+        const parameters = this.parameters[name];
+
+        if (parameters) {
+            const index = parameters.indexOf(value);
+            parameters.splice(index, 1);
         }
     }
 

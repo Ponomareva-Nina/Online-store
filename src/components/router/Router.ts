@@ -13,12 +13,17 @@ class Router implements RouterInterface {
         this.appController = controller;
         this.routes = routes;
         this.UrlSeparator = /\?|&|\//;
-        this.currentPath = window.location.href.split('#').length === 1 ? '' : window.location.href.split('#')[1];
+        this.currentPath = '';
+    }
+
+    private updateCurrentPath() {
+        const [, path] = window.location.href.split('#');
+        this.currentPath = window.location.href.split('#').length === 1 ? '' : path;
     }
 
     public changeCurrentPage(path: string) {
         window.history.pushState({}, '', path);
-        this.currentPath = window.location.href.split('#').length === 1 ? '' : window.location.href.split('#')[1];
+        this.updateCurrentPath();
         this.navigate();
     }
 
@@ -60,7 +65,15 @@ class Router implements RouterInterface {
     }
 
     private isCorrectParameters(paramsArr: string[]) {
-        const values = ['id', 'category', 'faculty', 'sort', 'price', 'stock'];
+        const values = [
+            PossibleUrlParams.ID,
+            PossibleUrlParams.CATEGORY,
+            PossibleUrlParams.FACULTY,
+            PossibleUrlParams.SORT,
+            PossibleUrlParams.PRICE,
+            PossibleUrlParams.STOCK,
+        ];
+
         const validationExp = new RegExp(values.join('|'));
         const isCorrect = paramsArr.every((param) => {
             return validationExp.test(param);
@@ -69,13 +82,13 @@ class Router implements RouterInterface {
     }
 
     private matchRouteWithParameters(path: string) {
-        const pathSegments = path.split(this.UrlSeparator);
-        if (!this.isCorrectParameters(pathSegments.splice(1))) {
+        const [pageRoute, ...pathSegments] = path.split(this.UrlSeparator);
+        if (!this.isCorrectParameters(pathSegments)) {
             return null;
         }
 
         const matchedRoute = this.routes.find((route: Route) => {
-            return route.pageName === pathSegments[0];
+            return route.pageName === pageRoute;
         });
 
         return matchedRoute;
@@ -95,12 +108,13 @@ class Router implements RouterInterface {
     }
 
     public navigate() {
+        this.updateCurrentPath();
         const path = this.currentPath;
         const matchedRoute = this.matchUrl(path);
-        if (!matchedRoute) {
-            alert('page 404');
-        } else {
+        if (matchedRoute) {
             this.appController.updatePage(matchedRoute.getView());
+        } else {
+            alert('page 404');
         }
     }
 
@@ -108,7 +122,7 @@ class Router implements RouterInterface {
         this.navigate();
 
         window.addEventListener('popstate', () => {
-            this.currentPath = window.location.href.split('#').length === 1 ? '' : window.location.href.split('#')[1];
+            this.updateCurrentPath();
             this.navigate();
         });
     }

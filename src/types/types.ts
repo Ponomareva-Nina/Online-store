@@ -10,3 +10,7 @@ export enum PossibleUrlParams {
 }
 
 export type MethodVoid = () => void;
+
+export enum HTMLElements {
+    PAGE_HEADER = 'h1',
+}
