@@ -114,7 +114,7 @@ class Router implements RouterInterface {
         if (matchedRoute) {
             this.appController.updatePage(matchedRoute.getView());
         } else {
-            alert('page 404');
+            window.location.href = '../404.html';
         }
     }
 
@@ -122,7 +122,6 @@ class Router implements RouterInterface {
         this.navigate();
 
         window.addEventListener('popstate', () => {
-            this.updateCurrentPath();
             this.navigate();
         });
     }
