@@ -26,7 +26,7 @@ export interface AppControllerInterface {
 export type Props = {
     [x in PossibleUrlParams]?: string[];
 };
-export interface viewComponent {
+export interface ViewComponent {
     container: DocumentFragment;
     appController: AppController;
     render: (props?: Props) => DocumentFragment;
