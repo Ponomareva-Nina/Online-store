@@ -114,7 +114,7 @@ class Router implements RouterInterface {
         if (matchedRoute) {
             this.appController.updatePage(matchedRoute.getView());
         } else {
-            window.location.href = 'https://vladimirm89.github.io/404-test/';
+            window.location.href = 'https://Ponomareva-Nina.github.io/Online-store/404.html';
         }
     }
 
