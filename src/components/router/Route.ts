@@ -1,13 +1,13 @@
-import { Props, viewComponent } from '../../types/interfaces';
+import { Props, ViewComponent } from '../../types/interfaces';
 import { PossibleUrlParams } from '../../types/types';
 
 export default class Route {
     pageName: string;
     path: string;
-    view: viewComponent;
+    view: ViewComponent;
     parameters: Props;
 
-    constructor(name: string, path: string, view: viewComponent) {
+    constructor(name: string, path: string, view: ViewComponent) {
         this.pageName = name;
         this.path = path;
         this.view = view;
