@@ -1,8 +1,8 @@
-import { Props, viewComponent } from '../../types/interfaces';
+import { Props, ViewComponent } from '../../types/interfaces';
 import createElem from '../../utils/utils';
 import AppController from '../app/app';
 
-export default class ProductPage implements viewComponent {
+export default class ProductPage implements ViewComponent {
     container: DocumentFragment;
     appController: AppController;
     productId: number;
