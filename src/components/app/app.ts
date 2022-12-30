@@ -7,17 +7,20 @@ import { AppControllerInterface, Props, ViewComponent } from '../../types/interf
 import Route from '../router/Route';
 import Router from '../router/Router';
 import ProductPage from '../views/productPage';
+import '../models/StoreModel';
+import StoreModel from '../models/StoreModel';
 
 export default class AppController implements AppControllerInterface {
+    private static instance: InstanceType<typeof AppController>;
+    mainContainer: HTMLElement;
+    header: Header;
+    routes: Route[];
+    router: Router;
     cartView: CartView;
     storeView: StoreView;
     startPage: StartPageView;
-    header: Header;
-    mainContainer: HTMLElement;
-    private static instance: InstanceType<typeof AppController>;
-    routes: Route[];
-    router: Router;
     productPage: ProductPage;
+    storeModel: StoreModel;
 
     constructor() {
         this.header = new Header(this);
@@ -26,6 +29,7 @@ export default class AppController implements AppControllerInterface {
         this.startPage = new StartPageView(this);
         this.storeView = new StoreView(this);
         this.productPage = new ProductPage(this);
+        this.storeModel = new StoreModel(this);
         this.routes = [
             new Route('', '#', this.startPage),
             new Route('store', '#store', this.storeView),
