@@ -732,6 +732,7 @@
         },
         {
             "id": 50,
+            "faculty": "gryffindor",
             "category": "trunks",
             "title": "Gryffindor Mini Gift Trunk",
             "description": "Take home this mini version of the Hogwarts School Trunk, crafted to resemble those used by Hogwarts students travelling on the Hogwarts Express. This bespoke Gryffindor gift trunk features some exclusive items from our knitwear collection, as well as a Hogwarts Acceptance Letter, personalised with your own name and complete with an exclusive supplies list.",
@@ -1258,6 +1259,7 @@
         },
         {
             "id": 84,
+            "faculty": "slytherin",
             "category": "jewellery",
             "title": "Slytherin House Crest Necklace",
             "description": "Keep your Hogwarts house pride close to heart with this stunning Slytherin House Crest Necklace.\n The raised heraldic snake of Slytherin House is set upon a glossed emerald green background. Clasped to the top is a charm in the shape of the iconic locket of Salazar Slytherin; one of the four founders of Hogwarts School of Witchcraft and Wizardry.\n The chain of this Slytherin necklace features a lobster claw clasp and is silver in appearance to emphasise the rich, cool tones of the House Crest colours.",
@@ -1387,6 +1389,7 @@
         },
         {
             "id": 93,
+            "faculty": "slytherin",
             "category": "travel",
             "title": "Slytherin Logo Green Backpack",
             "description": "Celebrate your Hogwarts house pride with this unique Slytherin backpack. Made from 100% cotton, the backpack features an emerald green design with grey vertical and diagonal stripes across the front. The iconic Slytherin crest is embroidered into the centre of the backpack. The bag has black handles as well as black straps which can be adjusted for a suitable and comfortable fit. The Slytherin backpack is complete with various compartments and pockets, perfect to keep safe or hide any magical trinkets when you’re on-the-go.",
