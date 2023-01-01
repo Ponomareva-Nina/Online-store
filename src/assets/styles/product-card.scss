@@ -15,7 +15,11 @@
 }
 
 .trunk-btn {
-    width: 4rem;
-    height: 3rem;
-    background: url('../images/trunk-icon.svg');
+    width: 5rem;
+    height: 5rem;
+    background-color: transparent;
+    background-image: url('./assets/images/trunk-icon.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
 }
