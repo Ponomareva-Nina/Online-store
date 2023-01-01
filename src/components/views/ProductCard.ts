@@ -32,11 +32,11 @@ export default class ProductCard implements ProductCardInterface {
         const detailsBtnClassName = 'btn';
         const detailsBtn = createElem(HTMLElements.BUTTON, detailsBtnClassName, detailsBtnText);
 
-        const addToCartBtnClassName = 'add-to-cart-btn';
-        const addToCartBtn = createElem(HTMLElements.BUTTON, addToCartBtnClassName, 'add');
+        const trunkBtnClassName = 'trunc-btn';
+        const trunkBtn = createElem(HTMLElements.BUTTON, trunkBtnClassName, '');
 
         const container = createElem(HTMLElements.DIV, 'card', '');
-        container.append(cardTitle, cardPrice, cardThumbnail, detailsBtn, addToCartBtn);
+        container.append(cardTitle, cardPrice, cardThumbnail, detailsBtn, trunkBtn);
         return container;
     }
 }
