@@ -120,6 +120,7 @@ label {
     background-size: auto 100%;
     background-repeat: repeat-x;
     background-color: transparent;
+    transition: all .5s ease;
 
     &:hover, &:active {
         background-image: url('./assets/images/btn-center-active.svg');
@@ -144,6 +145,7 @@ label {
         background-image: url('./assets/images/btn_left.svg');
         background-size: auto 100%;
         background-repeat: no-repeat;
+        transition: all .5s ease;
     }
 
     &::after {
@@ -156,7 +158,8 @@ label {
         background-image: url('./assets/images/btn-right.svg');
         background-size: auto 100%;
         background-repeat: no-repeat;
-        }
+        transition: all .5s ease;
+    }
 
 }
 

@@ -44,7 +44,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: all .5s ease;
+
+    & svg {
+        transition: all .5s ease;
+    }
 
     &:active svg {
         fill: $color-inCart;
