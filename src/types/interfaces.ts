@@ -44,3 +44,9 @@ export interface Product {
     thumbnail: string;
     images: string[];
 }
+
+export interface ProductCardInterface {
+    cardData: Product;
+    createBriefCard: () => HTMLElement;
+    createFullCard: () => HTMLElement;
+}
