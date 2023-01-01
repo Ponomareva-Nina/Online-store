@@ -44,16 +44,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: all .5s ease;
 
-    &:hover svg {
+    &:active svg {
         fill: $color-inCart;
     }
 }
 
 .trunk-btn_checked {
-    fill: $color-inCart;
-
-    &:hover svg {
-        fill: $color-outCart;
+    & svg {
+        fill: $color-inCart;
     }
 }

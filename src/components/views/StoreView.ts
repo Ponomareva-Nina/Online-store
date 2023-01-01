@@ -20,7 +20,7 @@ export default class StoreView {
     private renderProductCards() {
         const currentProducts = this.storeModel.currentProducts;
         currentProducts.forEach((product) => {
-            const card = new ProductCard(product);
+            const card = new ProductCard(product, this.appController);
             const cardView = card.createBriefCard();
             this.productCardsContainer.append(cardView);
         });

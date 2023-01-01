@@ -3,7 +3,7 @@ import StartPageView from '../views/StartPageView';
 import StoreView from '../views/StoreView';
 import Header from '../views/HeaderView';
 import { createElem } from '../../utils/utils';
-import { AppControllerInterface, Props, ViewComponent } from '../../types/interfaces';
+import { AppControllerInterface, Product, Props, ViewComponent } from '../../types/interfaces';
 import Route from '../router/Route';
 import Router from '../router/Router';
 import ProductPage from '../views/productPage';
@@ -52,5 +52,15 @@ export default class AppController implements AppControllerInterface {
     public updatePage(view: ViewComponent, params?: Props) {
         this.mainContainer.innerHTML = '';
         this.mainContainer.append(view.render(params));
+    }
+
+    public addProductToCart(product: Product) {
+        console.log(product);
+        console.log('method: addProductToCart');
+    }
+
+    public deleteProductFromCart(product: Product) {
+        console.log(product);
+        console.log('method: deleteProductFromCart');
     }
 }
