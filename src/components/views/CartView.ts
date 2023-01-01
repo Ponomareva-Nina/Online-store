@@ -1,4 +1,4 @@
-import createElem from '../../utils/utils';
+import { createElem } from '../../utils/utils';
 import AppController from '../app/app';
 
 export default class CartView {
