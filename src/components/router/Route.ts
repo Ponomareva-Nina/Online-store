@@ -41,4 +41,8 @@ export default class Route {
     public getView() {
         return this.view;
     }
+
+    public clearParameters() {
+        this.parameters = {};
+    }
 }

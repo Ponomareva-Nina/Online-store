@@ -23,7 +23,6 @@ class Router implements RouterInterface {
 
     public changeCurrentPage(path: string) {
         window.history.pushState({}, '', path);
-        this.updateCurrentPath();
         this.navigate();
     }
 
@@ -34,8 +33,10 @@ class Router implements RouterInterface {
         for (const key in newParams) {
             const params = newParams[key as PossibleUrlParams];
             if (params && params.length > 0) {
-                const urlSegment = `${key}=${params.join('↕')}`;
-                if (newPath.includes('?')) {
+                const urlSegment = `${key}=${params.join('|')}`;
+                if (key === 'id') {
+                    newPath = newPath.concat('/').concat(urlSegment);
+                } else if (newPath.includes('?')) {
                     newPath = newPath.concat('&').concat(urlSegment);
                 } else {
                     newPath = newPath.concat('?').concat(urlSegment);
@@ -43,7 +44,6 @@ class Router implements RouterInterface {
             }
         }
         window.history.pushState({}, '', newPath);
-        this.navigate();
     }
 
     public addParameterToUrl(name: PossibleUrlParams, value: string): void {
@@ -91,6 +91,16 @@ class Router implements RouterInterface {
             return route.pageName === pageRoute;
         });
 
+        if (matchedRoute) {
+            matchedRoute.clearParameters();
+            pathSegments.forEach((param) => {
+                const [key, values] = param.split('=');
+                const valuesArr = values.split('|');
+                valuesArr.forEach((value) => {
+                    matchedRoute.addParameter(key as PossibleUrlParams, value);
+                });
+            });
+        }
         return matchedRoute;
     }
 
@@ -112,7 +122,8 @@ class Router implements RouterInterface {
         const path = this.currentPath;
         const matchedRoute = this.matchUrl(path);
         if (matchedRoute) {
-            this.appController.updatePage(matchedRoute.getView());
+            const params = matchedRoute.getParameters();
+            this.appController.updatePage(matchedRoute.getView(), params);
         } else {
             window.location.href = 'https://Ponomareva-Nina.github.io/Online-store/404.html';
         }
