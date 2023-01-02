@@ -16,4 +16,8 @@ export default class StoreModel {
     getProductById(id: number) {
         return this.products.find((product) => product.id === id);
     }
+
+    getCurrentProducts() {
+        return this.currentProducts;
+    }
 }

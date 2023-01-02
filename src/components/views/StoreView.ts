@@ -18,7 +18,7 @@ export default class StoreView {
     }
 
     private renderProductCards() {
-        const currentProducts = this.storeModel.currentProducts;
+        const currentProducts = this.storeModel.getCurrentProducts();
         currentProducts.forEach((product) => {
             const card = new ProductCard(product, this.appController);
             const cardView = card.createBriefCard();
