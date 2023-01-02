@@ -1,5 +1,5 @@
 import { Props, ViewComponent } from '../../types/interfaces';
-import createElem from '../../utils/utils';
+import { createElem } from '../../utils/utils';
 import AppController from '../app/app';
 
 export default class ProductPage implements ViewComponent {

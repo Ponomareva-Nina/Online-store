@@ -1,0 +1,20 @@
+.cart-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.cart-icon {
+    width: 45px;
+    height: 30px;
+    content: "";
+    display: inline-flex;
+    background-image: url('./assets/images/cart-img.svg');
+    background-repeat: no-repeat;
+}
+
+.cart-quantity {
+    padding-left: 8px;
+    color: $color-main;
+    line-height: 112%;
+}

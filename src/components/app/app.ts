@@ -2,16 +2,18 @@ import CartView from '../views/CartView';
 import StartPageView from '../views/StartPageView';
 import StoreView from '../views/StoreView';
 import Header from '../views/HeaderView';
-import createElem from '../../utils/utils';
+import { createElem } from '../../utils/utils';
 import { AppControllerInterface, Props, ViewComponent } from '../../types/interfaces';
 import Route from '../router/Route';
 import Router from '../router/Router';
 import ProductPage from '../views/productPage';
+import Menu from '../views/Menu';
 
 export default class AppController implements AppControllerInterface {
     cartView: CartView;
     storeView: StoreView;
     startPage: StartPageView;
+    menu: Menu;
     header: Header;
     mainContainer: HTMLElement;
     private static instance: InstanceType<typeof AppController>;
@@ -20,6 +22,7 @@ export default class AppController implements AppControllerInterface {
     productPage: ProductPage;
 
     constructor() {
+        this.menu = new Menu(this);
         this.header = new Header(this);
         this.mainContainer = createElem('main', 'main');
         this.cartView = new CartView(this);

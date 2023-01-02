@@ -1,5 +1,5 @@
 import { HTMLElements } from '../../types/types';
-import createElem from '../../utils/utils';
+import { createElem } from '../../utils/utils';
 import AppController from '../app/app';
 
 export default class StoreView {
@@ -12,7 +12,7 @@ export default class StoreView {
     }
 
     private createPage() {
-        const className = 'header';
+        const className = 'main';
         const text = 'MERCH FOR WIZZARDS AND MUGGLES';
         const header = createElem(HTMLElements.PAGE_HEADER, className, text);
         this.container.append(header);
