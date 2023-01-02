@@ -1,6 +1,6 @@
 import { Props, ViewComponent } from '../../types/interfaces';
-import { createElem } from '../../utils/utils';
 import AppController from '../app/app';
+import ProductCard from './ProductCard';
 
 export default class ProductPage implements ViewComponent {
     container: DocumentFragment;
@@ -12,16 +12,19 @@ export default class ProductPage implements ViewComponent {
     }
 
     private createPage(productId: number) {
-        const title = createElem('h1', 'title', 'Product Page');
-        const productNumber = createElem('span', '', productId.toString());
-        this.container.append(title, productNumber);
+        const data = this.appController.storeModel.getProductById(productId);
+        if (data) {
+            const card = new ProductCard(data, this.appController);
+            const cardView = card.createFullCard();
+            this.container.append(cardView);
+        }
     }
 
     public render(props?: Props) {
         if (props && props['id']) {
-            this.createPage(Number(props['id']));
+            const id = Number(props['id']);
+            this.createPage(id);
         }
-
         return this.container;
     }
 }

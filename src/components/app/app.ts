@@ -6,7 +6,7 @@ import { createElem } from '../../utils/utils';
 import { AppControllerInterface, Product, Props, ViewComponent } from '../../types/interfaces';
 import Route from '../router/Route';
 import Router from '../router/Router';
-import ProductPage from '../views/productPage';
+import ProductPage from '../views/ProductPage';
 import '../models/StoreModel';
 import StoreModel from '../models/StoreModel';
 
