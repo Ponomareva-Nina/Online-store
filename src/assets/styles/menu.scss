@@ -24,7 +24,7 @@
 
 .menu_open .logo-container {
     width: 19rem;
-    padding: 3rem 0 3rem;
+    padding: 1.5rem 0.6rem;
 }
 
 .menu .main-nav__list {
@@ -38,17 +38,17 @@
 
 .menu .main-nav__list_item {
     width: 100%;
-    padding: 2.5rem 0;
+    padding: 1.5rem 0 1.7rem;
     border-bottom: 1px $color-accent solid;
 }
 
 .menu .theme-container {
     width: 100%;
-    padding: 1.5rem 0 3rem;
+    padding: 1rem 0 3rem;
     border-bottom: 1px $color-accent solid;
 }
 .menu .sound-container  {
-    padding: 1.5rem 0 5rem;
+    padding: 1rem 0 3rem;
 }
 
 .sound-container, .theme-container {
@@ -59,23 +59,23 @@
     width: 10%;
     height: 33%;
     left: 14.4rem;
-    top: 5.2rem;
+    top: 4.5rem;
     background-image: url('./assets/images/music_off.svg');
 }
 
 .checkbox-sound + label::after {
-    width: 11%;
-    height: 32%;
-    left: 13.8rem;
-    top: 5.0rem;
+    width: 10%;
+    height: 33%;
+    left: 13.77rem;
+    top: 4.3rem;
     background-image: url('./assets/images/music_on.svg');
 }
 
 .checkbox-theme + label::before {
     width: 38%;
-    height: 40%;
+    height: 42%;
     left: 10.1rem;
-    top: 4.9rem;
+    top: 3.9rem;
     background-image: url('./assets/images/light.svg');
 }
 
@@ -89,9 +89,9 @@
 
 .checkbox-theme + label::after {
     width: 38%;
-    height: 40%;
+    height: 42%;
     left: 10.1rem;
-    top: 4.9rem;
+    top: 3.9rem;
     background-image: url('./assets/images/dark.svg');
 }
 
