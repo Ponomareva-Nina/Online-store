@@ -9,3 +9,5 @@ export const QUERY_SEPARATOR = '?';
 export const HASHTAG = '#';
 export const STORE_VIEW_TITLE = 'CATALOGUE';
 export const DETAILS_BUTTON_TEXT = 'Details';
+export const MAIN_LOGO_PART1 = 'hogwarts';
+export const MAIN_LOGO_PART2 = 'store';

@@ -2,7 +2,7 @@ import { createElem, createWelcomeLine } from '../../utils/utils';
 import AppController from '../app/app';
 import { LINKS } from '../../constants/route-constants';
 import { HTMLTags, NullableElement } from '../../types/types';
-import { HASHTAG } from '../../constants/string-constants';
+import { HASHTAG, MAIN_LOGO_PART1, MAIN_LOGO_PART2 } from '../../constants/string-constants';
 
 export default class Header {
     container: HTMLElement;
@@ -20,15 +20,17 @@ export default class Header {
     public createLogo() {
         const logoContainer = createElem(HTMLTags.DIV, 'logo-container');
         const title = createElem(HTMLTags.PAGE_HEADER, 'logo-title');
-        const a = createElem(HTMLTags.LINK, 'logo-link');
-        a.setAttribute('href', LINKS.About);
-        a.append(title);
-        title.innerHTML = `hogwarts <span class="logo-lightning"></span> store`;
+        const textTitle1 = createElem(HTMLTags.SPAN, 'text-title-first', MAIN_LOGO_PART1);
+        const textTitle2 = createElem(HTMLTags.SPAN, 'text-title-second', MAIN_LOGO_PART2);
+        title.append(textTitle1, textTitle2);
+        const link = createElem(HTMLTags.LINK, 'logo-link');
+        link.setAttribute('href', LINKS.About);
+        link.append(title);
         logoContainer.addEventListener('click', (e) => {
             this.appController.router.changeCurrentPage(LINKS.About);
             this.appController.header.handleNavigationClick(e);
         });
-        logoContainer.append(a);
+        logoContainer.append(link);
         return logoContainer;
     }
 
@@ -38,18 +40,18 @@ export default class Header {
 
         for (const link in LINKS) {
             const li = createElem(HTMLTags.LIST, 'main-nav__list_item');
-            const a = createElem(HTMLTags.LINK, 'nav-link', link);
-            a.setAttribute('href', LINKS[link as keyof typeof LINKS]);
-            const initialLink = a.getAttribute('href');
+            const navLink = createElem(HTMLTags.LINK, 'nav-link', link);
+            navLink.setAttribute('href', LINKS[link as keyof typeof LINKS]);
+            const initialLink = navLink.getAttribute('href');
             if (initialLink === LINKS.About) {
-                this.currentActiveLink = a;
-                a.classList.add('nav-link_active');
+                this.currentActiveLink = navLink;
+                navLink.classList.add('nav-link_active');
             }
-            a.addEventListener('click', (e) => {
+            navLink.addEventListener('click', (e) => {
                 e.preventDefault();
                 this.handleNavigationClick(e);
             });
-            li.append(a);
+            li.append(navLink);
             navList.append(li);
         }
 
