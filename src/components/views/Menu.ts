@@ -1,9 +1,10 @@
 import { MENU_SOUND_TITLE, MENU_THEME_TITLE } from '../../constants/string-constants';
+import { IMenu } from '../../types/interfaces';
 import { HTMLTags } from '../../types/types';
 import { createAudio, createElem } from '../../utils/utils';
 import AppController from '../app/app';
 
-export default class Menu {
+export default class Menu implements IMenu {
     appController: AppController;
     menuContainer: HTMLElement;
     burgerIcon: HTMLElement;
@@ -14,7 +15,7 @@ export default class Menu {
         this.burgerIcon = this.createBurgerIcon();
     }
 
-    public createBurgerIcon() {
+    private createBurgerIcon() {
         const burgerMenu = createElem(HTMLTags.DIV, 'burger-menu');
         burgerMenu.addEventListener('click', (e) => {
             burgerMenu.classList.toggle('burger-menu_open');
@@ -28,7 +29,7 @@ export default class Menu {
         return burgerMenu;
     }
 
-    getBurgerIcon() {
+    public getBurgerIcon() {
         return this.burgerIcon;
     }
 
@@ -63,7 +64,7 @@ export default class Menu {
         return input;
     }
 
-    public createMenu(menu: HTMLElement, burgerMenu: HTMLElement) {
+    private createMenu(menu: HTMLElement, burgerMenu: HTMLElement) {
         document.body.addEventListener('click', (e) => {
             this.handleClick(e, burgerMenu, menu);
         });
@@ -85,7 +86,7 @@ export default class Menu {
         }
     }
 
-    public handleClick(e: MouseEvent, burgerMenu: HTMLElement, menu: HTMLElement) {
+    private handleClick(e: MouseEvent, burgerMenu: HTMLElement, menu: HTMLElement) {
         const target = e.target as Element;
         if (
             document.body.classList.contains('inactive') &&

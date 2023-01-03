@@ -31,3 +31,10 @@ export interface ViewComponent {
     appController: AppController;
     render: (props?: Props) => DocumentFragment;
 }
+
+export interface IMenu {
+    appController: AppController;
+    menuContainer: HTMLElement;
+    burgerIcon: HTMLElement;
+    getBurgerIcon: () => HTMLElement;
+}
