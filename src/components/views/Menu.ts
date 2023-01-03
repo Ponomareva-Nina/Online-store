@@ -71,6 +71,8 @@ export default class Menu implements IMenu {
         if (
             document.body.classList.contains('inactive') &&
             (target.classList.contains('logo-title') ||
+                target.classList.contains('text-title-second') ||
+                target.classList.contains('text-title-first') ||
                 target.classList.contains('inactive') ||
                 target.classList.contains('nav-link'))
         ) {
