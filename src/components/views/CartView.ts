@@ -33,16 +33,17 @@ export default class CartView {
         //
     }
 
-    //создает иконку корзины и кол-ва товаров в ней, вызывается из header
     public createCartIcon() {
         const cartContainer = createElem(HTMLTags.DIV, 'cart-container');
+        const link = createElem(HTMLTags.LINK);
         const cartIcon = createElem(HTMLTags.SPAN, 'cart-icon');
         const quantity = createElem(HTMLTags.SPAN, 'cart-quantity');
+        link.append(cartIcon, quantity);
         quantity.textContent = `${this.productsQuantity}`;
-        cartContainer.append(cartIcon, quantity);
-        cartContainer.addEventListener('click', (/*e*/) => {
+        cartContainer.append(link);
+        cartContainer.addEventListener('click', (e) => {
             this.appController.router.changeCurrentPage(LINKS.Cart);
-            // this.appController.header.handleNavigationClick(e);
+            this.appController.header.handleNavigationClick(e);
         });
         return cartContainer;
     }

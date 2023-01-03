@@ -2,6 +2,7 @@ import { createElem, createWelcomeLine } from '../../utils/utils';
 import AppController from '../app/app';
 import { LINKS } from '../../constants/route-constants';
 import { HTMLTags, NullableElement } from '../../types/types';
+import { HASHTAG } from '../../constants/string-constants';
 
 export default class Header {
     container: HTMLElement;
@@ -23,6 +24,10 @@ export default class Header {
         a.setAttribute('href', LINKS.About);
         a.append(title);
         title.innerHTML = `hogwarts <span class="logo-lightning"></span> store`;
+        logoContainer.addEventListener('click', (e) => {
+            this.appController.router.changeCurrentPage(LINKS.About);
+            this.appController.header.handleNavigationClick(e);
+        });
         logoContainer.append(a);
         return logoContainer;
     }
@@ -53,24 +58,18 @@ export default class Header {
     }
 
     public handleNavigationClick(event: MouseEvent) {
-        // if (this.currentActiveLink) {
-        // this.currentActiveLink.classList.remove('nav-link_active');
         const target = event.target as HTMLElement;
         const href = target.getAttribute('href') || '';
         this.appController.router.changeCurrentPage(href);
-
         const newActiveLink = document.querySelectorAll('.nav-link');
         newActiveLink.forEach((link) => {
-            const route = `#${this.appController.router.currentPath}`;
+            const route = `${HASHTAG}${this.appController.router.currentPath}`;
             if (link.getAttribute('href') === route) {
                 link.classList.add('nav-link_active');
             } else {
                 link.classList.remove('nav-link_active');
             }
         });
-        // this.currentActiveLink = event.target as HTMLElement;
-        // this.currentActiveLink.classList.add('nav-link_active');
-        // }
     }
 
     private createContentHeader() {
@@ -78,7 +77,6 @@ export default class Header {
         const logo = this.createLogo();
         const navigation = this.createNavigation();
         centralContainer.append(logo, navigation);
-
         const container = createElem(HTMLTags.DIV, 'header-content');
         const burger = this.appController.menu.getBurgerIcon();
         const menu = this.appController.menu.createMenu();
