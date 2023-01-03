@@ -19,7 +19,6 @@ export default class Header {
     public createLogo() {
         const logoContainer = createElem(HTMLElements.TAG_DIV, 'logo-container');
         const title = createElem(HTMLElements.PAGE_HEADER, 'logo-title');
-        //const lightning = createElem(HTMLElements.TAG_SPAN, 'logo-lightning');
         const a = createElem(HTMLElements.TAG_LINK, 'logo-link');
         a.setAttribute('href', LINKS.About);
         a.append(title);

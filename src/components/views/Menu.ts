@@ -1,5 +1,5 @@
 import { HTMLElements } from '../../types/types';
-import { createElem } from '../../utils/utils';
+import { createAudio, createElem } from '../../utils/utils';
 import AppController from '../app/app';
 
 export default class Menu {
@@ -49,7 +49,11 @@ export default class Menu {
         const input = this.createInput('checkbox checkbox-sound', 'sound');
         const label = createElem('label');
         label.setAttribute('for', 'sound');
-        soundContainer.append(soundTitle, input, label);
+        const audio = createAudio();
+        label.addEventListener('click', () => {
+            this.handlePlayAudio(audio);
+        });
+        soundContainer.append(soundTitle, input, label, audio);
         return soundContainer;
     }
 
@@ -73,9 +77,9 @@ export default class Menu {
             navigation.addEventListener('click', (e) => {
                 this.handleClick(e, burgerMenu, menu);
             });
-            const theme = this.createTheme();
+            //const theme = this.createTheme();
             const sound = this.createSound();
-            this.menuContainer.append(logo, navigation, theme, sound);
+            this.menuContainer.append(logo, navigation, sound);
             return this.menuContainer;
         } else {
             return this.menuContainer;
@@ -93,6 +97,16 @@ export default class Menu {
             document.body.classList.toggle('inactive');
             burgerMenu.classList.toggle('burger-menu_open');
             menu.classList.toggle('menu_open');
+        }
+    }
+
+    private handlePlayAudio(audio: HTMLAudioElement) {
+        if (audio.classList.contains('play')) {
+            audio.classList.remove('play');
+            audio.pause();
+        } else {
+            audio.classList.add('play');
+            audio.play();
         }
     }
 }

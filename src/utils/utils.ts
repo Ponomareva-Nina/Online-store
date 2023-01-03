@@ -18,7 +18,11 @@ export function createWelcomeLine() {
     line.append(wrapper);
     return line;
 }
-// export function createWrapper() {
-//     const wrapper = createElem('div', 'wrapper');
-//     return wrapper;
-// }
+
+export function createAudio() {
+    const audio = new Audio();
+    audio.src = 'https://dl2.mp3party.net/online/1411805.mp3';
+    audio.loop = true;
+    audio.volume = 0.2;
+    return audio;
+}
