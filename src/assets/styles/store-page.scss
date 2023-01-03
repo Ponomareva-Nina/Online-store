@@ -1,0 +1,11 @@
+.product-cards {
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    gap: 2rem;
+    justify-content: center;
+    margin: 3rem 0;
+}
+
+.page-header {
+    @include font-logo-title();
+}

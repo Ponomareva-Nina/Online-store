@@ -1,4 +1,4 @@
-import createElem from '../../utils/utils';
+import { createElem } from '../../utils/utils';
 import AppController from '../app/app';
 
 export default class CartView {
@@ -28,11 +28,7 @@ export default class CartView {
     }
 
     public deleteProductFromCart(/*объект товара*/) {
-        // создает вид карточки товара в корзине
-        // this.container.append(cозданную карточку продукта);
-        // this.renderProduct(объект)
-        // this.sum = sum + товар.price;
-        // this.productsQuantity += кол-во;
+        //
     }
 
     public render() {

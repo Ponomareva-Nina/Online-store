@@ -31,3 +31,22 @@ export interface ViewComponent {
     appController: AppController;
     render: (props?: Props) => DocumentFragment;
 }
+
+export interface Product {
+    id: number;
+    faculty: string;
+    category: string;
+    title: string;
+    description: string;
+    quantity: number;
+    price: number;
+    discount: number;
+    thumbnail: string;
+    images: string[];
+}
+
+export interface ProductCardInterface {
+    cardData: Product;
+    createBriefCard: () => HTMLElement;
+    createFullCard: () => HTMLElement;
+}

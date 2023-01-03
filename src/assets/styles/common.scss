@@ -1,38 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600&family=Merienda:wght@400;700&display=swap');
+
+$base-size: 10px;
 $color-page-bg: #FDFBF8;
 $color-card-bg: #FFFFFF;
 $color-main: #4A2B10;
 $color-accent: #A76029;
 $color-aux: #776353;
-$color-logo_and_text_hover: #000000;
+$color-logo: #000000;
+$color-btn-text-hover:  #000000;
 $color-aux_opacity: rgba(119, 99, 83, 0.5);
 $color-box-active: #FFC700;
-$color-hover: rgba(167, 96, 41, 0.7);
 $color-inCart: #148025;
 $color-outCart: #F62B2B;
 
-@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600&family=Merienda:wght@400;700&display=swap');
-
-@mixin font-logo-title($size: 1.5rem, $color: $color-accent, $height: 145%) {
+@mixin font-logo-title($size: 2.4rem, $color: $color-accent, $height: 145%) {
     font-family: 'Merienda', sans-serif;
     font-size: $size;
     font-weight: 700;
     line-height: $height;
     font-style: normal;
-    color: $color-accent;
+    color: $color;
     text-transform: uppercase;
-  }
+    text-align: center;
+}
 
-@mixin font-main($size: 1.5rem, $weight: 400, $color: $color-main, $height: 117%) {
+@mixin font-main($size: 2.4rem, $weight: 400, $color: $color-main, $height: 117%) {
   font-family: 'Crimson Pro', sans-serif;
   font-size: $size;
   font-weight: $weight;
   line-height: $height;
   font-style: normal;
-  color: $color-main;
+  color: $color;
 }
 
 * {
     box-sizing: border-box;
+}
+
+html {
+    font-size: $base-size;
 }
 
 html,
@@ -56,18 +62,13 @@ input {
     padding: 0;
 }
 
-body {
-    font-size: 16px;
-    scroll-behavior: smooth;
-}
-
 ul,
 ol {
 	list-style: none;
 }
 
 a {
-    @include font-main(1.25rem, 400, $color-main, 165%);
+    @include font-main(2rem, 400, $color-main, 165%);
     text-decoration: none;
     &:hover {
         cursor: pointer;
@@ -90,9 +91,12 @@ label {
 }
 
 #root {
+    @include font-main();
+    scroll-behavior: smooth;
     height: 100vh;
     display: flex;
     flex-direction: column;
+    background-color: $color-page-bg;
 }
 
 .header,
@@ -105,8 +109,8 @@ label {
 }
 
 .btn {
-    width: 6.25rem;
-    margin: 0 1.5rem;
+    width: 10rem;
+    margin: 0 2rem;
     padding: 8px 0;
     @include font-main();
     position: relative;
@@ -116,10 +120,11 @@ label {
     background-size: auto 100%;
     background-repeat: repeat-x;
     background-color: transparent;
+    transition: all .5s ease;
 
     &:hover, &:active {
         background-image: url('./assets/images/btn-center-active.svg');
-        color: $color-logo_and_text_hover;
+        color: $color-btn-text-hover;
 
         &::before {
             background-image: url('./assets/images/btn-left-active.svg');
@@ -140,6 +145,7 @@ label {
         background-image: url('./assets/images/btn_left.svg');
         background-size: auto 100%;
         background-repeat: no-repeat;
+        transition: all .5s ease;
     }
 
     &::after {
@@ -152,7 +158,8 @@ label {
         background-image: url('./assets/images/btn-right.svg');
         background-size: auto 100%;
         background-repeat: no-repeat;
-        }
+        transition: all .5s ease;
+    }
 
 }
 
@@ -169,8 +176,9 @@ label {
 .checkbox {
     display: none;
 }
+
 label {
-    padding-left: 2.18rem;
+    padding-left: 3.4rem;
 }
 
 .checkbox-lightning + label::before {
