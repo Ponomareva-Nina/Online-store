@@ -11,7 +11,7 @@ export enum PossibleUrlParams {
 
 export type MethodVoid = () => void;
 
-export enum HTMLElements {
+export enum HTMLTags {
     PAGE_HEADER = 'h1',
     H2 = 'h2',
     SECTION = 'section',

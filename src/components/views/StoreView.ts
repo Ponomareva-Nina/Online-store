@@ -1,4 +1,4 @@
-import { HTMLElements } from '../../types/types';
+import { HTMLTags } from '../../types/types';
 import { createElem } from '../../utils/utils';
 import { STORE_VIEW_TITLE } from '../../constants/string-constants';
 import AppController from '../app/app';
@@ -15,7 +15,7 @@ export default class StoreView {
         this.appController = controller;
         this.storeModel = model;
         this.container = document.createDocumentFragment();
-        this.productCardsContainer = createElem(HTMLElements.SECTION, 'product-cards', '');
+        this.productCardsContainer = createElem(HTMLTags.SECTION, 'product-cards', '');
     }
 
     private renderProductCards() {
@@ -29,7 +29,7 @@ export default class StoreView {
 
     private createPage() {
         const headerClassName = 'page-header';
-        const header = createElem(HTMLElements.PAGE_HEADER, headerClassName, STORE_VIEW_TITLE);
+        const header = createElem(HTMLTags.PAGE_HEADER, headerClassName, STORE_VIEW_TITLE);
         this.renderProductCards();
         this.container.append(header, this.productCardsContainer);
     }
