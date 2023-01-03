@@ -43,14 +43,7 @@ export default class Header {
             }
             a.addEventListener('click', (e) => {
                 e.preventDefault();
-                //const currentActiveLink = e.target as HTMLElement;
                 this.handleNavigationClick(e, this.currentActiveLink as HTMLElement);
-                // if (e) {
-                //     const target = e.target as HTMLElement;
-                //     const href = target.getAttribute('href') || '';
-                //     a.classList.add('nav-link_active');
-                //     this.appController.router.changeCurrentPage(href);
-                // }
             });
             li.append(a);
             navList.append(li);
@@ -60,19 +53,13 @@ export default class Header {
         return navigation;
     }
 
-    private handleNavigationClick(event: MouseEvent, element: HTMLElement) {
+    public handleNavigationClick(event: MouseEvent, element: HTMLElement) {
+        console.log(element);
         element.classList.remove('nav-link_active');
         this.currentActiveLink = event.target as HTMLElement;
         this.currentActiveLink.classList.add('nav-link_active');
         const href = this.currentActiveLink.getAttribute('href') || '';
         this.appController.router.changeCurrentPage(href);
-        // else {
-        //     this.currentActiveLink = event.target as HTMLElement;
-        //     console.log(element);
-        //     this.currentActiveLink.classList.add('nav-link_active');
-        //     const href = this.currentActiveLink.getAttribute('href') || '';
-        //     this.appController.router.changeCurrentPage(href);
-        // }
     }
 
     private createHeaderCentralContainer() {

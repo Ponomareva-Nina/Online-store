@@ -15,13 +15,13 @@ export default class Menu {
 
     public createBurgerIcon() {
         const burgerMenu = createElem(HTMLElements.TAG_DIV, 'burger-menu');
-        burgerMenu.addEventListener('click', () => {
-            this.handleClickBody(burgerMenu, this.menuContainer);
+        burgerMenu.addEventListener('click', (e) => {
             burgerMenu.classList.toggle('burger-menu_open');
             this.menuContainer.classList.toggle('menu_open');
             document.body.classList.toggle('inactive');
+            this.handleClick(e, burgerMenu, this.menuContainer);
             if (this.menuContainer.classList.contains('menu_open')) {
-                this.appController.header.wrapper.append(this.createMenu());
+                this.appController.header.wrapper.append(this.createMenu(this.menuContainer, burgerMenu));
             }
         });
         return burgerMenu;
@@ -60,10 +60,19 @@ export default class Menu {
         return input;
     }
 
-    public createMenu() {
+    public createMenu(menu: HTMLElement, burgerMenu: HTMLElement) {
+        document.body.addEventListener('click', (e) => {
+            this.handleClick(e, burgerMenu, menu);
+        });
         if (!this.menuContainer.innerHTML) {
             const logo = this.appController.header.createLogo();
+            logo.addEventListener('click', (e) => {
+                this.handleClick(e, burgerMenu, menu);
+            });
             const navigation = this.appController.header.createNavigation();
+            navigation.addEventListener('click', (e) => {
+                this.handleClick(e, burgerMenu, menu);
+            });
             const theme = this.createTheme();
             const sound = this.createSound();
             this.menuContainer.append(logo, navigation, theme, sound);
@@ -73,14 +82,17 @@ export default class Menu {
         }
     }
 
-    private handleClickBody(burgerMenu: HTMLElement, menu: HTMLElement) {
-        document.body.addEventListener('click', (e: MouseEvent) => {
-            const target = e.target as Element;
-            if (target.classList.contains('inactive')) {
-                document.body.classList.toggle('inactive');
-                burgerMenu.classList.toggle('burger-menu_open');
-                menu.classList.toggle('menu_open');
-            }
-        });
+    public handleClick(e: MouseEvent, burgerMenu: HTMLElement, menu: HTMLElement) {
+        const target = e.target as Element;
+        if (
+            document.body.classList.contains('inactive') &&
+            (target.classList.contains('logo-title') ||
+                target.classList.contains('inactive') ||
+                target.classList.contains('nav-link'))
+        ) {
+            document.body.classList.toggle('inactive');
+            burgerMenu.classList.toggle('burger-menu_open');
+            menu.classList.toggle('menu_open');
+        }
     }
 }

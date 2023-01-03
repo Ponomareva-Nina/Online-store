@@ -16,7 +16,7 @@ class Router implements RouterInterface {
         this.currentPath = '';
     }
 
-    private updateCurrentPath() {
+    public updateCurrentPath() {
         const [, path] = window.location.href.split('#');
         this.currentPath = window.location.href.split('#').length === 1 ? '' : path;
     }
