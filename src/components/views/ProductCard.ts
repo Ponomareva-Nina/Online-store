@@ -3,6 +3,7 @@ import { HTMLElements } from '../../types/types';
 import { createElem, createImage } from '../../utils/utils';
 import AppController from '../app/app';
 import { trunkIconSvg } from '../../assets/svg-inline-icons/trunk-icon';
+import { DETAILS_BUTTON_TEXT } from '../../constants/string-constants';
 
 export default class ProductCard implements ProductCardInterface {
     cardData: Product;
@@ -46,9 +47,8 @@ export default class ProductCard implements ProductCardInterface {
 
         const btnsContainerClassName = 'card__btns-container';
         const btnsContainer = createElem(HTMLElements.DIV, btnsContainerClassName);
-        const detailsBtnText = 'Details';
         const detailsBtnClassName = 'btn';
-        const detailsBtn = createElem(HTMLElements.BUTTON, detailsBtnClassName, detailsBtnText);
+        const detailsBtn = createElem(HTMLElements.BUTTON, detailsBtnClassName, DETAILS_BUTTON_TEXT);
         detailsBtn.addEventListener('click', () => {
             const root = `#product/id=${this.cardData.id}`;
             this.appController.router.changeCurrentPage(root);
