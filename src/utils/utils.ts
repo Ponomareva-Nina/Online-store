@@ -26,3 +26,10 @@ export function createAudio() {
     audio.volume = 0.2;
     return audio;
 }
+
+export function createImage(className = '', src = '') {
+    const img = document.createElement('img');
+    img.className = className;
+    img.setAttribute('src', src);
+    return img;
+}

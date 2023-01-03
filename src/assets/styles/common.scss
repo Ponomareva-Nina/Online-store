@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Merienda:wght@400;700&display=swap');
+=======
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600&family=Merienda:wght@400;700&display=swap');
+>>>>>>> 918c88d29d035238a6fa4792952394c5f9c9f44f
 
 $base-size: 10px;
 $color-page-bg: #FDFBF8;
@@ -10,7 +14,6 @@ $color-logo: #000000;
 $color-btn-text-hover:  #000000;
 $color-aux_opacity: rgba(119, 99, 83, 0.5);
 $color-box-active: #FFC700;
-$color-hover: rgba(167, 96, 41, 0.7);
 $color-inCart: #148025;
 $color-outCart: #F62B2B;
 
@@ -23,7 +26,11 @@ $color-outCart: #F62B2B;
     color: $color;
     text-transform: uppercase;
     text-align: center;
+<<<<<<< HEAD
   }
+=======
+}
+>>>>>>> 918c88d29d035238a6fa4792952394c5f9c9f44f
 
 @mixin font-main($size: 2.4rem, $weight: 400, $color: $color-main, $height: 117%) {
   font-family: 'Crimson Pro', sans-serif;
@@ -178,6 +185,7 @@ label {
 .checkbox {
     display: none;
 }
+
 label {
     padding-left: 3.4rem;
 }
