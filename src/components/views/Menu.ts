@@ -67,9 +67,7 @@ export default class Menu implements IMenu {
 
     private handleClick(e: MouseEvent) {
         const target = e.target as Element;
-        this.burgerIcon.classList.toggle('burger-menu_open');
-        this.menuContainer.classList.toggle('menu_open');
-        document.body.classList.toggle('inactive');
+
         if (
             document.body.classList.contains('inactive') &&
             (target.classList.contains('logo-title') ||
@@ -79,6 +77,10 @@ export default class Menu implements IMenu {
             document.body.classList.toggle('inactive');
             this.burgerIcon.classList.toggle('burger-menu_open');
             this.menuContainer.classList.toggle('menu_open');
+        } else if (target.classList.contains('burger-menu')) {
+            this.burgerIcon.classList.toggle('burger-menu_open');
+            this.menuContainer.classList.toggle('menu_open');
+            document.body.classList.toggle('inactive');
         }
     }
 
