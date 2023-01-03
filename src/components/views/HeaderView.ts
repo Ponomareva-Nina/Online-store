@@ -61,7 +61,8 @@ export default class Header {
 
         const newActiveLink = document.querySelectorAll('.nav-link');
         newActiveLink.forEach((link) => {
-            if (link.getAttribute('href') === `#${this.appController.router.currentPath}`) {
+            const route = `#${this.appController.router.currentPath}`;
+            if (link.getAttribute('href') === route) {
                 link.classList.add('nav-link_active');
             } else {
                 link.classList.remove('nav-link_active');

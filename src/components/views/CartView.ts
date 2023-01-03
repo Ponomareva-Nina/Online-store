@@ -44,8 +44,9 @@ export default class CartView {
         const quantity = createElem(HTMLTags.SPAN, 'cart-quantity');
         quantity.textContent = `${this.productsQuantity}`;
         cartContainer.append(cartIcon, quantity);
-        cartContainer.addEventListener('click', () => {
+        cartContainer.addEventListener('click', (/*e*/) => {
             this.appController.router.changeCurrentPage(LINKS.Cart);
+            // this.appController.header.handleNavigationClick(e);
         });
         return cartContainer;
     }
