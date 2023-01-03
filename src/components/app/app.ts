@@ -8,6 +8,7 @@ import Route from '../router/Route';
 import Router from '../router/Router';
 import ProductPage from '../views/productPage';
 import Menu from '../views/Menu';
+import { LINKS } from '../../constants/route-constans';
 
 export default class AppController implements AppControllerInterface {
     cartView: CartView;
@@ -30,9 +31,9 @@ export default class AppController implements AppControllerInterface {
         this.storeView = new StoreView(this);
         this.productPage = new ProductPage(this);
         this.routes = [
-            new Route('', '#', this.startPage),
-            new Route('store', '#store', this.storeView),
-            new Route('cart', '#cart', this.cartView),
+            new Route('', LINKS.About, this.startPage),
+            new Route('store', LINKS.Store, this.storeView),
+            new Route('cart', LINKS.Cart, this.cartView),
             new Route('product', '#product', this.productPage),
         ];
         this.router = new Router(this, this.routes);

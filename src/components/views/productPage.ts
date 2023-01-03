@@ -1,4 +1,5 @@
 import { Props, ViewComponent } from '../../types/interfaces';
+import { HTMLTags } from '../../types/types';
 import { createElem } from '../../utils/utils';
 import AppController from '../app/app';
 
@@ -15,8 +16,8 @@ export default class ProductPage implements ViewComponent {
 
     private createPage(productId: number) {
         this.productId = productId;
-        const title = createElem('h1', 'title', 'Product Page');
-        const productNumber = createElem('span', '', productId.toString());
+        const title = createElem(HTMLTags.PAGE_HEADER, 'title', 'Product Page');
+        const productNumber = createElem(HTMLTags.SPAN, '', productId.toString());
         this.container.append(title, productNumber);
     }
 

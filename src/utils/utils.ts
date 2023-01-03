@@ -1,4 +1,6 @@
-import { HTMLElements } from '../types/types';
+import { AUDIO_OST } from '../constants/source-constants';
+import { LINE_DESCRIPTION, LINE_WELCOME } from '../constants/string-constants';
+import { HTMLTags } from '../types/types';
 
 export function createElem(tag = 'div', className = '', text = '') {
     const elem = document.createElement(tag);
@@ -8,12 +10,10 @@ export function createElem(tag = 'div', className = '', text = '') {
 }
 
 export function createWelcomeLine() {
-    const line = createElem(HTMLElements.TAG_DIV, 'line');
-    const textWelcome = 'Welcome to Harry Potter fun shop';
-    const lineWelcome = createElem(HTMLElements.TAG_SPAN, 'line-welcome', textWelcome);
-    const textDescription = 'I solemnly swear that I’m up to no good...';
-    const lineDescription = createElem(HTMLElements.TAG_SPAN, 'line-description', textDescription);
-    const wrapper = createElem(HTMLElements.TAG_DIV, 'wrapper line-wrapper');
+    const line = createElem(HTMLTags.DIV, 'line');
+    const lineWelcome = createElem(HTMLTags.SPAN, 'line-welcome', LINE_WELCOME);
+    const lineDescription = createElem(HTMLTags.SPAN, 'line-description', LINE_DESCRIPTION);
+    const wrapper = createElem(HTMLTags.DIV, 'wrapper line-wrapper');
     wrapper.append(lineWelcome, lineDescription);
     line.append(wrapper);
     return line;
@@ -21,7 +21,7 @@ export function createWelcomeLine() {
 
 export function createAudio() {
     const audio = new Audio();
-    audio.src = 'https://dl2.mp3party.net/online/1411805.mp3';
+    audio.src = AUDIO_OST;
     audio.loop = true;
     audio.volume = 0.2;
     return audio;

@@ -1,7 +1,7 @@
 import { createElem, createWelcomeLine } from '../../utils/utils';
 import AppController from '../app/app';
-import { LINKS } from '../../types/constans';
-import { HTMLElements, NullableElement } from '../../types/types';
+import { LINKS } from '../../constants/route-constans';
+import { HTMLTags, NullableElement } from '../../types/types';
 
 export default class Header {
     container: HTMLElement;
@@ -11,15 +11,15 @@ export default class Header {
 
     constructor(controller: AppController) {
         this.appController = controller;
-        this.wrapper = createElem(HTMLElements.TAG_DIV, 'wrapper');
+        this.wrapper = createElem(HTMLTags.DIV, 'wrapper');
         this.container = createElem('header', 'header');
         this.currentActiveLink = null;
     }
 
     public createLogo() {
-        const logoContainer = createElem(HTMLElements.TAG_DIV, 'logo-container');
-        const title = createElem(HTMLElements.PAGE_HEADER, 'logo-title');
-        const a = createElem(HTMLElements.TAG_LINK, 'logo-link');
+        const logoContainer = createElem(HTMLTags.DIV, 'logo-container');
+        const title = createElem(HTMLTags.PAGE_HEADER, 'logo-title');
+        const a = createElem(HTMLTags.LINK, 'logo-link');
         a.setAttribute('href', LINKS.About);
         a.append(title);
         title.innerHTML = `hogwarts <span class="logo-lightning"></span> store`;
@@ -28,12 +28,12 @@ export default class Header {
     }
 
     public createNavigation() {
-        const navigation = createElem(HTMLElements.TAG_NAV, 'main-nav');
-        const navList = createElem(HTMLElements.TAG_UL, 'main-nav__list');
+        const navigation = createElem(HTMLTags.NAV, 'main-nav');
+        const navList = createElem(HTMLTags.UL, 'main-nav__list');
 
         for (const link in LINKS) {
-            const li = createElem(HTMLElements.TAG_LIST, 'main-nav__list_item');
-            const a = createElem(HTMLElements.TAG_LINK, 'nav-link', link);
+            const li = createElem(HTMLTags.LIST, 'main-nav__list_item');
+            const a = createElem(HTMLTags.LINK, 'nav-link', link);
             a.setAttribute('href', LINKS[link as keyof typeof LINKS]);
             const initialLink = a.getAttribute('href');
             if (initialLink === LINKS.About) {
@@ -62,7 +62,7 @@ export default class Header {
     }
 
     private createHeaderCentralContainer() {
-        const centralContainer = createElem(HTMLElements.TAG_DIV, 'central-container');
+        const centralContainer = createElem(HTMLTags.DIV, 'central-container');
         const logo = this.createLogo();
         const navigation = this.createNavigation();
         centralContainer.append(logo, navigation);
@@ -70,7 +70,7 @@ export default class Header {
     }
 
     private createContentHeader() {
-        const container = createElem(HTMLElements.TAG_DIV, 'header-content');
+        const container = createElem(HTMLTags.DIV, 'header-content');
         const burger = this.appController.menu.getBurgerIcon();
         const centralContaier = this.createHeaderCentralContainer();
         const cart = this.appController.cartView.createCartIcon();

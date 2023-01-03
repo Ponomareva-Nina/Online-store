@@ -1,3 +1,4 @@
+import { HTMLTags } from '../../types/types';
 import { createElem } from '../../utils/utils';
 import AppController from '../app/app';
 
@@ -11,7 +12,7 @@ export default class StartPageView {
     }
 
     private createPage() {
-        const title = createElem('h1', 'title', 'Start Page');
+        const title = createElem(HTMLTags.PAGE_HEADER, 'title', 'Start Page');
         this.container.append(title);
     }
 

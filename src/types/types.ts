@@ -11,13 +11,18 @@ export enum PossibleUrlParams {
 
 export type MethodVoid = () => void;
 
-export enum HTMLElements {
+export enum HTMLTags {
     PAGE_HEADER = 'h1',
-    PAGE_H2 = 'h2',
-    TAG_DIV = 'div',
-    TAG_SPAN = 'span',
-    TAG_LINK = 'a',
-    TAG_NAV = 'nav',
-    TAG_UL = 'ul',
-    TAG_LIST = 'li',
+    H2 = 'h2',
+    SECTION = 'section',
+    DIV = 'div',
+    BUTTON = 'button',
+    SPAN = 'span',
+    LINK = 'a',
+    NAV = 'nav',
+    LIST = 'li',
+    UL = 'ul',
+    INPUT = 'input',
+    LABEL = 'label',
+    P = 'p',
 }
