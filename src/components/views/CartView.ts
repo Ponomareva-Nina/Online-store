@@ -1,4 +1,4 @@
-import { LINKS } from '../../constants/route-constans';
+import { LINKS } from '../../constants/route-constants';
 import { HTMLTags } from '../../types/types';
 import { createElem } from '../../utils/utils';
 import AppController from '../app/app';

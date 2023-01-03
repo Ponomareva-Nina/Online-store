@@ -8,7 +8,7 @@ import Route from '../router/Route';
 import Router from '../router/Router';
 import ProductPage from '../views/productPage';
 import Menu from '../views/Menu';
-import { LINKS } from '../../constants/route-constans';
+import { LINKS } from '../../constants/route-constants';
 
 export default class AppController implements AppControllerInterface {
     cartView: CartView;

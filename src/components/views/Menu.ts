@@ -59,12 +59,9 @@ export default class Menu implements IMenu {
             this.handleClick(e);
         });
         const navigation = this.appController.header.createNavigation();
-        navigation.addEventListener('click', (e) => {
-            this.handleClick(e);
-        });
-        //const theme = this.createTheme();
+        const theme = this.createTheme();
         const sound = this.createSound();
-        this.menuContainer.append(logo, navigation, sound);
+        this.menuContainer.append(logo, navigation, theme, sound);
         return this.menuContainer;
     }
 

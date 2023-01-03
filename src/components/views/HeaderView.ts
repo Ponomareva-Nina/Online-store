@@ -1,6 +1,6 @@
 import { createElem, createWelcomeLine } from '../../utils/utils';
 import AppController from '../app/app';
-import { LINKS } from '../../constants/route-constans';
+import { LINKS } from '../../constants/route-constants';
 import { HTMLTags, NullableElement } from '../../types/types';
 
 export default class Header {
@@ -42,7 +42,7 @@ export default class Header {
             }
             a.addEventListener('click', (e) => {
                 e.preventDefault();
-                this.handleNavigationClick(e, this.currentActiveLink as HTMLElement);
+                this.handleNavigationClick(e);
             });
             li.append(a);
             navList.append(li);
@@ -52,29 +52,36 @@ export default class Header {
         return navigation;
     }
 
-    public handleNavigationClick(event: MouseEvent, element: HTMLElement) {
-        console.log(element);
-        element.classList.remove('nav-link_active');
-        this.currentActiveLink = event.target as HTMLElement;
-        this.currentActiveLink.classList.add('nav-link_active');
-        const href = this.currentActiveLink.getAttribute('href') || '';
+    public handleNavigationClick(event: MouseEvent) {
+        // if (this.currentActiveLink) {
+        // this.currentActiveLink.classList.remove('nav-link_active');
+        const target = event.target as HTMLElement;
+        const href = target.getAttribute('href') || '';
         this.appController.router.changeCurrentPage(href);
+
+        const newActiveLink = document.querySelectorAll('.nav-link');
+        newActiveLink.forEach((link) => {
+            if (link.getAttribute('href') === `#${this.appController.router.currentPath}`) {
+                link.classList.add('nav-link_active');
+            } else {
+                link.classList.remove('nav-link_active');
+            }
+        });
+        // this.currentActiveLink = event.target as HTMLElement;
+        // this.currentActiveLink.classList.add('nav-link_active');
+        // }
     }
 
-    private createHeaderCentralContainer() {
+    private createContentHeader() {
         const centralContainer = createElem(HTMLTags.DIV, 'central-container');
         const logo = this.createLogo();
         const navigation = this.createNavigation();
         centralContainer.append(logo, navigation);
-        return centralContainer;
-    }
 
-    private createContentHeader() {
         const container = createElem(HTMLTags.DIV, 'header-content');
         const burger = this.appController.menu.getBurgerIcon();
         const menu = this.appController.menu.createMenu();
         this.wrapper.append(menu);
-        const centralContainer = this.createHeaderCentralContainer();
         const cart = this.appController.cartView.createCartIcon();
         container.append(burger, centralContainer, cart);
         return container;
