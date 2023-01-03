@@ -72,9 +72,11 @@ export default class Header {
     private createContentHeader() {
         const container = createElem(HTMLTags.DIV, 'header-content');
         const burger = this.appController.menu.getBurgerIcon();
-        const centralContaier = this.createHeaderCentralContainer();
+        const menu = this.appController.menu.createMenu();
+        this.wrapper.append(menu);
+        const centralContainer = this.createHeaderCentralContainer();
         const cart = this.appController.cartView.createCartIcon();
-        container.append(burger, centralContaier, cart);
+        container.append(burger, centralContainer, cart);
         return container;
     }
 

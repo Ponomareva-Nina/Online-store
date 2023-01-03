@@ -12,21 +12,7 @@ export default class Menu implements IMenu {
     constructor(controller: AppController) {
         this.appController = controller;
         this.menuContainer = createElem(HTMLTags.DIV, 'menu');
-        this.burgerIcon = this.createBurgerIcon();
-    }
-
-    private createBurgerIcon() {
-        const burgerMenu = createElem(HTMLTags.DIV, 'burger-menu');
-        burgerMenu.addEventListener('click', (e) => {
-            burgerMenu.classList.toggle('burger-menu_open');
-            this.menuContainer.classList.toggle('menu_open');
-            document.body.classList.toggle('inactive');
-            this.handleClick(e, burgerMenu, this.menuContainer);
-            if (this.menuContainer.classList.contains('menu_open')) {
-                this.appController.header.wrapper.append(this.createMenu(this.menuContainer, burgerMenu));
-            }
-        });
-        return burgerMenu;
+        this.burgerIcon = createElem(HTMLTags.DIV, 'burger-menu');
     }
 
     public getBurgerIcon() {
@@ -64,30 +50,29 @@ export default class Menu implements IMenu {
         return input;
     }
 
-    private createMenu(menu: HTMLElement, burgerMenu: HTMLElement) {
+    public createMenu() {
         document.body.addEventListener('click', (e) => {
-            this.handleClick(e, burgerMenu, menu);
+            this.handleClick(e);
         });
-        if (!this.menuContainer.innerHTML) {
-            const logo = this.appController.header.createLogo();
-            logo.addEventListener('click', (e) => {
-                this.handleClick(e, burgerMenu, menu);
-            });
-            const navigation = this.appController.header.createNavigation();
-            navigation.addEventListener('click', (e) => {
-                this.handleClick(e, burgerMenu, menu);
-            });
-            //const theme = this.createTheme();
-            const sound = this.createSound();
-            this.menuContainer.append(logo, navigation, sound);
-            return this.menuContainer;
-        } else {
-            return this.menuContainer;
-        }
+        const logo = this.appController.header.createLogo();
+        logo.addEventListener('click', (e) => {
+            this.handleClick(e);
+        });
+        const navigation = this.appController.header.createNavigation();
+        navigation.addEventListener('click', (e) => {
+            this.handleClick(e);
+        });
+        //const theme = this.createTheme();
+        const sound = this.createSound();
+        this.menuContainer.append(logo, navigation, sound);
+        return this.menuContainer;
     }
 
-    private handleClick(e: MouseEvent, burgerMenu: HTMLElement, menu: HTMLElement) {
+    private handleClick(e: MouseEvent) {
         const target = e.target as Element;
+        this.burgerIcon.classList.toggle('burger-menu_open');
+        this.menuContainer.classList.toggle('menu_open');
+        document.body.classList.toggle('inactive');
         if (
             document.body.classList.contains('inactive') &&
             (target.classList.contains('logo-title') ||
@@ -95,8 +80,8 @@ export default class Menu implements IMenu {
                 target.classList.contains('nav-link'))
         ) {
             document.body.classList.toggle('inactive');
-            burgerMenu.classList.toggle('burger-menu_open');
-            menu.classList.toggle('menu_open');
+            this.burgerIcon.classList.toggle('burger-menu_open');
+            this.menuContainer.classList.toggle('menu_open');
         }
     }
 
