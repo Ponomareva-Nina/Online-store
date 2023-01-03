@@ -33,7 +33,7 @@ export default class Header {
         const navList = createElem(HTMLElements.TAG_UL, 'main-nav__list');
 
         for (const link in LINKS) {
-            const li = createElem(HTMLElements.TAG_LIST);
+            const li = createElem(HTMLElements.TAG_LIST, 'main-nav__list_item');
             const a = createElem(HTMLElements.TAG_LINK, 'nav-link', link);
             a.setAttribute('href', LINKS[link as keyof typeof LINKS]);
             const initialLink = a.getAttribute('href');

@@ -1,10 +1,112 @@
 .menu {
-    width: 342px;
-    //display: none;
+    width: 34.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     position: absolute;
-    z-index: 10;
+    top: 24%;
+    left: -100vw;;
+    z-index: 1;
+    background-color: $color-page-bg;
+    border: 1px $color-main solid;
+    border-radius: 1rem;
+    transition: all 1s ease;
+}
+
+.menu > * {
+    width: 100%;
+    text-align: center;
+}
+
+.menu_open {
+    left: 1.6%;
+}
+
+.menu_open .logo-container {
+    width: 19rem;
+    padding: 3rem 0 3rem;
 }
 
 .menu .main-nav__list {
+    @include font-main($size: 3.2rem, $weight: 400, $color: $color-main, $height: 103%);
     flex-direction: column;
+
+    &:first-child {
+        border-top: 1px $color-accent solid;
+    }
+}
+
+.menu .main-nav__list_item {
+    width: 100%;
+    padding: 2.5rem 0;
+    border-bottom: 1px $color-accent solid;
+}
+
+.menu .theme-container {
+    width: 100%;
+    padding: 1.5rem 0 3rem;
+    border-bottom: 1px $color-accent solid;
+}
+.menu .sound-container  {
+    padding: 1.5rem 0 5rem;
+}
+
+.sound-container, .theme-container {
+    position: relative;
+}
+
+.checkbox-sound + label::before {
+    width: 10%;
+    height: 33%;
+    left: 14.4rem;
+    top: 5.2rem;
+    background-image: url('./assets/images/music_off.svg');
+}
+
+.checkbox-sound + label::after {
+    width: 11%;
+    height: 32%;
+    left: 13.8rem;
+    top: 5.0rem;
+    background-image: url('./assets/images/music_on.svg');
+}
+
+.checkbox-theme + label::before {
+    width: 38%;
+    height: 40%;
+    left: 10.1rem;
+    top: 4.9rem;
+    background-image: url('./assets/images/light.svg');
+}
+
+.checkbox-theme:checked + label::before {
+    width: 38%;
+    height: 40%;
+    left: 10.1rem;
+    top: 4.9rem;
+    opacity: 0;
+}
+
+.checkbox-theme + label::after {
+    width: 38%;
+    height: 40%;
+    left: 10.1rem;
+    top: 4.9rem;
+    background-image: url('./assets/images/dark.svg');
+}
+
+//style for active burger-menu
+.inactive {
+    overflow: hidden;
+
+    &:after {
+        content: "";
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        background-color: rgba(0,0,0,.6);
+        z-index: 0;
+    }
 }

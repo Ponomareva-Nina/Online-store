@@ -1,6 +1,6 @@
 %burger-line {
     width: 100%;
-    height: 20%;
+    height: 100%;
     display: inline-block;
     position: absolute;
     content: '';
@@ -9,32 +9,22 @@
 }
 
 .header {
-    // display: flex;
-    // align-items: center;
-    // justify-content: space-between;
     background-image: url('./assets/images/bg-header-footer.png');
     background-repeat: no-repeat;
     background-size: cover;
 }
 
 .header-content {
-    padding: 12px 0 18px;
+    padding: 1.2rem 0 1.8rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     @include font-main($size: 2.5rem, $weight: 400, $color: $color-main, $height: 127%);
 }
 
-// .wrapper-header {
-//     width: 100%;
-//     display: flex;
-//     justify-content: space-between;
-//     align-items: center;
-// }
-
 .line-icon {
-    width: 28px;
-    height: 40px;
+    width: 2.8rem;
+    height: 4.0rem;
     display: inline-flex;
     background-image: url('./assets/images/lineLogo.svg');
     background-repeat: no-repeat;
@@ -47,8 +37,8 @@
 }
 
 .logo-lightning {
-    width: 28px;
-    height: 40px;
+    width: 2.8rem;
+    height: 4.0rem;
     display: inline-flex;
     background-image: url('./assets/images/flash.svg');
     background-repeat: no-repeat;
@@ -56,7 +46,7 @@
 }
 
 .main-nav {
-    padding-top: 9px;
+    padding-top: 0.9rem;
 
     &__list {
         display: flex;
@@ -67,27 +57,50 @@
 }
 
 .burger-menu {
-    width: 35px;
-    height: 20px;
+    width: 3.5rem;
+    height: 0.4rem;
+    margin: 1.3rem 0;
     position: relative;
+    z-index: 2;
     cursor: pointer;
+    @extend %burger-line;
 
     &:before {
       @extend %burger-line;
-      top: calc(50% - 2px);
+      top: calc(50% - 9px);
       left: 0;
+      transition: transform .5s cubic-bezier(0.23, 1, 0.32, 1);
+      background-color: $color-main;
     }
 
     &:after {
       @extend %burger-line;
-      bottom: 0;
+      bottom: -7px;
       left: 0;
+      transition: transform .5s cubic-bezier(0.23, 1, 0.32, 1);
+      background-color: $color-main;
     }
 
 }
 
-.burger-line {
-    @extend %burger-line;
+.burger-menu_open {
+    background: rgba(0,0,0,0);
+
+    &::before {
+        z-index: 2;
+        top: calc(50% - 3px);
+        transform: rotate(405deg);
+        transition: transform .5s cubic-bezier(0.23, 1, 0.32, 1);
+        background-color: $color-main;
+    }
+
+    &::after {
+        z-index: 2;
+        bottom: 0;
+        transform: rotate(-405deg);
+        transition: transform .5s cubic-bezier(0.23, 1, 0.32, 1);
+        background-color: $color-main;
+    }
 }
 
 .nav-link {
@@ -102,11 +115,11 @@
     &::after {
         display: inline-block;
         content: "";
-        width: 90px;
+        width: 9.0rem;
         background-image: url('./assets/images/wand_underline.svg');
-        height: 7px;
+        height: 0.7rem;
         position: absolute;
-        top: 30px;
-        left: -17px;
+        top: 3.0rem;
+        left: -1.7rem;
     }
 }

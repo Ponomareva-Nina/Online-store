@@ -1,13 +1,11 @@
 import { HTMLElements } from '../../types/types';
 import { createElem } from '../../utils/utils';
 import AppController from '../app/app';
-//import HeaderView from './HeaderView';
 
 export default class Menu {
     appController: AppController;
     menuContainer: HTMLElement;
     burgerIcon: HTMLElement;
-    //headerView!: HeaderView;
 
     constructor(controller: AppController) {
         this.appController = controller;
@@ -15,31 +13,17 @@ export default class Menu {
         this.burgerIcon = this.createBurgerIcon();
     }
 
-    private createMenu() {
-        if (!this.menuContainer.innerHTML) {
-            const logo = this.appController.header.createLogo();
-            const navigation = this.appController.header.createNavigation();
-            this.menuContainer.append(logo, navigation);
-            console.log(this.menuContainer);
-            return this.menuContainer;
-        } else {
-            return this.menuContainer;
-        }
-    }
-
     public createBurgerIcon() {
         const burgerMenu = createElem(HTMLElements.TAG_DIV, 'burger-menu');
-        const burgerLine = createElem(HTMLElements.TAG_SPAN, 'burger-line');
-        burgerMenu.append(burgerLine);
         burgerMenu.addEventListener('click', () => {
+            this.handleClickBody(burgerMenu, this.menuContainer);
             burgerMenu.classList.toggle('burger-menu_open');
-            if (burgerMenu.classList.contains('burger-menu_open')) {
-                document.body.append(this.createMenu());
+            this.menuContainer.classList.toggle('menu_open');
+            document.body.classList.toggle('inactive');
+            if (this.menuContainer.classList.contains('menu_open')) {
+                this.appController.header.wrapper.append(this.createMenu());
             }
         });
-        //повесить клик на меню, по которому добавлять и удалять класс и
-        //вызывть отрисовку вида меню настроек
-        //
         return burgerMenu;
     }
 
@@ -48,10 +32,55 @@ export default class Menu {
     }
 
     private createTheme() {
-        //создает вид меню перекючения темы
+        const themeContainer = createElem(HTMLElements.TAG_DIV, 'theme-container');
+        const textTitle = 'Choose your theme';
+        const themeTitle = createElem('p', 'theme-title', textTitle);
+        const input = this.createInput('checkbox checkbox-theme', 'theme');
+        const label = createElem('label');
+        label.setAttribute('for', 'theme');
+        themeContainer.append(themeTitle, input, label);
+        return themeContainer;
     }
 
     private createSound() {
-        //создает вид меню вкл/выкл звука
+        const soundContainer = createElem(HTMLElements.TAG_DIV, 'sound-container');
+        const textTitle = 'Turn on/off sound:';
+        const soundTitle = createElem('p', 'sound-title', textTitle);
+        const input = this.createInput('checkbox checkbox-sound', 'sound');
+        const label = createElem('label');
+        label.setAttribute('for', 'sound');
+        soundContainer.append(soundTitle, input, label);
+        return soundContainer;
+    }
+
+    private createInput(className: string, inputId: string) {
+        const input = createElem('input', className);
+        input.setAttribute('type', 'checkbox');
+        input.setAttribute('id', inputId);
+        return input;
+    }
+
+    public createMenu() {
+        if (!this.menuContainer.innerHTML) {
+            const logo = this.appController.header.createLogo();
+            const navigation = this.appController.header.createNavigation();
+            const theme = this.createTheme();
+            const sound = this.createSound();
+            this.menuContainer.append(logo, navigation, theme, sound);
+            return this.menuContainer;
+        } else {
+            return this.menuContainer;
+        }
+    }
+
+    private handleClickBody(burgerMenu: HTMLElement, menu: HTMLElement) {
+        document.body.addEventListener('click', (e: MouseEvent) => {
+            const target = e.target as Element;
+            if (target.classList.contains('inactive')) {
+                document.body.classList.toggle('inactive');
+                burgerMenu.classList.toggle('burger-menu_open');
+                menu.classList.toggle('menu_open');
+            }
+        });
     }
 }
