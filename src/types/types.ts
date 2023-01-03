@@ -17,4 +17,9 @@ export enum HTMLElements {
     SECTION = 'section',
     DIV = 'div',
     BUTTON = 'button',
+    SPAN = 'span',
+    LINK = 'a',
+    NAV = 'nav',
+    LIST = 'li',
+    UL = 'ul',
 }

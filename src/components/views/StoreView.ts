@@ -1,5 +1,6 @@
 import { HTMLElements } from '../../types/types';
 import { createElem } from '../../utils/utils';
+import { STORE_VIEW_TITLE } from '../../constants/string-constants';
 import AppController from '../app/app';
 import StoreModel from '../models/StoreModel';
 import ProductCard from './ProductCard';
@@ -27,9 +28,8 @@ export default class StoreView {
     }
 
     private createPage() {
-        const headerText = 'CATALOGUE';
         const headerClassName = 'page-header';
-        const header = createElem(HTMLElements.PAGE_HEADER, headerClassName, headerText);
+        const header = createElem(HTMLElements.PAGE_HEADER, headerClassName, STORE_VIEW_TITLE);
         this.renderProductCards();
         this.container.append(header, this.productCardsContainer);
     }

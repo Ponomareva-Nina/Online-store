@@ -1,3 +1,10 @@
+import {
+    AMPERSAND_SEPARATOR,
+    HASHTAG,
+    PARAM_VALUES_SEPARATOR,
+    QUERY_SEPARATOR,
+    SLASH_SEPARATOR,
+} from '../../constants/string-constants';
 import { RouterInterface } from '../../types/interfaces';
 import { PossibleUrlParams } from '../../types/types';
 import AppController from '../app/app';
@@ -17,8 +24,8 @@ class Router implements RouterInterface {
     }
 
     private updateCurrentPath() {
-        const [, path] = window.location.href.split('#');
-        this.currentPath = window.location.href.split('#').length === 1 ? '' : path;
+        const [, path] = window.location.href.split(HASHTAG);
+        this.currentPath = window.location.href.split(HASHTAG).length === 1 ? '' : path;
     }
 
     public changeCurrentPage(path: string) {
@@ -33,13 +40,13 @@ class Router implements RouterInterface {
         for (const key in newParams) {
             const params = newParams[key as PossibleUrlParams];
             if (params && params.length > 0) {
-                const urlSegment = `${key}=${params.join('|')}`;
+                const urlSegment = `${key}=${params.join(PARAM_VALUES_SEPARATOR)}`;
                 if (key === 'id') {
-                    newPath = newPath.concat('/').concat(urlSegment);
-                } else if (newPath.includes('?')) {
-                    newPath = newPath.concat('&').concat(urlSegment);
+                    newPath = newPath.concat(SLASH_SEPARATOR).concat(urlSegment);
+                } else if (newPath.includes(QUERY_SEPARATOR)) {
+                    newPath = newPath.concat(AMPERSAND_SEPARATOR).concat(urlSegment);
                 } else {
-                    newPath = newPath.concat('?').concat(urlSegment);
+                    newPath = newPath.concat(QUERY_SEPARATOR).concat(urlSegment);
                 }
             }
         }
@@ -74,7 +81,7 @@ class Router implements RouterInterface {
             PossibleUrlParams.STOCK,
         ];
 
-        const validationExp = new RegExp(values.join('|'));
+        const validationExp = new RegExp(values.join(PARAM_VALUES_SEPARATOR));
         const isCorrect = paramsArr.every((param) => {
             return validationExp.test(param);
         });
@@ -95,7 +102,7 @@ class Router implements RouterInterface {
             matchedRoute.clearParameters();
             pathSegments.forEach((param) => {
                 const [key, values] = param.split('=');
-                const valuesArr = values.split('|');
+                const valuesArr = values.split(PARAM_VALUES_SEPARATOR);
                 valuesArr.forEach((value) => {
                     matchedRoute.addParameter(key as PossibleUrlParams, value);
                 });
