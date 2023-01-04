@@ -67,10 +67,12 @@ export default class Menu implements IMenu {
 
     private handleClick(e: MouseEvent) {
         const target = e.target as Element;
+        console.log(target);
 
         if (
             document.body.classList.contains('inactive') &&
             (target.classList.contains('logo-title') ||
+                target.classList.contains('logo-title') ||
                 target.classList.contains('text-title-second') ||
                 target.classList.contains('text-title-first') ||
                 target.classList.contains('inactive') ||
