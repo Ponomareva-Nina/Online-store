@@ -28,7 +28,8 @@
     }
 }
 
-.card__price {
+.card__price,
+.card__discount {
     color: $color-accent;
 }
 
@@ -59,4 +60,88 @@
     & svg {
         fill: $color-inCart;
     }
+}
+
+.card_full {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+    gap: 3rem;
+    align-items: start;
+
+    .card__title {
+        @include font-logo-title();
+        grid-column: span 2;
+    }
+
+    .previews-container {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+    }
+
+    .image__preview {
+        max-width: 100px;
+        opacity: .5;
+        cursor: pointer;
+    }
+
+    .image__preview_active {
+        opacity: 1;
+    }
+
+    .images-container {
+        display: flex;
+        flex-direction: column;
+        align-self: start;
+        width: 100%;
+        box-shadow: 2px 2px 5px rgba(167, 96, 41, 0.5);
+        border-radius: 10px;
+        background-color: $color-card-bg;
+        padding: 1.5rem;
+        gap: 2rem;
+    }
+
+    .card__image {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 100%;
+
+        & img {
+            max-width: 100%;
+            height: 35rem;
+        }
+    }
+}
+
+.card_product-params-container {
+    display: flex;
+    gap: 2rem;
+    border-top: 1px solid $color-accent;
+    border-bottom: 1px solid $color-accent;
+    padding: 1rem 0;
+}
+
+.card__info {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+@media screen and (max-width: 750px) {
+    .card_full {
+        grid-template-columns: 1fr;
+
+        .card__title {
+            grid-column: span 1;
+        }
+
+        .card__image {
+            & img {
+                height: 30rem;
+            }
+        }
+    }
+
 }

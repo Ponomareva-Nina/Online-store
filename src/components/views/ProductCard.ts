@@ -39,7 +39,7 @@ export default class ProductCard implements ProductCardInterface {
         const infoSection = createElem(HTMLTags.DIV, CLASS_PRODUCT_CARD_INFO);
 
         const title = this.createTitle();
-        const priceContainer = createElem(HTMLTags.DIV, '', '');
+        const priceContainer = createElem(HTMLTags.DIV, 'card_product-params-container', '');
         const priceText = `Price: $ ${this.cardData.price}`;
         const cardPrice = createElem(HTMLTags.DIV, CLASS_CARD_PRICE, priceText);
         const discountText = `Discount: $ ${this.cardData.discount}`;
@@ -49,8 +49,8 @@ export default class ProductCard implements ProductCardInterface {
         const description = createElem(HTMLTags.DIV, CLASS_CARD_DESCRIPTION, descriptionText);
         const imagesSection = this.createProductImagesSection();
 
-        infoSection.append(title, priceContainer, description);
-        container.append(imagesSection, infoSection);
+        infoSection.append(priceContainer, description);
+        container.append(title, imagesSection, infoSection);
         return container;
     }
 
@@ -102,7 +102,7 @@ export default class ProductCard implements ProductCardInterface {
             });
         });
 
-        container.append(previewsContainer, fullImageContainer);
+        container.append(fullImageContainer, previewsContainer);
         return container;
     }
 

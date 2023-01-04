@@ -24,7 +24,7 @@ export default class AppController implements AppControllerInterface {
 
     constructor() {
         this.header = new Header(this);
-        this.mainContainer = createElem('main', 'main');
+        this.mainContainer = createElem('main', 'main wrapper');
         this.cartView = new CartView(this);
         this.startPage = new StartPageView(this);
         this.storeModel = new StoreModel(this);
