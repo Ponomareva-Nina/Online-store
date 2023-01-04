@@ -31,6 +31,12 @@ export default class CartView {
         //
     }
 
+    private destroyAllChildNodes(parent: Node) {
+        while (parent.firstChild) {
+            parent.removeChild(parent.firstChild);
+        }
+    }
+
     public render() {
         this.createPage();
         return this.container;

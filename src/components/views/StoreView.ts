@@ -40,4 +40,10 @@ export default class StoreView {
         this.createPage();
         return this.container;
     }
+
+    private destroyAllChildNodes(parent: Node) {
+        while (parent.firstChild) {
+            parent.removeChild(parent.firstChild);
+        }
+    }
 }
