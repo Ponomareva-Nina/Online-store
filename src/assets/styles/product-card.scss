@@ -81,7 +81,7 @@
     }
 
     .image__preview {
-        max-width: 100px;
+        max-width: calc(100% /4);
         opacity: .5;
         cursor: pointer;
     }
@@ -94,12 +94,14 @@
         display: flex;
         flex-direction: column;
         align-self: start;
-        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
         box-shadow: 2px 2px 5px rgba(167, 96, 41, 0.5);
         border-radius: 10px;
         background-color: $color-card-bg;
         padding: 1.5rem;
         gap: 2rem;
+        overflow: hidden;
     }
 
     .card__image {

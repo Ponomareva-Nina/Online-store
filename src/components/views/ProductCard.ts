@@ -90,9 +90,10 @@ export default class ProductCard implements ProductCardInterface {
         const fullImage = createImage('', this.cardData.thumbnail);
         fullImageContainer.append(fullImage);
 
-        imageSources.forEach((imageSrc) => {
-            const preview = createImage(CLASS_IMAGE_PREVIEW, imageSrc);
-            if (imageSrc === this.cardData.thumbnail) {
+        const maxIndex = imageSources.length > 4 ? 4 : imageSources.length;
+        for (let i = 0; i < maxIndex; i++) {
+            const preview = createImage(CLASS_IMAGE_PREVIEW, imageSources[i]);
+            if (imageSources[i] === this.cardData.thumbnail) {
                 this.activePreviewImage = preview;
                 this.activePreviewImage.classList.add(CLASS_IMAGE_PREVIEW_ACTIVE);
             }
@@ -100,7 +101,7 @@ export default class ProductCard implements ProductCardInterface {
             preview.addEventListener('click', () => {
                 this.handleClickOnImagePreview(preview, fullImage);
             });
-        });
+        }
 
         container.append(fullImageContainer, previewsContainer);
         return container;
