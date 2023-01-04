@@ -10,12 +10,14 @@ export default class StoreView {
     appController: AppController;
     productCardsContainer: HTMLElement;
     storeModel: StoreModel;
+    header: HTMLElement;
 
     constructor(model: StoreModel, controller: AppController) {
         this.appController = controller;
         this.storeModel = model;
         this.container = document.createDocumentFragment();
         this.productCardsContainer = createElem(HTMLTags.SECTION, 'product-cards', '');
+        this.header = createElem(HTMLTags.PAGE_HEADER, 'page-header', STORE_VIEW_TITLE);
     }
 
     private renderProductCards() {
@@ -23,15 +25,15 @@ export default class StoreView {
         currentProducts.forEach((product) => {
             const card = new ProductCard(product, this.appController);
             const cardView = card.createBriefCard();
-            this.productCardsContainer.append(cardView);
+            this.productCardsContainer.appendChild(cardView);
         });
     }
 
     private createPage() {
-        const headerClassName = 'page-header';
-        const header = createElem(HTMLTags.PAGE_HEADER, headerClassName, STORE_VIEW_TITLE);
-        this.renderProductCards();
-        this.container.append(header, this.productCardsContainer);
+        if (this.productCardsContainer.childNodes.length === 0) {
+            this.renderProductCards();
+        }
+        this.container.append(this.header, this.productCardsContainer);
     }
 
     public render() {
