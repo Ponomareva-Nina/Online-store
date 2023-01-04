@@ -6,13 +6,13 @@ import AppController from '../app/app';
 
 export default class Menu implements IMenu {
     appController: AppController;
-    menuContainer: HTMLElement;
-    burgerIcon: HTMLElement;
+    menuContainer: HTMLDivElement;
+    burgerIcon: HTMLDivElement;
 
     constructor(controller: AppController) {
         this.appController = controller;
-        this.menuContainer = createElem(HTMLTags.DIV, 'menu');
-        this.burgerIcon = createElem(HTMLTags.DIV, 'burger-menu');
+        this.menuContainer = createElem(HTMLTags.DIV, 'menu') as HTMLDivElement;
+        this.burgerIcon = createElem(HTMLTags.DIV, 'burger-menu') as HTMLDivElement;
     }
 
     public getBurgerIcon() {

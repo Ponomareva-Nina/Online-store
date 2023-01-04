@@ -5,14 +5,14 @@ import { HTMLTags, NullableElement } from '../../types/types';
 import { HASHTAG, MAIN_LOGO_PART1, MAIN_LOGO_PART2 } from '../../constants/string-constants';
 
 export default class Header {
-    container: HTMLElement;
+    container: HTMLHeadElement;
     appController: AppController;
-    wrapper: HTMLElement;
+    wrapper: HTMLDivElement;
     currentActiveLink: NullableElement<HTMLElement>;
 
     constructor(controller: AppController) {
         this.appController = controller;
-        this.wrapper = createElem(HTMLTags.DIV, 'wrapper');
+        this.wrapper = createElem(HTMLTags.DIV, 'wrapper') as HTMLDivElement;
         this.container = createElem('header', 'header');
         this.currentActiveLink = null;
     }
