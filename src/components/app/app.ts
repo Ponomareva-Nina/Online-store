@@ -50,7 +50,7 @@ export default class AppController implements AppControllerInterface {
     }
 
     public updatePage(view: ViewComponent, params?: Props) {
-        this.mainContainer.innerHTML = '';
+        this.destroyAllChildNodes(this.mainContainer);
         this.mainContainer.append(view.render(params));
     }
 
@@ -62,5 +62,11 @@ export default class AppController implements AppControllerInterface {
     public deleteProductFromCart(product: Product) {
         console.log(product);
         console.log('method: deleteProductFromCart');
+    }
+
+    private destroyAllChildNodes(parent: Node) {
+        while (parent.firstChild) {
+            parent.removeChild(parent.firstChild);
+        }
     }
 }
