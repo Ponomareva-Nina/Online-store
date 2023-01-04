@@ -4,7 +4,7 @@ import { createElem, createImage } from '../../utils/utils';
 import AppController from '../app/app';
 import { trunkIconSvg } from '../../assets/svg-inline-icons/trunk-icon';
 import {
-    // ADD_TO_CART_BUTTON_TEXT,
+    ADD_TO_CART_BUTTON_TEXT,
     BUY_NOW_BUTTON_TEXT,
     DELETE_FROM_CART_BUTTON_TEXT,
     DETAILS_BUTTON_TEXT,
@@ -55,9 +55,13 @@ export default class ProductCard implements ProductCardInterface {
         const imagesSection = this.createProductImagesSection();
 
         const btnsContainer = createElem(HTMLTags.DIV, CLASS_PRODUCT_CARD_BTNS_CONTAINER);
-        const BuyNowBtn = createElem(HTMLTags.BUTTON, CLASS_BTN, BUY_NOW_BUTTON_TEXT);
-        const AddDeleteProductBtn = createElem(HTMLTags.BUTTON, 'btn add-delete-btn', DELETE_FROM_CART_BUTTON_TEXT);
-        btnsContainer.append(BuyNowBtn, AddDeleteProductBtn);
+        const buyNowBtn = createElem(HTMLTags.BUTTON, CLASS_BTN, BUY_NOW_BUTTON_TEXT);
+        const addDeleteProductBtn = createElem(HTMLTags.BUTTON, 'btn add-delete-btn btn_add', ADD_TO_CART_BUTTON_TEXT);
+        addDeleteProductBtn.addEventListener('click', () => {
+            this.handleClickOnAddButton(addDeleteProductBtn);
+        });
+
+        btnsContainer.append(buyNowBtn, addDeleteProductBtn);
 
         infoSection.append(priceContainer, description, btnsContainer);
         container.append(title, imagesSection, infoSection);
@@ -84,7 +88,7 @@ export default class ProductCard implements ProductCardInterface {
         const trunkBtn = createElem(HTMLTags.BUTTON, CLASS_TRUNK_BTN, '');
         trunkBtn.innerHTML = trunkIconSvg;
         trunkBtn.addEventListener('click', () => {
-            this.handleClickOnTrunkBtn(trunkBtn, this.cardData);
+            this.handleClickOnTrunkBtn(trunkBtn);
         });
         btnsContainer.append(detailsBtn, trunkBtn);
 
@@ -136,13 +140,23 @@ export default class ProductCard implements ProductCardInterface {
         return cardTitle;
     }
 
-    private handleClickOnTrunkBtn(btn: HTMLElement, card: Product) {
+    private handleClickOnTrunkBtn(btn: HTMLElement) {
         if (btn.classList.contains(CLASS_TRUNK_BTN_CHECKED)) {
             btn.classList.remove(CLASS_TRUNK_BTN_CHECKED);
-            this.appController.deleteProductFromCart(card);
+            this.appController.deleteProductFromCart(this.cardData);
         } else {
             btn.classList.add(CLASS_TRUNK_BTN_CHECKED);
-            this.appController.addProductToCart(card);
+            this.appController.addProductToCart(this.cardData);
+        }
+    }
+
+    private handleClickOnAddButton(addDeleteBtn: HTMLElement) {
+        if (addDeleteBtn.textContent === ADD_TO_CART_BUTTON_TEXT) {
+            addDeleteBtn.textContent = DELETE_FROM_CART_BUTTON_TEXT;
+            this.appController.addProductToCart(this.cardData);
+        } else {
+            addDeleteBtn.textContent = ADD_TO_CART_BUTTON_TEXT;
+            this.appController.deleteProductFromCart(this.cardData);
         }
     }
 }
