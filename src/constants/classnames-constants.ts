@@ -1,0 +1,16 @@
+export const CLASS_IMG_CONTAINER = 'images-container';
+export const CLASS_FULL_CARD_CONTAINER = 'card card_full';
+export const CLASS_BRIEF_CARD_CONTAINER = 'card card_brief';
+export const CLASS_CARD_PRICE = 'card__price';
+export const CLASS_CARD_DISCOUNT = 'card__discount';
+export const CLASS_CARD_DESCRIPTION = 'card__description';
+export const CLASS_TRUNK_BTN = 'trunk-btn';
+export const CLASS_PRODUCT_CARD_BTNS_CONTAINER = 'card__btns-container';
+export const CLASS_BTN = 'btn';
+export const CLASS_TRUNK_BTN_CHECKED = 'trunk-btn_checked';
+export const CLASS_PRODUCT_CARD_TITLE = 'card__title';
+export const CLASS_PRODUCT_CARD_IMAGE = 'card__image';
+export const CLASS_PRODUCT_CARD_INFO = 'card__info';
+export const CLASS_PRODUCT_CARD_PREVIEWS_CONTAINER = 'previews-container';
+export const CLASS_IMAGE_PREVIEW = 'image__preview';
+export const CLASS_IMAGE_PREVIEW_ACTIVE = 'image__preview_active';
