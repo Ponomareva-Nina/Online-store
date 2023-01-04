@@ -4,11 +4,12 @@ import { STORE_VIEW_TITLE } from '../../constants/string-constants';
 import AppController from '../app/app';
 import StoreModel from '../models/StoreModel';
 import ProductCard from './ProductCard';
+import { ViewComponent } from '../../types/interfaces';
 
-export default class StoreView {
+export default class StoreView implements ViewComponent {
     container: DocumentFragment;
     appController: AppController;
-    productCardsContainer: HTMLElement;
+    productCardsContainer: HTMLDivElement;
     storeModel: StoreModel;
     header: HTMLElement;
 
@@ -16,7 +17,7 @@ export default class StoreView {
         this.appController = controller;
         this.storeModel = model;
         this.container = document.createDocumentFragment();
-        this.productCardsContainer = createElem(HTMLTags.SECTION, 'product-cards', '');
+        this.productCardsContainer = createElem(HTMLTags.SECTION, 'product-cards', '') as HTMLDivElement;
         this.header = createElem(HTMLTags.PAGE_HEADER, 'page-header', STORE_VIEW_TITLE);
     }
 
