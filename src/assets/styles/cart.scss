@@ -1,0 +1,31 @@
+.cart-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.cart-link {
+    display: flex;
+    align-items: center;
+}
+
+.cart-icon {
+    width: 45px;
+    height: 30px;
+    content: "";
+    display: inline-flex;
+    background-image: url('./assets/images/cart-img.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    @media screen and (max-width: 550px) {
+        width: 40px;
+        height: 27px;
+    }
+}
+
+.cart-quantity {
+    padding-left: 8px;
+    color: $color-main;
+    line-height: 112%;
+}

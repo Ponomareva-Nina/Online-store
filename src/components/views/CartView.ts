@@ -1,3 +1,5 @@
+import { LINKS } from '../../constants/route-constants';
+import { HTMLTags } from '../../types/types';
 import { createElem } from '../../utils/utils';
 import AppController from '../app/app';
 
@@ -15,7 +17,7 @@ export default class CartView {
     }
 
     private createPage() {
-        const title = createElem('h1', 'title', 'Cart Page');
+        const title = createElem(HTMLTags.H2, 'title', 'Cart Page');
         this.container.append(title);
     }
 
@@ -29,6 +31,21 @@ export default class CartView {
 
     public deleteProductFromCart(/*объект товара*/) {
         //
+    }
+
+    public createCartIcon() {
+        const cartContainer = createElem(HTMLTags.DIV, 'cart-container');
+        const link = createElem(HTMLTags.LINK, 'cart-link');
+        const cartIcon = createElem(HTMLTags.SPAN, 'cart-icon');
+        const quantity = createElem(HTMLTags.SPAN, 'cart-quantity');
+        link.append(cartIcon, quantity);
+        quantity.textContent = `${this.productsQuantity}`;
+        cartContainer.append(link);
+        cartContainer.addEventListener('click', (e) => {
+            this.appController.router.changeCurrentPage(LINKS.Cart);
+            this.appController.header.handleNavigationClick(e);
+        });
+        return cartContainer;
     }
 
     public render() {

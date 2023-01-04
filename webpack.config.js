@@ -53,6 +53,9 @@ const config = {
         new CopyPlugin({
             patterns: [{ from: './src/404.html', to: './404.html' }],
         }),
+        new CopyPlugin({
+            patterns: [{ from: './src/assets/audio/Harry_Potter_OST.mp3', to: './assets/Harry_Potter_OST.mp3' }],
+        }),
     ],
 };
 
