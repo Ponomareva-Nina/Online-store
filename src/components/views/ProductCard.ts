@@ -3,7 +3,12 @@ import { HTMLTags, NullableElement } from '../../types/types';
 import { createElem, createImage } from '../../utils/utils';
 import AppController from '../app/app';
 import { trunkIconSvg } from '../../assets/svg-inline-icons/trunk-icon';
-import { DETAILS_BUTTON_TEXT } from '../../constants/string-constants';
+import {
+    // ADD_TO_CART_BUTTON_TEXT,
+    BUY_NOW_BUTTON_TEXT,
+    DELETE_FROM_CART_BUTTON_TEXT,
+    DETAILS_BUTTON_TEXT,
+} from '../../constants/string-constants';
 import {
     CLASS_BRIEF_CARD_CONTAINER,
     CLASS_BTN,
@@ -49,7 +54,12 @@ export default class ProductCard implements ProductCardInterface {
         const description = createElem(HTMLTags.DIV, CLASS_CARD_DESCRIPTION, descriptionText);
         const imagesSection = this.createProductImagesSection();
 
-        infoSection.append(priceContainer, description);
+        const btnsContainer = createElem(HTMLTags.DIV, CLASS_PRODUCT_CARD_BTNS_CONTAINER);
+        const BuyNowBtn = createElem(HTMLTags.BUTTON, CLASS_BTN, BUY_NOW_BUTTON_TEXT);
+        const AddDeleteProductBtn = createElem(HTMLTags.BUTTON, 'btn add-delete-btn', DELETE_FROM_CART_BUTTON_TEXT);
+        btnsContainer.append(BuyNowBtn, AddDeleteProductBtn);
+
+        infoSection.append(priceContainer, description, btnsContainer);
         container.append(title, imagesSection, infoSection);
         return container;
     }
