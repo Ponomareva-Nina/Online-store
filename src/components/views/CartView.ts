@@ -35,7 +35,7 @@ export default class CartView {
 
     public createCartIcon() {
         const cartContainer = createElem(HTMLTags.DIV, 'cart-container');
-        const link = createElem(HTMLTags.LINK);
+        const link = createElem(HTMLTags.LINK, 'cart-link');
         const cartIcon = createElem(HTMLTags.SPAN, 'cart-icon');
         const quantity = createElem(HTMLTags.SPAN, 'cart-quantity');
         link.append(cartIcon, quantity);

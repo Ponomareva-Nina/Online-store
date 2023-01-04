@@ -1,20 +1,5 @@
 .menu {
-    width: 34.2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: absolute;
-    top: 24%;
-    left: -100vw;;
-    z-index: 1;
-    background-color: $color-page-bg;
-    border: 1px $color-main solid;
-    border-radius: 1rem;
-    transition: all 1s ease;
-}
-
-.menu {
-    width: 34.2rem;
+    width: 29rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -32,11 +17,71 @@
 
     .logo-container {
         width: 19rem;
-        padding: 4rem 1rem 1.5rem;
+        padding: 3rem 1rem 1.5rem;
     }
 
     .main-nav {
         width: 100%;
+    }
+
+    .logo-title {
+        @include font-logo-title($size: 3.0rem, $color: $color-logo, $height: 110%);
+        text-shadow: 0px 3px 1px rgba(167, 96, 41, 0.5);
+    }
+
+    .text-title-second {
+        padding-left: 3rem;
+        position: relative;
+
+        &::before {
+            display: inline-block;
+            content: "";
+            width: 3rem;
+            background-image: url('./assets/images/flash.svg');
+            background-size: contain;
+            height: 3.7rem;
+            position: absolute;
+            top: 0.7rem;
+            left: 0.2rem;
+    
+            @media screen and (max-width: 550px) {
+                width: 2.2rem;
+                height: 3rem;
+                top: 0.4rem;
+                left: 0.5rem;
+            }
+        }
+    }
+
+    .logo-lightning {
+        width: 2.8rem;
+        height: 4.0rem;
+        display: inline-flex;
+        background-image: url('./assets/images/flash.svg');
+        background-repeat: no-repeat;
+        vertical-align: middle;
+    }
+
+    .nav-link {
+        font-size: 2.6rem;
+        color: $color-main;
+        line-height: 127%;
+    }
+
+    .nav-link_active {
+        position: relative;
+
+        &::after {
+            display: inline-block;
+            content: "";
+            width: 9.0rem;
+            background-image: url('./assets/images/wand_underline.svg');
+            background-size: contain;
+            height: 0.7rem;
+            position: absolute;
+            top: 3.0rem;
+            left: -1.7rem;
+        }
     }
 }
 
@@ -78,24 +123,24 @@
 .checkbox-sound + label::before {
     width: 10%;
     height: 33%;
-    left: 14.4rem;
+    left: 11.4rem;
     top: 4.5rem;
     background-image: url('./assets/images/music_off.svg');
 }
 
 .checkbox-sound + label::after {
-    width: 10%;
-    height: 33%;
-    left: 13.79rem;
+    width: 12%;
+    height: 34%;
+    left: 10.79rem;
     top: 4.3rem;
     background-image: url('./assets/images/music_on.svg');
 }
 
 .checkbox-theme + label::before {
-    width: 38%;
-    height: 42%;
-    left: 10.1rem;
-    top: 3.9rem;
+    width: 45%;
+    height: 43%;
+    left: 8.1rem;
+    top: 4.3rem;
     background-image: url('./assets/images/light.svg');
 }
 
@@ -108,10 +153,10 @@
 }
 
 .checkbox-theme + label::after {
-    width: 38%;
-    height: 42%;
-    left: 10.1rem;
-    top: 3.9rem;
+    width: 45%;
+    height: 43%;
+    left: 8.1rem;
+    top: 4.3rem;
     background-image: url('./assets/images/dark.svg');
 }
 
