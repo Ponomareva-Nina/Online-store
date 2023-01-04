@@ -67,7 +67,6 @@ export default class Menu implements IMenu {
 
     private handleClick(e: MouseEvent) {
         const target = e.target as Element;
-        console.log(target);
 
         if (
             document.body.classList.contains('inactive') &&
