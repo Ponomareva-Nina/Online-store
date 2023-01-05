@@ -1,24 +1,30 @@
 import { LINKS } from '../../constants/route-constants';
+import { CART_TITLE } from '../../constants/string-constants';
 import { HTMLTags } from '../../types/types';
 import { createElem } from '../../utils/utils';
 import AppController from '../app/app';
+import CartModel from '../models/CartModel';
 
 export default class CartView {
     container: DocumentFragment;
     appController: AppController;
+    cartModel: CartModel;
     totalSum: number;
     productsQuantity: number;
+    cartContainer: HTMLDivElement;
 
-    constructor(controller: AppController) {
+    constructor(cart: CartModel, controller: AppController) {
         this.appController = controller;
+        this.cartModel = cart;
         this.totalSum = 0;
         this.productsQuantity = 0;
         this.container = document.createDocumentFragment();
+        this.cartContainer = createElem(HTMLTags.DIV, 'cart-container', '') as HTMLDivElement;
     }
 
     private createPage() {
-        const title = createElem(HTMLTags.H2, 'title', 'Cart Page');
-        this.container.append(title);
+        const title = createElem(HTMLTags.H2, 'page-header', CART_TITLE);
+        this.container.append(title, this.cartContainer);
     }
 
     public addProductToCart(/*объект товара*/) {
@@ -31,6 +37,19 @@ export default class CartView {
 
     public deleteProductFromCart(/*объект товара*/) {
         //
+    }
+
+    private destroyAllChildNodes(parent: Node) {
+        //очищает содержимое контейрнера
+        //вызывает перед перерисовкой содержимого parent
+        while (parent.firstChild) {
+            parent.removeChild(parent.firstChild);
+        }
+    }
+
+    private updatePage() {
+        //берет из модели текущие товары корзины и отрисовывает их
+        console.log(this.cartModel.productsInCart);
     }
 
     public createCartIcon() {

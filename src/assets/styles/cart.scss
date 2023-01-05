@@ -1,3 +1,8 @@
+.page-header {
+    @include font-logo-title();
+}
+
+
 .cart-container {
     display: flex;
     align-items: center;
