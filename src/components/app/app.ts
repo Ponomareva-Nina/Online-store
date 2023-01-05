@@ -12,6 +12,7 @@ import Router from '../router/Router';
 import ProductPage from '../views/ProductPage';
 import '../models/StoreModel';
 import StoreModel from '../models/StoreModel';
+import Footer from '../views/FooterVew';
 
 export default class AppController implements AppControllerInterface {
     private static instance: InstanceType<typeof AppController>;
@@ -25,6 +26,7 @@ export default class AppController implements AppControllerInterface {
     menu: Menu;
     productPage: ProductPage;
     storeModel: StoreModel;
+    footer: Footer;
 
     constructor() {
         this.menu = new Menu(this);
@@ -35,6 +37,7 @@ export default class AppController implements AppControllerInterface {
         this.storeModel = new StoreModel(this);
         this.storeView = new StoreView(this.storeModel, this);
         this.productPage = new ProductPage(this);
+        this.footer = new Footer();
         this.routes = [
             new Route('', LINKS.About, this.startPage),
             new Route('store', LINKS.Store, this.storeView),
@@ -50,7 +53,7 @@ export default class AppController implements AppControllerInterface {
     }
 
     public start() {
-        document.body.append(this.header.createHeader(), this.mainContainer);
+        document.body.append(this.header.createHeader(), this.mainContainer, this.footer.renderFooter());
         this.router.init();
     }
 
