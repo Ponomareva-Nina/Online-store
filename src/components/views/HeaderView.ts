@@ -77,8 +77,11 @@ export default class Header {
     private getLinkRouteFromURL() {
         const route = window.location.href.split(HASHTAG);
         const [, params] = route;
-        const [initialRoute] = params.split(/\?|&|\//);
-        return `${HASHTAG}${initialRoute}`;
+        if (params) {
+            const [initialRoute] = params.split(/\?|&|\//);
+            return `${HASHTAG}${initialRoute}`;
+        }
+        return '#';
     }
 
     private createContentHeader() {
