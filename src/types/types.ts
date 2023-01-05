@@ -25,4 +25,6 @@ export enum HTMLTags {
     INPUT = 'input',
     LABEL = 'label',
     P = 'p',
+    IMG = 'img',
+    H3 = 'h3',
 }

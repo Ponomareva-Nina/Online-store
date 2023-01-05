@@ -1,5 +1,6 @@
 import { LINKS } from '../../constants/route-constants';
 import { CART_TITLE } from '../../constants/string-constants';
+import { Product } from '../../types/interfaces';
 import { HTMLTags } from '../../types/types';
 import { createElem } from '../../utils/utils';
 import AppController from '../app/app';
@@ -19,12 +20,71 @@ export default class CartView {
         this.totalSum = 0;
         this.productsQuantity = 0;
         this.container = document.createDocumentFragment();
-        this.cartContainer = createElem(HTMLTags.DIV, 'cart-container', '') as HTMLDivElement;
+        this.cartContainer = createElem(HTMLTags.DIV, 'cart-wrapper', '') as HTMLDivElement;
     }
 
     private createPage() {
+        this.destroyAllChildNodes(this.cartContainer);
+
         const title = createElem(HTMLTags.H2, 'page-header', CART_TITLE);
+
+        const productInCart = this.cartModel.productsInCart;
+
+        if (productInCart.length !== 0) {
+            productInCart.forEach((product) => {
+                const productContainer = createElem(HTMLTags.DIV, 'product-container');
+                const productContent = this.createCard(product);
+                const buttonsContainer = this.createCounters(/*card: Product*/);
+                productContainer.append(productContent, buttonsContainer);
+                this.cartContainer.append(productContainer);
+            });
+        }
         this.container.append(title, this.cartContainer);
+    }
+
+    private createCard(card: Product) {
+        const productContent = createElem(HTMLTags.DIV, 'product-content');
+        const productCartImg = createElem(HTMLTags.IMG, 'product-image');
+        productCartImg.setAttribute('src', card.thumbnail);
+        productCartImg.setAttribute('alt', card.title);
+
+        const cardCartContent = createElem(HTMLTags.DIV, 'card-content');
+        const cardCartTitle = createElem(HTMLTags.H3, 'card-title', card.title);
+        const cardCartDescription = createElem(HTMLTags.DIV, 'card-description');
+
+        const cardSize = createElem(HTMLTags.P, 'card-size');
+        const cardSizeSubtitle = createElem(HTMLTags.SPAN, 'subtitle-name', 'size: ');
+        const cardSizeDescription = createElem(HTMLTags.SPAN, 'subtitle-name-description', 'one size');
+        cardSize.append(cardSizeSubtitle, cardSizeDescription);
+
+        const cardStock = createElem(HTMLTags.P, 'card-stock');
+        const cardStockSubtitle = createElem(HTMLTags.SPAN, 'subtitle-name', 'Available in stock: ');
+        const cardStockDescription = createElem(HTMLTags.SPAN, 'subtitle-name-description', `${card.quantity}`);
+        cardStock.append(cardStockSubtitle, cardStockDescription);
+
+        const cardPrice = createElem(HTMLTags.P, 'card-price', `${card.price}`);
+
+        cardCartDescription.append(cardSize, cardStock, cardPrice);
+
+        cardCartContent.append(cardCartTitle, cardCartDescription);
+
+        productContent.append(productCartImg, cardCartContent);
+
+        return productContent;
+    }
+
+    private createCounters(/*card: Product*/) {
+        const buttonsContainer = createElem(HTMLTags.DIV, 'buttons-container');
+        const counterContainer = createElem(HTMLTags.DIV, 'counter-container');
+        const countDown = createElem(HTMLTags.SPAN, 'count-down counter-button');
+        const productQuantity = createElem(HTMLTags.SPAN, 'product-quantity', '1');
+        const countUp = createElem(HTMLTags.SPAN, 'count-up counter-button');
+        counterContainer.append(countDown, productQuantity, countUp);
+
+        const cartDeleteProduct = createElem(HTMLTags.BUTTON, 'btn button-all-delete', 'Delete');
+        buttonsContainer.append(counterContainer, cartDeleteProduct);
+
+        return buttonsContainer;
     }
 
     public addProductToCart(/*объект товара*/) {

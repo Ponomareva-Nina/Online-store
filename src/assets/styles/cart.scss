@@ -34,3 +34,69 @@
     color: $color-main;
     line-height: 112%;
 }
+
+
+.product-container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-top: 1px $color-main solid;
+
+    &:last-child {
+        border-bottom: 1px $color-main solid;
+    }
+}
+
+.product-content {
+    display: flex;
+    gap: 2rem;
+}
+
+.product-image {
+    width: 14.5rem;
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.card-price {
+
+    &::before {
+        content: '$';
+        padding-right: 0.5rem;
+    }
+}
+
+
+.counter-button {
+    width: 3rem;
+    height: 3rem;
+    content: '';
+    display: inline-flex;
+    background-size: contain;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.buttons-container {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.counter-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem
+}
+
+.count-down {
+    background-image: url('./assets/images/counter_delete.svg');
+}
+
+.count-up {
+    background-image: url('./assets/images/counter_add.svg');
+}
