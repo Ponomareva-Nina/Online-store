@@ -1,9 +1,10 @@
 import { AUTHOR_FIRST_GIT_LINK, AUTHOR_SECOND_GIT_LINK, TASK_LINK } from '../../constants/source-constants';
 import { AUTHOR_FIRST, AUTHOR_SECOND, YEAR } from '../../constants/string-constants';
+import { IFooter } from '../../types/interfaces';
 import { HTMLTags } from '../../types/types';
 import { createElem, createWelcomeLine } from '../../utils/utils';
 
-export default class Footer {
+export default class Footer implements IFooter {
     container: HTMLDivElement;
     wrapper: HTMLDivElement;
 

@@ -56,3 +56,9 @@ export interface ProductCardInterface {
     createBriefCard: () => HTMLElement;
     createFullCard: () => HTMLElement;
 }
+
+export interface IFooter {
+    container: HTMLDivElement;
+    wrapper: HTMLDivElement;
+    renderFooter: () => HTMLElement;
+}
