@@ -1,0 +1,59 @@
+.footer {
+    background-image: url('./assets/images/bg-header-footer.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.footer-content {
+    display: flex;
+    padding: 2.8rem 0;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.authors-content {
+    display: flex;
+    align-items: center;
+    gap: 1.8rem;
+}
+
+
+.footer__link {
+    display: flex;
+    align-items: center;
+    @include font-main(2rem, 400, $color-main, 165%);
+}
+
+.git-logo {
+    width: 3.5rem;
+    height: 3.5rem;
+    display: inline-flex;
+    background-image: url('./assets/images/git_logo.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.rs-container {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    @include font-main(2rem, 700, $color-main, 90%);
+}
+
+.rs-logo {
+    width: 8rem;
+    height: 3.2rem;
+    display: inline-flex;
+    background-image: url('./assets/images/rs_school_logo.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.flash {
+    width: 1.85rem;
+    height: 2.95rem;
+    display: inline-flex;
+    background-image: url('./assets/images/flash_footer.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+}
