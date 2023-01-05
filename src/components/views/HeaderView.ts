@@ -42,10 +42,10 @@ export default class Header {
             const li = createElem(HTMLTags.LIST, 'main-nav__list_item');
             const navLink = createElem(HTMLTags.LINK, 'nav-link', link);
             navLink.setAttribute('href', LINKS[link as keyof typeof LINKS]);
-            const initialLink = navLink.getAttribute('href');
-            if (initialLink === LINKS.About) {
+            const initialRoute = this.getLinkRouteFromURL();
+            if (navLink.getAttribute('href') === initialRoute) {
                 this.currentActiveLink = navLink;
-                navLink.classList.add('nav-link_active');
+                this.currentActiveLink.classList.add('nav-link_active');
             }
             navLink.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -65,13 +65,20 @@ export default class Header {
         this.appController.router.changeCurrentPage(href);
         const newActiveLink = document.querySelectorAll('.nav-link');
         newActiveLink.forEach((link) => {
-            const route = `${HASHTAG}${this.appController.router.currentPath}`;
+            const route = this.getLinkRouteFromURL();
             if (link.getAttribute('href') === route) {
                 link.classList.add('nav-link_active');
             } else {
                 link.classList.remove('nav-link_active');
             }
         });
+    }
+
+    private getLinkRouteFromURL() {
+        const route = window.location.href.split(HASHTAG);
+        const [, params] = route;
+        const [initialRoute] = params.split(/\?|&|\//);
+        return `${HASHTAG}${initialRoute}`;
     }
 
     private createContentHeader() {

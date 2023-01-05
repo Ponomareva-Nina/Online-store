@@ -31,7 +31,7 @@ export default class AppController implements AppControllerInterface {
     constructor() {
         this.menu = new Menu(this);
         this.header = new Header(this);
-        this.mainContainer = createElem('main', 'main');
+        this.mainContainer = createElem('main', 'main wrapper');
         this.cartView = new CartView(this);
         this.startPage = new StartPageView(this);
         this.storeModel = new StoreModel(this);
@@ -58,7 +58,7 @@ export default class AppController implements AppControllerInterface {
     }
 
     public updatePage(view: ViewComponent, params?: Props) {
-        this.mainContainer.innerHTML = '';
+        this.destroyAllChildNodes(this.mainContainer);
         this.mainContainer.append(view.render(params));
     }
 
@@ -70,5 +70,11 @@ export default class AppController implements AppControllerInterface {
     public deleteProductFromCart(product: Product) {
         console.log(product);
         console.log('method: deleteProductFromCart');
+    }
+
+    private destroyAllChildNodes(parent: Node) {
+        while (parent.firstChild) {
+            parent.removeChild(parent.firstChild);
+        }
     }
 }

@@ -33,6 +33,12 @@ export default class CartView {
         //
     }
 
+    private destroyAllChildNodes(parent: Node) {
+        while (parent.firstChild) {
+            parent.removeChild(parent.firstChild);
+        }
+    }
+
     public createCartIcon() {
         const cartContainer = createElem(HTMLTags.DIV, 'cart-container');
         const link = createElem(HTMLTags.LINK, 'cart-link');
