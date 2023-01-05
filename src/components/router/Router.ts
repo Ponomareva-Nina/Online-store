@@ -24,8 +24,9 @@ class Router implements RouterInterface {
     }
 
     private updateCurrentPath() {
-        const [, path] = window.location.href.split(HASHTAG);
-        this.currentPath = window.location.href.split(HASHTAG).length === 1 ? '' : path;
+        const route = window.location.href.split(HASHTAG);
+        const [, path] = route;
+        this.currentPath = route.length === 1 ? '' : path;
     }
 
     public changeCurrentPage(path: string) {

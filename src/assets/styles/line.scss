@@ -1,0 +1,73 @@
+.line-wrapper {
+    display: flex;
+    justify-content: space-between;
+
+    @media screen and (max-width: 700px) {
+        justify-content: center;;
+    }
+
+}
+
+.line {
+    padding: 2.5px 0;
+    background-color: $color-main;
+    @include font-logo-title($size: 1.1rem, $color: $color-page-bg, $height: 175%);
+    font-weight: 400;
+    text-transform: none;
+
+    @media screen and (max-width: 550px) {
+        @include font-logo-title($size: 0.9rem, $color: $color-page-bg, $height: 110%);
+        text-transform: none;
+    }
+}
+
+.line-logo {
+    width: 2.2rem;
+    height: 2.1rem;
+    padding-right: 6px;
+    display: inline-flex;
+    vertical-align: middle;
+    background-image: url('./assets/images/lineLogo.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    @media screen and (max-width: 700px) {
+        width: 1.7rem;
+        height: 1.6rem;
+    }
+}
+
+.header {
+    .line-welcome {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+    }
+
+    .line-description {
+        display: inline-flex;
+        align-items: center;
+
+        @media screen and (max-width: 700px) {
+            display: none;
+        }
+    }
+}
+
+.footer {
+
+    .line-welcome {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+
+        @media screen and (max-width: 700px) {
+            display: none;
+        }
+    }
+
+    .line-description {
+        display: inline-flex;
+        align-items: center;
+    }
+}

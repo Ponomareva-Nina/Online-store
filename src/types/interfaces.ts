@@ -32,6 +32,12 @@ export interface ViewComponent {
     render: (props?: Props) => DocumentFragment;
 }
 
+export interface IMenu {
+    appController: AppController;
+    menuContainer: HTMLElement;
+    burgerIcon: HTMLElement;
+    getBurgerIcon: () => HTMLElement;
+}
 export interface Product {
     id: number;
     faculty: string;
@@ -49,4 +55,10 @@ export interface ProductCardInterface {
     cardData: Product;
     createBriefCard: () => HTMLElement;
     createFullCard: () => HTMLElement;
+}
+
+export interface IFooter {
+    container: HTMLDivElement;
+    wrapper: HTMLDivElement;
+    renderFooter: () => HTMLElement;
 }

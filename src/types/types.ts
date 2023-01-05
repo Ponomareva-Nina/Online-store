@@ -22,4 +22,7 @@ export enum HTMLTags {
     NAV = 'nav',
     LIST = 'li',
     UL = 'ul',
+    INPUT = 'input',
+    LABEL = 'label',
+    P = 'p',
 }
