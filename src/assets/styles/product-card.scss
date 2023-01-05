@@ -12,7 +12,6 @@
     &:hover {
         cursor: pointer;
     }
-
     .card__title {
         @include font-main($weight: 600);
         overflow: hidden;
@@ -21,24 +20,20 @@
         -webkit-box-orient: vertical;
         text-align: center;
     }
-
     .card__image {
         max-width: 280px;
         max-height: 200px;
     }
 }
-
 .card__price,
 .card__discount {
     color: $color-accent;
 }
-
 .card__btns-container {
     display: flex;
     align-items: center;
     gap: 2rem;
 }
-
 .trunk-btn {
     width: 5rem;
     height: 5rem;
@@ -50,23 +45,21 @@
     & svg {
         transition: all .5s ease;
     }
-
     &:active svg {
         fill: $color-inCart;
     }
 }
-
 .trunk-btn_checked {
     & svg {
         fill: $color-inCart;
     }
 }
-
 .card_full {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     align-items: center;
-    gap: 3rem;
+    row-gap: 3rem;
+    column-gap: 2rem;
     align-items: start;
     margin: 2rem 0 5rem;
 
@@ -74,23 +67,21 @@
         @include font-logo-title();
         grid-column: span 2;
     }
-
     .previews-container {
         display: flex;
         gap: 1rem;
         justify-content: center;
+        align-items: center;
+        padding: 0 .5rem;
     }
-
     .image__preview {
-        max-width: calc(100% /4);
+        max-width: 24%;
         opacity: .5;
         cursor: pointer;
     }
-
     .image__preview_active {
         opacity: 1;
     }
-
     .images-container {
         display: flex;
         flex-direction: column;
@@ -104,25 +95,25 @@
         gap: 2rem;
         overflow: hidden;
     }
-
     .card__image {
         display: flex;
         flex-direction: column;
         align-items: center;
         max-width: 100%;
+        justify-content: center;
+        min-height: 35rem;
+        max-height: 35rem;
+        overflow: hidden;
 
         & img {
             max-width: 100%;
-            height: 35rem;
         }
     }
-
     .btn {
         width: 19rem;
         height: 5rem;
     }
 }
-
 .card_product-params-container {
     display: flex;
     gap: 2rem;
@@ -130,26 +121,33 @@
     border-bottom: 1px solid $color-accent;
     padding: 1rem 0;
 }
-
 .card__info {
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    width: 100%;
+    height: 100%;
+    padding: 0 1rem;
 }
 
-@media screen and (max-width: 750px) {
+// responsive styles for mobiles and laptops
+@media screen and (max-width: 800px) {
     .card_full {
         grid-template-columns: 1fr;
 
         .card__title {
             grid-column: span 1;
         }
-
         .card__image {
+            min-height: 25rem;
+            max-height: 25rem;
+
             & img {
                 height: 30rem;
             }
         }
+        .card__btns-container {
+            align-self: flex-end;
+        }
     }
-
 }
