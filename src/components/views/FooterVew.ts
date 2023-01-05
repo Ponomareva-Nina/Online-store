@@ -1,20 +1,22 @@
+import { AUTHOR_FIRST_GIT_LINK, AUTHOR_SECOND_GIT_LINK, TASK_LINK } from '../../constants/source-constants';
+import { AUTHOR_FIRST, AUTHOR_SECOND, YEAR } from '../../constants/string-constants';
 import { HTMLTags } from '../../types/types';
 import { createElem, createWelcomeLine } from '../../utils/utils';
 
 export default class Footer {
-    container: HTMLElement;
-    wrapper: HTMLElement;
+    container: HTMLDivElement;
+    wrapper: HTMLDivElement;
 
     constructor() {
-        this.wrapper = createElem(HTMLTags.DIV, 'wrapper');
-        this.container = createElem('footer', 'footer');
+        this.wrapper = createElem(HTMLTags.DIV, 'wrapper') as HTMLDivElement;
+        this.container = createElem('footer', 'footer') as HTMLDivElement;
     }
 
     private createFooterContent() {
         const footerContainer = createElem(HTMLTags.DIV, 'footer-content');
         const authorsContainer = createElem(HTMLTags.DIV, 'authors-content');
-        const authorFirst = this.createAuthorGithub('Ponomareva-Nina', 'https://github.com/Ponomareva-Nina');
-        const authorSecond = this.createAuthorGithub('Milashevsky-Vladimir', 'https://github.com/VladimirM89');
+        const authorFirst = this.createAuthorGithub(AUTHOR_FIRST, AUTHOR_FIRST_GIT_LINK);
+        const authorSecond = this.createAuthorGithub(AUTHOR_SECOND, AUTHOR_SECOND_GIT_LINK);
         const rsContainer = this.createRsContainer();
         authorsContainer.append(authorFirst, authorSecond);
         footerContainer.append(authorsContainer, rsContainer);
@@ -24,29 +26,27 @@ export default class Footer {
 
     private createAuthorGithub(name: string, link: string) {
         const autorContainer = createElem(HTMLTags.DIV, 'author-container');
-        const a = createElem(HTMLTags.LINK, 'footer__link');
-        a.setAttribute('href', link);
-        a.setAttribute('target', '_blank');
+        const gitLink = createElem(HTMLTags.LINK, 'git__link');
+        gitLink.setAttribute('href', link);
+        gitLink.setAttribute('target', '_blank');
         const gitLogo = createElem(HTMLTags.SPAN, 'git-logo');
         const gitUsername = createElem(HTMLTags.SPAN, 'git-username');
         gitUsername.textContent = name;
-        a.append(gitLogo, gitUsername);
-        autorContainer.append(a);
+        gitLink.append(gitLogo, gitUsername);
+        autorContainer.append(gitLink);
         return autorContainer;
     }
 
     private createRsContainer() {
         const rsContainer = createElem(HTMLTags.DIV, 'rs-container');
-        const a = createElem(HTMLTags.LINK);
-        const link = 'https://github.com/rolling-scopes-school/tasks/tree/master/tasks/online-store-team';
-        a.setAttribute('href', link);
-        a.setAttribute('target', '_blank');
+        const taskLink = createElem(HTMLTags.LINK);
+        taskLink.setAttribute('href', TASK_LINK);
+        taskLink.setAttribute('target', '_blank');
         const rsLogo = createElem(HTMLTags.SPAN, 'rs-logo');
         const flash = createElem(HTMLTags.SPAN, 'flash');
-        const year = createElem(HTMLTags.SPAN, 'year');
-        year.textContent = '2022';
-        a.append(rsLogo);
-        rsContainer.append(a, flash, year);
+        const year = createElem(HTMLTags.SPAN, 'year', YEAR);
+        taskLink.append(rsLogo);
+        rsContainer.append(taskLink, flash, year);
         return rsContainer;
     }
 

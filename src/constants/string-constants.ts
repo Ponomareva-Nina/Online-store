@@ -11,3 +11,6 @@ export const STORE_VIEW_TITLE = 'CATALOGUE';
 export const DETAILS_BUTTON_TEXT = 'Details';
 export const MAIN_LOGO_PART1 = 'hogwarts';
 export const MAIN_LOGO_PART2 = 'store';
+export const AUTHOR_FIRST = 'Ponomareva-Nina';
+export const AUTHOR_SECOND = 'Milashevsky-Vladimir';
+export const YEAR = '2022';
