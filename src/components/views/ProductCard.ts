@@ -47,7 +47,7 @@ export default class ProductCard implements ProductCardInterface {
         const priceContainer = createElem(HTMLTags.DIV, 'card_product-params-container', '');
         const priceText = `Price: $ ${this.cardData.price}`;
         const cardPrice = createElem(HTMLTags.DIV, CLASS_CARD_PRICE, priceText);
-        const discountText = `Discount: $ ${this.cardData.discount}`;
+        const discountText = `Discount: ${this.cardData.discount} %`;
         const cardDiscount = createElem(HTMLTags.DIV, CLASS_CARD_DISCOUNT, discountText);
         priceContainer.append(cardPrice, cardDiscount);
         const descriptionText = this.cardData.description;
