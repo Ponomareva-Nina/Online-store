@@ -106,6 +106,8 @@ label {
 
 .main {
     flex: 1 0 auto;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
 }
 
 .btn {
@@ -133,8 +135,9 @@ label {
 .wrapper {
     max-width: 900px;
     margin: 0 auto;
-    padding: 0 1.6%;
-    position: relative; //
+    padding-left: 1.6%;
+    padding-right: 1.6%;
+    position: relative;
 }
 
 .input-container {
