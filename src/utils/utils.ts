@@ -11,7 +11,10 @@ export function createElem(tag = 'div', className = '', text = '') {
 
 export function createWelcomeLine() {
     const line = createElem(HTMLTags.DIV, 'line');
-    const lineWelcome = createElem(HTMLTags.SPAN, 'line-welcome', LINE_WELCOME);
+    const lineWelcome = createElem(HTMLTags.SPAN, 'line-welcome');
+    const logo = createElem(HTMLTags.SPAN, 'line-logo');
+    const welcomeText = createElem(HTMLTags.SPAN, 'welcome-text', LINE_WELCOME);
+    lineWelcome.append(logo, welcomeText);
     const lineDescription = createElem(HTMLTags.SPAN, 'line-description', LINE_DESCRIPTION);
     const wrapper = createElem(HTMLTags.DIV, 'wrapper line-wrapper');
     wrapper.append(lineWelcome, lineDescription);

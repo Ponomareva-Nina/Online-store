@@ -40,7 +40,7 @@ export default class Footer implements IFooter {
 
     private createRsContainer() {
         const rsContainer = createElem(HTMLTags.DIV, 'rs-container');
-        const taskLink = createElem(HTMLTags.LINK);
+        const taskLink = createElem(HTMLTags.LINK, 'course-link');
         taskLink.setAttribute('href', TASK_LINK);
         taskLink.setAttribute('target', '_blank');
         const rsLogo = createElem(HTMLTags.SPAN, 'rs-logo');
