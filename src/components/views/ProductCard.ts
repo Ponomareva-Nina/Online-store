@@ -103,8 +103,8 @@ export default class ProductCard implements ProductCardInterface {
         const fullImageContainer = createElem(HTMLTags.DIV, CLASS_PRODUCT_CARD_IMAGE);
         const fullImage = createImage('', this.cardData.thumbnail);
         fullImageContainer.append(fullImage);
-
-        const maxIndex = imageSources.length > 4 ? 4 : imageSources.length;
+        const previewImagesNumber = 4;
+        const maxIndex = imageSources.length > previewImagesNumber ? previewImagesNumber : imageSources.length;
         for (let i = 0; i < maxIndex; i++) {
             const preview = createImage(CLASS_IMAGE_PREVIEW, imageSources[i]);
             if (imageSources[i] === this.cardData.thumbnail) {
