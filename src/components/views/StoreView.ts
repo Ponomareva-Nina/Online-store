@@ -51,6 +51,7 @@ export default class StoreView implements ViewComponent {
             const searchValue = this.currentParams[PossibleUrlParams.SEARCH].join(' ');
             (searchInput as HTMLInputElement).value = searchValue;
             this.storeModel.filterCardsByKeyword(searchValue);
+            this.updateCards();
         }
         this.sidePanelContainer.append(searchContainer);
         searchInput.addEventListener('change', (e) => {
