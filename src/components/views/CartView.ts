@@ -95,6 +95,7 @@ export default class CartView implements ViewComponent {
             this.cartModel.deleteProduct(card);
             this.appController.updatePage(this.appController.header);
             this.appController.updatePage(this.appController.cartView);
+            this.checkCartIsEmpty();
         });
         buttonsContainer.append(counterContainer, cartDeleteProduct);
 
@@ -121,7 +122,6 @@ export default class CartView implements ViewComponent {
 
     public deleteProductFromCart(product: Product) {
         this.totalSum = Math.round((this.totalSum -= product.price));
-
         if (product.inCart && product.inCart > 1) {
             product.inCart -= 1;
             this.productsQuantity -= 1;
@@ -135,10 +135,14 @@ export default class CartView implements ViewComponent {
             this.cartModel.deleteProduct(product);
             this.appController.updatePage(this.appController.header);
             this.appController.updatePage(this.appController.cartView);
-            if (this.cartModel.productsInCart.length === 0) {
-                const emptyCart = createElem(HTMLTags.DIV, 'empty-cart', CART_EMPTY);
-                this.cartContainer.append(emptyCart);
-            }
+            this.checkCartIsEmpty();
+        }
+    }
+
+    private checkCartIsEmpty() {
+        if (this.cartModel.productsInCart.length === 0) {
+            const emptyCart = createElem(HTMLTags.DIV, 'empty-cart', CART_EMPTY);
+            this.cartContainer.append(emptyCart);
         }
     }
 
