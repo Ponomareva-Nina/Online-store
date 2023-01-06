@@ -80,6 +80,7 @@ class Router implements RouterInterface {
             PossibleUrlParams.SORT,
             PossibleUrlParams.PRICE,
             PossibleUrlParams.STOCK,
+            PossibleUrlParams.SEARCH,
         ];
 
         const validationExp = new RegExp(values.join(PARAM_VALUES_SEPARATOR));
@@ -130,6 +131,7 @@ class Router implements RouterInterface {
         const path = this.currentPath;
         const matchedRoute = this.matchUrl(path);
         if (matchedRoute) {
+            this.updatePageUrl(matchedRoute);
             const params = matchedRoute.getParameters();
             this.appController.updatePage(matchedRoute.getView(), params);
         } else {

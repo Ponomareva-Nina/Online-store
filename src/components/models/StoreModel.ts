@@ -20,4 +20,20 @@ export default class StoreModel {
     getCurrentProducts() {
         return this.currentProducts;
     }
+
+    filterCardsByKeyword(value: string) {
+        this.currentProducts = [];
+        this.products.forEach((product) => {
+            if (
+                product.category.toLowerCase().includes(value) ||
+                product.description.toLowerCase().includes(value) ||
+                product.title.toLowerCase().includes(value) ||
+                product.faculty.toLowerCase().includes(value) ||
+                product.price.toString() === value ||
+                product.discount.toString() === value
+            ) {
+                this.currentProducts.push(product);
+            }
+        });
+    }
 }

@@ -7,6 +7,7 @@ export enum PossibleUrlParams {
     SORT = 'sort',
     PRICE = 'price',
     STOCK = 'stock',
+    SEARCH = 'search',
 }
 
 export type MethodVoid = () => void;
