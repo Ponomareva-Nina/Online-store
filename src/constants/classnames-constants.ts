@@ -19,4 +19,6 @@ export enum ClassNames {
     PAGE_HEADER = 'page-header',
     SIDE_PANEL = 'side-panel',
     PRODUCT_CARDS_CONTAINER = 'product-cards',
+    SEARCH_INPUT_CONTAINER = 'search-input-container',
+    SEARCH_INPUT = 'search-input',
 }

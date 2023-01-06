@@ -12,9 +12,9 @@ import {
 import { ClassNames } from '../../constants/classnames-constants';
 
 export default class ProductCard implements ProductCardInterface {
-    cardData: Product;
-    appController: AppController;
-    activePreviewImage: NullableElement<HTMLImageElement>;
+    public cardData: Product;
+    public appController: AppController;
+    private activePreviewImage: NullableElement<HTMLImageElement>;
 
     constructor(card: Product, controller: AppController) {
         this.cardData = card;

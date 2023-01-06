@@ -3,9 +3,9 @@ import { Product } from '../../types/interfaces';
 import AppController from '../app/app';
 
 export default class StoreModel {
-    appController: AppController;
-    products: Product[];
-    currentProducts: Product[];
+    public appController: AppController;
+    private products: Product[];
+    public currentProducts: Product[];
 
     constructor(controller: AppController) {
         this.appController = controller;
