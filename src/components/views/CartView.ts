@@ -1,12 +1,12 @@
 import { LINKS } from '../../constants/route-constants';
 import { CART_TITLE } from '../../constants/string-constants';
-import { Product } from '../../types/interfaces';
+import { Product, ViewComponent } from '../../types/interfaces';
 import { HTMLTags } from '../../types/types';
 import { createElem } from '../../utils/utils';
 import AppController from '../app/app';
 import CartModel from '../models/CartModel';
 
-export default class CartView {
+export default class CartView implements ViewComponent {
     container: DocumentFragment;
     appController: AppController;
     cartModel: CartModel;
@@ -24,6 +24,7 @@ export default class CartView {
     }
 
     private createPage() {
+        this.destroyAllChildNodes(this.container);
         this.destroyAllChildNodes(this.cartContainer);
 
         const title = createElem(HTMLTags.H2, 'page-header', CART_TITLE);
@@ -34,7 +35,7 @@ export default class CartView {
             productInCart.forEach((product) => {
                 const productContainer = createElem(HTMLTags.DIV, 'product-container');
                 const productContent = this.createCard(product);
-                const buttonsContainer = this.createCounters(/*card: Product*/);
+                const buttonsContainer = this.createCounters(product);
                 productContainer.append(productContent, buttonsContainer);
                 this.cartContainer.append(productContainer);
             });
@@ -73,35 +74,57 @@ export default class CartView {
         return productContent;
     }
 
-    private createCounters(/*card: Product*/) {
+    private createCounters(card: Product) {
         const buttonsContainer = createElem(HTMLTags.DIV, 'buttons-container');
         const counterContainer = createElem(HTMLTags.DIV, 'counter-container');
+        buttonsContainer.addEventListener('click', (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            if (target.classList.contains('count-down')) {
+                this.deleteProductFromCart(/*product: Product*/);
+            } else if (target.classList.contains('count-up')) {
+                this.addProductToCart(card);
+            }
+        });
         const countDown = createElem(HTMLTags.SPAN, 'count-down counter-button');
-        const productQuantity = createElem(HTMLTags.SPAN, 'product-quantity', '1');
+        const productQuantity = createElem(HTMLTags.SPAN, 'product-quantity', `${card.inCart}`);
         const countUp = createElem(HTMLTags.SPAN, 'count-up counter-button');
         counterContainer.append(countDown, productQuantity, countUp);
 
         const cartDeleteProduct = createElem(HTMLTags.BUTTON, 'btn button-all-delete', 'Delete');
+        cartDeleteProduct.addEventListener('click', () => {
+            this.cartModel.deleteProduct(card);
+            this.appController.updatePage(this.appController.header);
+            this.appController.updatePage(this.appController.cartView);
+        });
         buttonsContainer.append(counterContainer, cartDeleteProduct);
 
         return buttonsContainer;
     }
 
-    public addProductToCart(/*объект товара*/) {
+    public addProductToCart(product: Product) {
         // создает вид карточки товара в корзине
         // this.container.append(cозданную карточку продукта);
         // this.renderProduct(объект)
         // this.sum = sum + товар.price;
         // this.productsQuantity += кол-во;
+        this.totalSum = Math.round((this.totalSum += product.price));
+        if (product.inCart && product.inCart < product.quantity) {
+            product.inCart += 1;
+            this.productsQuantity += 1; //this.cartModel.productsInCart.reduce((sum, current) => sum + current.price, 0);
+            console.log(this.totalSum, this.productsQuantity, this.cartModel.productsInCart);
+            this.appController.updatePage(this.appController.header);
+            this.appController.updatePage(this.appController.cartView);
+        } else {
+            console.log(`Выбрано максимальное количество товара`);
+        }
     }
 
-    public deleteProductFromCart(/*объект товара*/) {
+    public deleteProductFromCart(/*product: Product*/) {
         //
+        console.log('delete');
     }
 
     private destroyAllChildNodes(parent: Node) {
-        //очищает содержимое контейрнера
-        //вызывает перед перерисовкой содержимого parent
         while (parent.firstChild) {
             parent.removeChild(parent.firstChild);
         }
@@ -109,7 +132,6 @@ export default class CartView {
 
     private updatePage() {
         //берет из модели текущие товары корзины и отрисовывает их
-        console.log(this.cartModel.productsInCart);
     }
 
     public createCartIcon() {

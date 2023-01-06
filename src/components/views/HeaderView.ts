@@ -3,17 +3,20 @@ import AppController from '../app/app';
 import { LINKS } from '../../constants/route-constants';
 import { HTMLTags, NullableElement } from '../../types/types';
 import { HASHTAG, MAIN_LOGO_PART1, MAIN_LOGO_PART2 } from '../../constants/string-constants';
+import { ViewComponent } from '../../types/interfaces';
 
-export default class Header {
-    container: HTMLHeadElement;
+export default class Header implements ViewComponent {
+    container: DocumentFragment;
     appController: AppController;
     wrapper: HTMLDivElement;
     currentActiveLink: NullableElement<HTMLElement>;
+    headerContainer: HTMLDivElement;
 
     constructor(controller: AppController) {
         this.appController = controller;
         this.wrapper = createElem(HTMLTags.DIV, 'wrapper') as HTMLDivElement;
-        this.container = createElem('header', 'header');
+        this.headerContainer = createElem('header', 'header') as HTMLDivElement;
+        this.container = document.createDocumentFragment();
         this.currentActiveLink = null;
     }
 
@@ -42,10 +45,10 @@ export default class Header {
             const li = createElem(HTMLTags.LIST, 'main-nav__list_item');
             const navLink = createElem(HTMLTags.LINK, 'nav-link', link);
             navLink.setAttribute('href', LINKS[link as keyof typeof LINKS]);
-            const initialLink = navLink.getAttribute('href');
-            if (initialLink === LINKS.About) {
+            const initialRoute = this.getLinkRouteFromURL();
+            if (navLink.getAttribute('href') === initialRoute) {
                 this.currentActiveLink = navLink;
-                navLink.classList.add('nav-link_active');
+                this.currentActiveLink.classList.add('nav-link_active');
             }
             navLink.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -65,7 +68,7 @@ export default class Header {
         this.appController.router.changeCurrentPage(href);
         const newActiveLink = document.querySelectorAll('.nav-link');
         newActiveLink.forEach((link) => {
-            const route = `${HASHTAG}${this.appController.router.currentPath}`;
+            const route = this.getLinkRouteFromURL();
             if (link.getAttribute('href') === route) {
                 link.classList.add('nav-link_active');
             } else {
@@ -74,7 +77,18 @@ export default class Header {
         });
     }
 
-    private createContentHeader() {
+    private getLinkRouteFromURL() {
+        const route = window.location.href.split(HASHTAG);
+        const [, params] = route;
+        if (params) {
+            const [initialRoute] = params.split(/\?|&|\//);
+            return `${HASHTAG}${initialRoute}`;
+        }
+        return '#';
+    }
+
+    public createContentHeader() {
+        this.destroyAllChildNodes(this.wrapper);
         const centralContainer = createElem(HTMLTags.DIV, 'central-container');
         const logo = this.createLogo();
         const navigation = this.createNavigation();
@@ -89,10 +103,22 @@ export default class Header {
     }
 
     public createHeader() {
+        this.destroyAllChildNodes(this.headerContainer);
         const line = createWelcomeLine();
         const headerContent = this.createContentHeader();
         this.wrapper.append(headerContent);
-        this.container.append(line, this.wrapper);
+        this.headerContainer.append(line, this.wrapper);
+        return this.headerContainer;
+    }
+
+    private destroyAllChildNodes(parent: Node) {
+        while (parent.firstChild) {
+            parent.removeChild(parent.firstChild);
+        }
+    }
+
+    public render() {
+        this.createHeader();
         return this.container;
     }
 }

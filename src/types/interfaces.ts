@@ -39,6 +39,7 @@ export interface IMenu {
     getBurgerIcon: () => HTMLElement;
 }
 export interface Product {
+    inCart?: number;
     id: number;
     faculty: string;
     category: string;

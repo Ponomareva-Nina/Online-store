@@ -17,12 +17,27 @@ export default class CartModel {
     }
 
     addProduct(product: Product) {
-        //добавляет полученный объект в массив this.productsInCart. с товарами корзины
+        //добавляет полученный из каталога объект в массив this.productsInCart. с товарами корзины
         const isInCart = this.checkProductInCart(product.id);
         if (!isInCart) {
             //console.log('товара нет в корзине. Добавляем...');
             this.productsInCart.push(product);
-            //console.log('Товар добавлен. Обновленная корзина: ', this.productsInCart);
+            product.inCart = 1;
+            this.appController.cartView.productsQuantity += product.inCart;
+            this.appController.cartView.totalSum = Math.round(
+                (this.appController.cartView.totalSum += product.inCart * product.price)
+            );
+            this.appController.addProductToCart(product);
+            console.log(
+                `Товар добавлен в количестве . Обновленная корзина (${this.appController.cartView.productsQuantity} товаров): `,
+                this.productsInCart
+            );
+            console.log(
+                `Добавлено ${product.inCart} шт выбранного товра. Общая сумма увеличилась на ${
+                    product.inCart * product.price
+                } и стала ${this.appController.cartView.totalSum}`
+            );
+            return this.productsInCart;
         } else {
             //console.log('Товар уже есть в корзине. Корзина ', this.productsInCart);
         }
@@ -35,7 +50,22 @@ export default class CartModel {
             //console.log('товара найден в корзине. Удаляем...');
             const deletedIndex = this.productsInCart.indexOf(product);
             this.productsInCart.splice(deletedIndex, 1);
-            //console.log('Товар удален. Обновленная корзина: ', this.productsInCart);
+            if (product.inCart) {
+                this.appController.cartView.productsQuantity -= product.inCart;
+                this.appController.cartView.totalSum = Math.round(
+                    (this.appController.cartView.totalSum -= product.inCart * product.price)
+                );
+                console.log(
+                    `Удалено ${product.inCart} шт выбранного товра. Общая сумма уменьшилась на ${
+                        product.inCart * product.price
+                    } и стала ${this.appController.cartView.totalSum}`
+                );
+            }
+
+            product.inCart = 0;
+
+            console.log('Товар удален. Обновленная корзина: ', this.appController.cartView.productsQuantity);
+            return this.productsInCart;
         } else {
             //console.log('Этот товар не найден в корзине');
         }
@@ -48,7 +78,7 @@ export default class CartModel {
         //console.log(id);
         const idProductInCart = this.productsInCart.find((product) => product.id === id);
         if (idProductInCart) {
-            console.log(idProductInCart, this.productsInCart.includes(idProductInCart));
+            //console.log(idProductInCart, this.productsInCart.includes(idProductInCart));
             return this.productsInCart.includes(idProductInCart);
         } else {
             return false;

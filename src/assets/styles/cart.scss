@@ -30,9 +30,11 @@
 }
 
 .cart-quantity {
+    width: 4rem;
     padding-left: 8px;
     color: $color-main;
     line-height: 112%;
+    text-align: center;
 }
 
 
@@ -90,7 +92,6 @@
 .counter-container {
     display: flex;
     align-items: center;
-    gap: 1rem
 }
 
 .count-down {
@@ -99,4 +100,9 @@
 
 .count-up {
     background-image: url('./assets/images/counter_add.svg');
+}
+
+.product-quantity {
+    width: 4rem;
+    text-align: center;
 }

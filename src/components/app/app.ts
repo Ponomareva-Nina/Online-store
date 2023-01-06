@@ -33,9 +33,9 @@ export default class AppController implements AppControllerInterface {
     constructor() {
         this.menu = new Menu(this);
         this.header = new Header(this);
-        this.mainContainer = createElem('main', 'main');
         this.cartModel = new CartModel(this);
         this.cartView = new CartView(this.cartModel, this);
+        this.mainContainer = createElem('main', 'main wrapper');
         this.startPage = new StartPageView(this);
         this.storeModel = new StoreModel(this);
         this.storeView = new StoreView(this.storeModel, this);
@@ -62,20 +62,24 @@ export default class AppController implements AppControllerInterface {
     }
 
     public updatePage(view: ViewComponent, params?: Props) {
-        this.mainContainer.innerHTML = '';
+        this.destroyAllChildNodes(this.mainContainer);
         this.mainContainer.append(view.render(params));
     }
 
     public addProductToCart(product: Product) {
-        console.log(product);
-        console.log('method: addProductToCart');
+        // console.log(product);
+        // console.log('method: addProductToCart');
         this.cartModel.addProduct(product);
+        this.updatePage(this.header);
+        this.updatePage(this.storeView); // вопрос?
     }
 
     public deleteProductFromCart(product: Product) {
-        console.log(product);
-        console.log('method: deleteProductFromCart');
+        // console.log(product);
+        // console.log('method: deleteProductFromCart');
         this.cartModel.deleteProduct(product);
+        this.updatePage(this.header);
+        this.updatePage(this.storeView); // вопрос?
     }
 
     private addToLocalStorage() {
@@ -84,5 +88,11 @@ export default class AppController implements AppControllerInterface {
                 localStorage.setItem('cart', JSON.stringify(this.cartModel.productsInCart));
             }
         });
+    }
+
+    private destroyAllChildNodes(parent: Node) {
+        while (parent.firstChild) {
+            parent.removeChild(parent.firstChild);
+        }
     }
 }
