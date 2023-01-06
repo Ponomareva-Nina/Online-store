@@ -47,6 +47,6 @@ export default class Route {
     }
 
     public clearParameters() {
-        this.parameters = {};
+        Object.keys(this.parameters).forEach((key) => delete this.parameters[key as keyof Props]);
     }
 }
