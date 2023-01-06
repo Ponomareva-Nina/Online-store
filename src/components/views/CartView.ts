@@ -59,7 +59,7 @@ export default class CartView implements ViewComponent {
         cardSize.append(cardSizeSubtitle, cardSizeDescription);
 
         const cardStock = createElem(HTMLTags.P, 'card-stock');
-        const cardStockSubtitle = createElem(HTMLTags.SPAN, 'subtitle-name', 'Available in stock: ');
+        const cardStockSubtitle = createElem(HTMLTags.SPAN, 'subtitle-name subtitle-name_low', 'Available in stock: ');
         const cardStockDescription = createElem(HTMLTags.SPAN, 'subtitle-name-description', `${card.quantity}`);
         cardStock.append(cardStockSubtitle, cardStockDescription);
 

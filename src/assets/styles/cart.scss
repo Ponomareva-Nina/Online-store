@@ -2,6 +2,10 @@
     @include font-logo-title();
 }
 
+.cart-wrapper {
+    padding: 1.6rem 0 3rem;
+}
+
 
 .cart-container {
     display: flex;
@@ -35,6 +39,11 @@
     color: $color-main;
     line-height: 112%;
     text-align: center;
+
+    @media screen and (max-width: 600px) {
+        width: 3rem;
+        font-size: 2.3rem;
+    }
 }
 
 
@@ -43,9 +52,15 @@
     align-items: flex-end;
     justify-content: space-between;
     border-top: 1px $color-main solid;
+    padding-bottom: 0.7rem;
 
     &:last-child {
         border-bottom: 1px $color-main solid;
+    }
+
+    @media screen and (max-width: 600px) {
+        flex-direction: column;
+        align-items: stretch;
     }
 }
 
@@ -56,6 +71,14 @@
 
 .product-image {
     width: 14.5rem;
+
+    @media screen and (max-width: 750px) {
+        width: 13rem;
+    }
+
+    @media screen and (max-width: 550px) {
+        width: 11rem;
+    }
 }
 
 .card-content {
@@ -64,7 +87,17 @@
     justify-content: space-evenly;
 }
 
+.card-title {
+    @include font-main($size: 2.4rem, $weight: 600, $color: $color-main, $height: 113%);
+    text-transform: uppercase;
+
+    @media screen and (max-width: 750px) {
+        font-size: 1.9rem;
+    }
+}
+
 .card-price {
+    color: $color-accent;
 
     &::before {
         content: '$';
@@ -81,12 +114,55 @@
     background-size: contain;
     background-repeat: no-repeat;
     cursor: pointer;
+
+    @media screen and (max-width: 600px) {
+        width: 2.3rem;
+        height: 2.3rem;
+    }
+}
+
+.card-description {
+    @include font-main($size: 2.4rem, $weight: 400, $color: $color-main, $height: 113%);
+    @media screen and (max-width: 750px) {
+        font-size: 1.8rem;
+    }
+}
+
+.subtitle-name {
+    color: $color-accent;
+    text-transform: uppercase;
+}
+
+.subtitle-name_low {
+    text-transform: initial;
 }
 
 .buttons-container {
     display: flex;
     align-items: center;
     gap: 2rem;
+
+    @media screen and (max-width: 750px) {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    @media screen and (max-width: 600px) {
+        flex-direction: row;
+        align-self: flex-end;
+    }
+}
+
+.button-all-delete {
+
+    @media screen and (max-width: 750px) {
+        width: 13rem;
+    }
+    
+    @media screen and (max-width: 600px) {
+        width: 11rem;
+        font-size: 2rem;
+    }
 }
 
 .counter-container {
@@ -105,6 +181,10 @@
 .product-quantity {
     width: 4rem;
     text-align: center;
+
+    @media screen and (max-width: 600px) {
+        width: 3rem;
+    }
 }
 
 .empty-cart {
