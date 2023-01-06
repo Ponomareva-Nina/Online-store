@@ -106,3 +106,13 @@
     width: 4rem;
     text-align: center;
 }
+
+.empty-cart {
+    @include font-main($size: 4rem, $weight: 600, $color: $color-main, $height: 150%);
+    margin-top: 5rem;
+    text-align: center;
+
+    @media screen and (max-width: 550px) {
+        font-size: 3rem;
+    }
+}

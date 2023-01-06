@@ -1,5 +1,5 @@
 import { LINKS } from '../../constants/route-constants';
-import { CART_TITLE } from '../../constants/string-constants';
+import { CART_EMPTY, CART_TITLE } from '../../constants/string-constants';
 import { Product, ViewComponent } from '../../types/interfaces';
 import { HTMLTags } from '../../types/types';
 import { createElem } from '../../utils/utils';
@@ -80,7 +80,7 @@ export default class CartView implements ViewComponent {
         buttonsContainer.addEventListener('click', (e: MouseEvent) => {
             const target = e.target as HTMLElement;
             if (target.classList.contains('count-down')) {
-                this.deleteProductFromCart(/*product: Product*/);
+                this.deleteProductFromCart(card);
             } else if (target.classList.contains('count-up')) {
                 this.addProductToCart(card);
             }
@@ -110,7 +110,7 @@ export default class CartView implements ViewComponent {
         this.totalSum = Math.round((this.totalSum += product.price));
         if (product.inCart && product.inCart < product.quantity) {
             product.inCart += 1;
-            this.productsQuantity += 1; //this.cartModel.productsInCart.reduce((sum, current) => sum + current.price, 0);
+            this.productsQuantity += 1;
             console.log(this.totalSum, this.productsQuantity, this.cartModel.productsInCart);
             this.appController.updatePage(this.appController.header);
             this.appController.updatePage(this.appController.cartView);
@@ -119,9 +119,27 @@ export default class CartView implements ViewComponent {
         }
     }
 
-    public deleteProductFromCart(/*product: Product*/) {
-        //
-        console.log('delete');
+    public deleteProductFromCart(product: Product) {
+        this.totalSum = Math.round((this.totalSum -= product.price));
+
+        if (product.inCart && product.inCart > 1) {
+            product.inCart -= 1;
+            this.productsQuantity -= 1;
+            console.log(this.totalSum, this.productsQuantity, this.cartModel.productsInCart);
+            this.appController.updatePage(this.appController.header);
+            this.appController.updatePage(this.appController.cartView);
+        }
+
+        if (product.inCart === 1) {
+            console.log('Этот товар удален полностью');
+            this.cartModel.deleteProduct(product);
+            this.appController.updatePage(this.appController.header);
+            this.appController.updatePage(this.appController.cartView);
+            if (this.cartModel.productsInCart.length === 0) {
+                const emptyCart = createElem(HTMLTags.DIV, 'empty-cart', CART_EMPTY);
+                this.cartContainer.append(emptyCart);
+            }
+        }
     }
 
     private destroyAllChildNodes(parent: Node) {

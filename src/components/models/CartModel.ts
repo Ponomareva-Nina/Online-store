@@ -7,7 +7,6 @@ export default class CartModel {
 
     constructor(controller: AppController) {
         this.appController = controller;
-        //this.productsInCart = []; //массив товаров в корзине. при инициализации проверяется localStorage или создается пустой
 
         if (localStorage.getItem('cart')) {
             this.productsInCart = JSON.parse(localStorage.getItem('cart') || '{}');
@@ -20,7 +19,6 @@ export default class CartModel {
         //добавляет полученный из каталога объект в массив this.productsInCart. с товарами корзины
         const isInCart = this.checkProductInCart(product.id);
         if (!isInCart) {
-            //console.log('товара нет в корзине. Добавляем...');
             this.productsInCart.push(product);
             product.inCart = 1;
             this.appController.cartView.productsQuantity += product.inCart;
@@ -38,8 +36,6 @@ export default class CartModel {
                 } и стала ${this.appController.cartView.totalSum}`
             );
             return this.productsInCart;
-        } else {
-            //console.log('Товар уже есть в корзине. Корзина ', this.productsInCart);
         }
     }
 
@@ -47,7 +43,6 @@ export default class CartModel {
         //удаляет полученный объект из массива this.productsInCart. с товарами корзины
         const isInCart = this.checkProductInCart(product.id);
         if (isInCart) {
-            //console.log('товара найден в корзине. Удаляем...');
             const deletedIndex = this.productsInCart.indexOf(product);
             this.productsInCart.splice(deletedIndex, 1);
             if (product.inCart) {
@@ -65,9 +60,9 @@ export default class CartModel {
             product.inCart = 0;
 
             console.log('Товар удален. Обновленная корзина: ', this.appController.cartView.productsQuantity);
+
+            // Добавить уаление класса trunk-btn_checked в карточке товара в каталоге
             return this.productsInCart;
-        } else {
-            //console.log('Этот товар не найден в корзине');
         }
     }
 
@@ -75,10 +70,8 @@ export default class CartModel {
         //метод проверяет по id есть ли такой товар в корзине и возвращает true или false
         //(необходим для присвоения корректного класса кнопкам добавить в корзину
         //(на странице товара и на странице каталога) после перезагрузки страницы)
-        //console.log(id);
         const idProductInCart = this.productsInCart.find((product) => product.id === id);
         if (idProductInCart) {
-            //console.log(idProductInCart, this.productsInCart.includes(idProductInCart));
             return this.productsInCart.includes(idProductInCart);
         } else {
             return false;
