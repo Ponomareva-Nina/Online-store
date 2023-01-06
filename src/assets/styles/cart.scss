@@ -25,10 +25,11 @@
 }
 
 .cart-sum {
+    display: inline-flex;
     width: 4rem;
-    color: $color-main;
+    color: #4A2B10;
     line-height: 112%;
-    text-align: center;
+    justify-content: center;
 
     @media screen and (max-width: 600px) {
         width: 3rem;
@@ -173,6 +174,28 @@
         flex-direction: row;
         align-self: flex-end;
     }
+}
+
+.price-counter-cont {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @media screen and (max-width: 600px) {
+        font-size: 2rem;
+
+    @media screen and (max-width: 550px) {
+        flex-direction: row;
+        gap: 0.5rem;
+        }
+    }
+}
+
+.product-price {
+    width: 12rem;
+    font-size: 2rem;
+    display: inline-flex;
+    justify-content: center;
 }
 
 .button-all-delete {

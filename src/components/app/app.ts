@@ -70,16 +70,14 @@ export default class AppController implements AppControllerInterface {
         // console.log(product);
         // console.log('method: addProductToCart');
         this.cartModel.addProduct(product);
-        this.updatePage(this.header);
-        this.updatePage(this.storeView); // вопрос?
+        this.cartView.updateCartInfo();
     }
 
     public deleteProductFromCart(product: Product) {
         // console.log(product);
         // console.log('method: deleteProductFromCart');
         this.cartModel.deleteProduct(product);
-        this.updatePage(this.header);
-        this.updatePage(this.storeView); // вопрос?
+        this.cartView.updateCartInfo();
     }
 
     private addToLocalStorage() {

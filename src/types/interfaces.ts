@@ -40,6 +40,7 @@ export interface IMenu {
 }
 export interface Product {
     inCart?: number;
+    sum?: number;
     id: number;
     faculty: string;
     category: string;

@@ -10,20 +10,24 @@ export default class CartView implements ViewComponent {
     container: DocumentFragment;
     appController: AppController;
     cartModel: CartModel;
-    totalSum: number;
-    productsQuantity: number;
-    cartContainer: HTMLDivElement;
+    cartContainer: HTMLElement;
+    totalPerProduct: number;
+    quantity: HTMLSpanElement;
+    cartSum: HTMLSpanElement;
 
     constructor(cart: CartModel, controller: AppController) {
         this.appController = controller;
         this.cartModel = cart;
-        this.totalSum = 0;
-        this.productsQuantity = 0;
+        // this.totalSum = 0;
+        // this.productsQuantity = 0;
+        this.totalPerProduct = 0;
         this.container = document.createDocumentFragment();
-        this.cartContainer = createElem(HTMLTags.DIV, 'cart-wrapper', '') as HTMLDivElement;
+        this.cartContainer = createElem(HTMLTags.DIV, 'cart-wrapper');
+        this.quantity = createElem(HTMLTags.SPAN, 'cart-quantity');
+        this.cartSum = createElem(HTMLTags.SPAN, 'cart-sum');
     }
 
-    private createPage() {
+    public createPage() {
         this.destroyAllChildNodes(this.container);
         this.destroyAllChildNodes(this.cartContainer);
 
@@ -35,12 +39,14 @@ export default class CartView implements ViewComponent {
             productInCart.forEach((product) => {
                 const productContainer = createElem(HTMLTags.DIV, 'product-container');
                 const productContent = this.createCard(product);
-                const buttonsContainer = this.createCounters(product);
+                const buttonsContainer = this.createManagePanel(product);
                 productContainer.append(productContent, buttonsContainer);
                 this.cartContainer.append(productContainer);
             });
         }
         this.container.append(title, this.cartContainer);
+        this.checkCartIsEmpty();
+        //return this.container;
     }
 
     private createCard(card: Product) {
@@ -74,7 +80,7 @@ export default class CartView implements ViewComponent {
         return productContent;
     }
 
-    private createCounters(card: Product) {
+    private createManagePanel(card: Product) {
         const buttonsContainer = createElem(HTMLTags.DIV, 'buttons-container');
         const counterContainer = createElem(HTMLTags.DIV, 'counter-container');
         counterContainer.addEventListener('click', (e: MouseEvent) => {
@@ -91,60 +97,34 @@ export default class CartView implements ViewComponent {
         const countUp = createElem(HTMLTags.SPAN, 'count-up counter-button');
         counterContainer.append(countDown, productQuantity, countUp);
 
+        const counterPriceContainer = createElem(HTMLTags.DIV, 'price-counter-cont');
+
+        const productPriceContainer = createElem(HTMLTags.P, 'product-price', `Total: ${card.sum} $`);
+        counterPriceContainer.append(productPriceContainer, counterContainer);
+
         const cartDeleteProduct = createElem(HTMLTags.BUTTON, 'btn button-all-delete', 'Delete');
         cartDeleteProduct.addEventListener('click', () => {
             this.cartModel.deleteProduct(card);
-            this.appController.updatePage(this.appController.header);
-            this.appController.updatePage(this.appController.cartView);
-            this.checkCartIsEmpty();
+            this.updateCartInfo();
+
+            this.appController.updatePage(this.appController.cartView); //
         });
-        buttonsContainer.append(counterContainer, cartDeleteProduct);
+        buttonsContainer.append(counterPriceContainer, cartDeleteProduct);
 
         return buttonsContainer;
     }
 
     public addProductToCart(product: Product) {
-        // создает вид карточки товара в корзине
-        // this.container.append(cозданную карточку продукта);
-        // this.renderProduct(объект)
-        // this.sum = sum + товар.price;
-        // this.productsQuantity += кол-во;
-        if (product.inCart && product.inCart < product.quantity) {
-            product.inCart += 1;
-            this.productsQuantity += 1;
-            this.totalSum = Math.round((this.totalSum += product.price));
-            this.appController.updatePage(this.appController.header);
-            this.appController.updatePage(this.appController.cartView);
-            console.log(this.totalSum, this.productsQuantity, this.cartModel.productsInCart);
-        } else {
-            console.log(`Выбрано максимальное количество товара`);
-        }
+        this.cartModel.addOneProduct(product);
     }
 
     public deleteProductFromCart(product: Product) {
-        if (product.inCart && product.inCart > 1) {
-            product.inCart -= 1;
-            this.productsQuantity -= 1;
-            this.totalSum = Math.round((this.totalSum -= product.price));
-            this.appController.updatePage(this.appController.header);
-            this.appController.updatePage(this.appController.cartView);
-            console.log(this.totalSum, this.productsQuantity, this.cartModel.productsInCart);
-        }
-
-        if (product.inCart === 1) {
-            product.inCart -= 1;
-            this.productsQuantity -= 1;
-            this.totalSum = Math.round((this.totalSum -= product.price));
-            console.log('Этот товар удален полностью');
-            this.cartModel.deleteProduct(product);
-            this.appController.updatePage(this.appController.header);
-            this.appController.updatePage(this.appController.cartView);
-            this.checkCartIsEmpty();
-        }
+        this.cartModel.deleteOneProduct(product);
     }
 
-    private checkCartIsEmpty() {
+    public checkCartIsEmpty() {
         if (this.cartModel.productsInCart.length === 0) {
+            this.destroyAllChildNodes(this.cartContainer);
             const emptyCart = createElem(HTMLTags.DIV, 'empty-cart', CART_EMPTY);
             this.cartContainer.append(emptyCart);
         }
@@ -160,15 +140,22 @@ export default class CartView implements ViewComponent {
         //берет из модели текущие товары корзины и отрисовывает их
     }
 
+    public updateCartInfo() {
+        this.quantity.textContent = `${this.cartModel.productsQuantity}`;
+        this.cartSum.textContent = `${this.cartModel.totalSum}`;
+    }
+
     public createCartIcon() {
         const cartContainer = createElem(HTMLTags.DIV, 'cart-container');
         const link = createElem(HTMLTags.LINK, 'cart-link');
-        const cartSum = createElem(HTMLTags.SPAN, 'cart-sum', `${this.totalSum}`);
+
         const cartIcon = createElem(HTMLTags.SPAN, 'cart-icon');
-        const quantity = createElem(HTMLTags.SPAN, 'cart-quantity');
-        link.append(cartIcon, quantity);
-        quantity.textContent = `${this.productsQuantity}`;
-        cartContainer.append(cartSum, link);
+
+        link.append(cartIcon, this.quantity);
+        this.quantity.textContent = `${this.cartModel.productsQuantity}`;
+
+        cartContainer.append(this.cartSum, link);
+        this.cartSum.textContent = `${this.cartModel.totalSum}`;
         cartContainer.addEventListener('click', (e) => {
             this.appController.router.changeCurrentPage(LINKS.Cart);
             this.appController.header.handleNavigationClick(e);
