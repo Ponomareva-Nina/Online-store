@@ -47,9 +47,7 @@ export default class CartModel {
             this.productsInCart.splice(deletedIndex, 1);
             if (product.inCart) {
                 this.appController.cartView.productsQuantity -= product.inCart;
-                this.appController.cartView.totalSum = Math.round(
-                    (this.appController.cartView.totalSum -= product.inCart * product.price)
-                );
+                this.appController.cartView.totalSum -= product.inCart * product.price;
                 console.log(
                     `Удалено ${product.inCart} шт выбранного товра. Общая сумма уменьшилась на ${
                         product.inCart * product.price
@@ -57,13 +55,11 @@ export default class CartModel {
                 );
             }
 
-            product.inCart = 0;
+            //product.inCart = 0;
 
             console.log('Товар удален. Обновленная корзина: ', this.appController.cartView.productsQuantity);
-
-            // Добавить уаление класса trunk-btn_checked в карточке товара в каталоге
-            return this.productsInCart;
         }
+        return this.productsInCart;
     }
 
     checkProductInCart(id: number) {

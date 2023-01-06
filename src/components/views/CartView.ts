@@ -77,11 +77,12 @@ export default class CartView implements ViewComponent {
     private createCounters(card: Product) {
         const buttonsContainer = createElem(HTMLTags.DIV, 'buttons-container');
         const counterContainer = createElem(HTMLTags.DIV, 'counter-container');
-        buttonsContainer.addEventListener('click', (e: MouseEvent) => {
+        counterContainer.addEventListener('click', (e: MouseEvent) => {
             const target = e.target as HTMLElement;
-            if (target.classList.contains('count-down')) {
+            const currentTarget = e.currentTarget as HTMLElement;
+            if (currentTarget.classList.contains('counter-container') && target.classList.contains('count-down')) {
                 this.deleteProductFromCart(card);
-            } else if (target.classList.contains('count-up')) {
+            } else if (currentTarget.classList.contains('counter-container') && target.classList.contains('count-up')) {
                 this.addProductToCart(card);
             }
         });
@@ -108,29 +109,32 @@ export default class CartView implements ViewComponent {
         // this.renderProduct(объект)
         // this.sum = sum + товар.price;
         // this.productsQuantity += кол-во;
-        this.totalSum = Math.round((this.totalSum += product.price));
         if (product.inCart && product.inCart < product.quantity) {
             product.inCart += 1;
             this.productsQuantity += 1;
-            console.log(this.totalSum, this.productsQuantity, this.cartModel.productsInCart);
+            this.totalSum = Math.round((this.totalSum += product.price));
             this.appController.updatePage(this.appController.header);
             this.appController.updatePage(this.appController.cartView);
+            console.log(this.totalSum, this.productsQuantity, this.cartModel.productsInCart);
         } else {
             console.log(`Выбрано максимальное количество товара`);
         }
     }
 
     public deleteProductFromCart(product: Product) {
-        this.totalSum = Math.round((this.totalSum -= product.price));
         if (product.inCart && product.inCart > 1) {
             product.inCart -= 1;
             this.productsQuantity -= 1;
-            console.log(this.totalSum, this.productsQuantity, this.cartModel.productsInCart);
+            this.totalSum = Math.round((this.totalSum -= product.price));
             this.appController.updatePage(this.appController.header);
             this.appController.updatePage(this.appController.cartView);
+            console.log(this.totalSum, this.productsQuantity, this.cartModel.productsInCart);
         }
 
         if (product.inCart === 1) {
+            product.inCart -= 1;
+            this.productsQuantity -= 1;
+            this.totalSum = Math.round((this.totalSum -= product.price));
             console.log('Этот товар удален полностью');
             this.cartModel.deleteProduct(product);
             this.appController.updatePage(this.appController.header);
@@ -159,11 +163,12 @@ export default class CartView implements ViewComponent {
     public createCartIcon() {
         const cartContainer = createElem(HTMLTags.DIV, 'cart-container');
         const link = createElem(HTMLTags.LINK, 'cart-link');
+        const cartSum = createElem(HTMLTags.SPAN, 'cart-sum', `${this.totalSum}`);
         const cartIcon = createElem(HTMLTags.SPAN, 'cart-icon');
         const quantity = createElem(HTMLTags.SPAN, 'cart-quantity');
         link.append(cartIcon, quantity);
         quantity.textContent = `${this.productsQuantity}`;
-        cartContainer.append(link);
+        cartContainer.append(cartSum, link);
         cartContainer.addEventListener('click', (e) => {
             this.appController.router.changeCurrentPage(LINKS.Cart);
             this.appController.header.handleNavigationClick(e);
