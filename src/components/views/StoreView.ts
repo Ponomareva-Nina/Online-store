@@ -13,21 +13,17 @@ export default class StoreView implements ViewComponent {
     public appController: AppController;
     private storeModel: StoreModel;
     private productCardsContainer: HTMLDivElement;
-    private pageHeader: HTMLElement;
     private filtersSidePanel: FiltersPanel;
     private sidePanelContainer: HTMLDivElement;
-    private storeContainer: HTMLElement;
     private currentParams: Props | null;
 
     constructor(model: StoreModel, controller: AppController) {
         this.appController = controller;
         this.storeModel = model;
         this.container = document.createDocumentFragment();
-        this.productCardsContainer = createElem(HTMLTags.DIV, ClassNames.PRODUCT_CARDS_CONTAINER, '') as HTMLDivElement;
-        this.pageHeader = createElem(HTMLTags.PAGE_HEADER, ClassNames.PAGE_HEADER, STORE_VIEW_TITLE);
         this.filtersSidePanel = new FiltersPanel();
+        this.productCardsContainer = createElem(HTMLTags.DIV, ClassNames.PRODUCT_CARDS_CONTAINER, '') as HTMLDivElement;
         this.sidePanelContainer = createElem(HTMLTags.DIV, ClassNames.SIDE_PANEL) as HTMLDivElement;
-        this.storeContainer = createElem(HTMLTags.SECTION, ClassNames.STORE_CONTAINER);
         this.currentParams = null;
     }
 
@@ -51,7 +47,6 @@ export default class StoreView implements ViewComponent {
             const searchValue = this.currentParams[PossibleUrlParams.SEARCH].join(' ');
             (searchInput as HTMLInputElement).value = searchValue;
             this.storeModel.filterCardsByKeyword(searchValue);
-            this.updateCards();
         }
         this.sidePanelContainer.append(searchContainer);
         searchInput.addEventListener('change', (e) => {
@@ -64,24 +59,22 @@ export default class StoreView implements ViewComponent {
     private handleSearchInput(value: string) {
         this.storeModel.filterCardsByKeyword(value);
         this.appController.router.addParameterToUrl(PossibleUrlParams.SEARCH, value);
-        this.updateCards();
-    }
-
-    private updateCards() {
-        this.destroyAllChildNodes(this.productCardsContainer);
-        this.renderProductCards();
     }
 
     private createPage() {
-        this.destroyAllChildNodes(this.productCardsContainer);
+        const storeContainer = createElem(HTMLTags.SECTION, ClassNames.STORE_CONTAINER);
+        const pageHeader = createElem(HTMLTags.PAGE_HEADER, ClassNames.PAGE_HEADER, STORE_VIEW_TITLE);
         this.destroyAllChildNodes(this.sidePanelContainer);
+        this.destroyAllChildNodes(this.productCardsContainer);
         this.createSearchInput();
         this.renderProductCards();
-        this.storeContainer.append(this.sidePanelContainer, this.productCardsContainer);
-        this.container.append(this.pageHeader, this.storeContainer);
+        storeContainer.append(this.sidePanelContainer, this.productCardsContainer);
+        this.container.append(pageHeader, storeContainer);
+        console.log('create page вызывался');
     }
 
     public render(params?: Props) {
+        this.storeModel.restoreCurrentProducts();
         if (params) {
             this.currentParams = params;
         }

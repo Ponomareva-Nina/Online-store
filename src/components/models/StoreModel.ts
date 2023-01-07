@@ -13,17 +13,22 @@ export default class StoreModel {
         this.currentProducts = data.products;
     }
 
-    getProductById(id: number) {
+    public getProductById(id: number) {
         return this.products.find((product) => product.id === id);
     }
 
-    getCurrentProducts() {
+    public getCurrentProducts() {
         return this.currentProducts;
     }
 
-    filterCardsByKeyword(value: string) {
-        this.currentProducts = [];
-        this.products.forEach((product) => {
+    public restoreCurrentProducts() {
+        this.currentProducts = this.products;
+    }
+
+    public filterCardsByKeyword(value: string) {
+        const newCurrentProducts: Array<Product> = [];
+
+        this.currentProducts.forEach((product) => {
             if (
                 product.category.toLowerCase().includes(value) ||
                 product.description.toLowerCase().includes(value) ||
@@ -32,8 +37,9 @@ export default class StoreModel {
                 product.price.toString() === value ||
                 product.discount.toString() === value
             ) {
-                this.currentProducts.push(product);
+                newCurrentProducts.push(product);
             }
         });
+        this.currentProducts = newCurrentProducts;
     }
 }
