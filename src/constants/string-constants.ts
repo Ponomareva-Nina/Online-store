@@ -19,3 +19,5 @@ export const AUTHOR_SECOND = 'Milashevsky-Vladimir';
 export const YEAR = '2022';
 export const SEARCH_INPUT_PLACEHOLDER = 'Enter a keyword';
 export const NO_PRODUCTS_MESSAGE = 'Sorry. No products found.';
+export const CART_TITLE = 'Products in cart';
+export const CART_EMPTY = 'CART IS EMPTY';
