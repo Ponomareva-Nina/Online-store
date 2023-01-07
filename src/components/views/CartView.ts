@@ -18,8 +18,6 @@ export default class CartView implements ViewComponent {
     constructor(cart: CartModel, controller: AppController) {
         this.appController = controller;
         this.cartModel = cart;
-        // this.totalSum = 0;
-        // this.productsQuantity = 0;
         this.totalPerProduct = 0;
         this.container = document.createDocumentFragment();
         this.cartContainer = createElem(HTMLTags.DIV, 'cart-wrapper');
@@ -46,7 +44,7 @@ export default class CartView implements ViewComponent {
         }
         this.container.append(title, this.cartContainer);
         this.checkCartIsEmpty();
-        //return this.container;
+        return this.container;
     }
 
     private createCard(card: Product) {
@@ -106,8 +104,7 @@ export default class CartView implements ViewComponent {
         cartDeleteProduct.addEventListener('click', () => {
             this.cartModel.deleteProduct(card);
             this.updateCartInfo();
-
-            this.appController.updatePage(this.appController.cartView); //
+            this.updatePage();
         });
         buttonsContainer.append(counterPriceContainer, cartDeleteProduct);
 
@@ -136,8 +133,15 @@ export default class CartView implements ViewComponent {
         }
     }
 
-    private updatePage() {
+    public updatePage() {
         //берет из модели текущие товары корзины и отрисовывает их
+        this.destroyAllChildNodes(this.cartContainer);
+        this.cartModel.productsInCart.forEach((card) => {
+            const productContainer = createElem(HTMLTags.DIV, 'product-container');
+            productContainer.append(this.createCard(card), this.createManagePanel(card));
+            this.cartContainer.append(productContainer);
+        });
+        this.checkCartIsEmpty();
     }
 
     public updateCartInfo() {

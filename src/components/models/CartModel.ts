@@ -29,15 +29,6 @@ export default class CartModel {
             this.productsQuantity += product.inCart;
             this.totalSum = Number((this.totalSum += product.inCart * product.price).toFixed(2));
             this.appController.addProductToCart(product);
-            // console.log(
-            //     `Товар добавлен в количестве . Обновленная корзина (${this.productsQuantity} товаров): `,
-            //     this.productsInCart
-            // );
-            // console.log(
-            //     `Добавлено ${product.inCart} шт выбранного товра. Общая сумма увеличилась на ${
-            //         product.inCart * product.price
-            //     } и стала ${this.totalSum}`
-            // );
             return this.productsInCart;
         }
     }
@@ -50,15 +41,9 @@ export default class CartModel {
             this.productsInCart.splice(deletedIndex, 1);
             if (product.inCart) {
                 this.productsQuantity -= product.inCart;
-                this.totalSum -= product.inCart * product.price;
+                this.totalSum = Number((this.totalSum -= product.inCart * product.price).toFixed(2));
                 this.appController.cartView.totalPerProduct = 0;
-                // console.log(
-                //     `Удалено ${product.inCart} шт выбранного товра. Общая сумма уменьшилась на ${
-                //         product.inCart * product.price
-                //     } и стала ${this.totalSum}`
-                // );
             }
-            // console.log('Товар удален. Обновленная корзина: ', this.productsQuantity);
         }
         return this.productsInCart;
     }
@@ -70,10 +55,7 @@ export default class CartModel {
             this.totalSum = Number((this.totalSum += product.price).toFixed(2));
             product.sum = Number((product.sum += product.price).toFixed(2));
             this.appController.cartView.updateCartInfo();
-            this.appController.updatePage(this.appController.cartView); //
-            // console.log(this.totalSum, this.productsQuantity, this.productsInCart);
-        } else {
-            // console.log(`Выбрано максимальное количество товара`);
+            this.appController.cartView.updatePage();
         }
     }
 
@@ -83,10 +65,9 @@ export default class CartModel {
             this.productsQuantity -= 1;
             this.totalSum = Number((this.totalSum -= product.price).toFixed(2));
             product.sum = product.price;
-            // console.log('Этот товар удален полностью');
             this.deleteProduct(product);
             this.appController.cartView.updateCartInfo();
-            this.appController.updatePage(this.appController.cartView); //
+            this.appController.cartView.updatePage();
             this.appController.cartView.checkCartIsEmpty();
         }
 
@@ -96,8 +77,7 @@ export default class CartModel {
             this.totalSum = Number((this.totalSum -= product.price).toFixed(2));
             product.sum = Number((product.sum -= product.price).toFixed(2));
             this.appController.cartView.updateCartInfo();
-            this.appController.updatePage(this.appController.cartView); //
-            // console.log(this.totalSum, this.productsQuantity, this.productsInCart);
+            this.appController.cartView.updatePage();
         }
     }
 
