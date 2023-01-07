@@ -40,7 +40,7 @@ class Router implements RouterInterface {
 
         for (const key in newParams) {
             const params = newParams[key as PossibleUrlParams];
-            if (params && params.length > 0) {
+            if (params && !params.includes('')) {
                 const urlSegment = `${key}=${params.join(PARAM_VALUES_SEPARATOR)}`;
                 if (key === 'id') {
                     newPath = newPath.concat(SLASH_SEPARATOR).concat(urlSegment);
@@ -51,7 +51,7 @@ class Router implements RouterInterface {
                 }
             }
         }
-        window.history.pushState({}, '', newPath);
+        window.location.hash = newPath;
     }
 
     public addParameterToUrl(name: PossibleUrlParams, value: string): void {
@@ -73,7 +73,7 @@ class Router implements RouterInterface {
     }
 
     private isCorrectParameters(paramsArr: string[]) {
-        const values = [
+        const params = [
             PossibleUrlParams.ID,
             PossibleUrlParams.CATEGORY,
             PossibleUrlParams.FACULTY,
@@ -83,7 +83,7 @@ class Router implements RouterInterface {
             PossibleUrlParams.SEARCH,
         ];
 
-        const validationExp = new RegExp(values.join(PARAM_VALUES_SEPARATOR));
+        const validationExp = new RegExp(params.join(PARAM_VALUES_SEPARATOR));
         const isCorrect = paramsArr.every((param) => {
             return validationExp.test(param);
         });
@@ -102,15 +102,17 @@ class Router implements RouterInterface {
 
         if (matchedRoute) {
             matchedRoute.clearParameters();
-            pathSegments.forEach((param) => {
-                const [key, values] = param.split('=');
-                const valuesArr = values.split(PARAM_VALUES_SEPARATOR);
-                valuesArr.forEach((value) => {
-                    matchedRoute.addParameter(key as PossibleUrlParams, value);
+            if (pathSegments.length > 0) {
+                pathSegments.forEach((param) => {
+                    const [key, values] = param.split('=');
+                    const valuesArr = values.split(PARAM_VALUES_SEPARATOR);
+                    valuesArr.forEach((value) => {
+                        matchedRoute.addParameter(key as PossibleUrlParams, value);
+                    });
                 });
-            });
+            }
+            return matchedRoute;
         }
-        return matchedRoute;
     }
 
     public navigate() {
