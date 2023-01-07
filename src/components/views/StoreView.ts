@@ -1,17 +1,12 @@
-import { HTMLTags, PossibleUrlParams } from '../../types/types';
-import { createElem, createRadioButton } from '../../utils/utils';
+import { HTMLTags, PossibleUrlParams, SortLabels, SortOptions } from '../../types/types';
+import { createElem, createLabel, createRadioButton } from '../../utils/utils';
 import { NO_PRODUCTS_MESSAGE, STORE_VIEW_TITLE } from '../../constants/string-constants';
 import AppController from '../app/app';
 import StoreModel from '../models/StoreModel';
 import ProductCard from './ProductCard';
 import { Props, ViewComponent } from '../../types/interfaces';
 import { ClassNames } from '../../constants/classnames-constants';
-import {
-    SEARCH_INPUT_PLACEHOLDER,
-    SORT_BY_DISCOUNT,
-    SORT_BY_MAX_PRICE,
-    SORT_BY_MIN_PRICE,
-} from '../../constants/string-constants';
+import { SEARCH_INPUT_PLACEHOLDER } from '../../constants/string-constants';
 
 export default class StoreView implements ViewComponent {
     public container: DocumentFragment;
@@ -54,12 +49,33 @@ export default class StoreView implements ViewComponent {
 
     private createSorts() {
         const sortContainer = createElem(HTMLTags.DIV, ClassNames.SORT_CONTAINER);
+        const sortTitle = createElem(HTMLTags.P, '', 'Sort by');
+        sortContainer.append(sortTitle);
         const radioBtnsName = 'sort';
-        const sortByMinPrice = createRadioButton(radioBtnsName, ClassNames.SORT_RADIO, SORT_BY_MIN_PRICE);
-        const sortByMaxPrice = createRadioButton(radioBtnsName, ClassNames.SORT_RADIO, SORT_BY_MAX_PRICE);
-        const sortByDiscount = createRadioButton(radioBtnsName, ClassNames.SORT_RADIO, SORT_BY_DISCOUNT);
-        sortContainer.append(sortByMinPrice, sortByMaxPrice, sortByDiscount);
+        Object.keys(SortOptions).forEach((key) => {
+            const value = SortOptions[key as keyof typeof SortOptions];
+            const radioBtn = createRadioButton(radioBtnsName, ClassNames.SORT_RADIO, value, value);
+            radioBtn.addEventListener('click', () => {
+                this.handleSort(radioBtn);
+            });
+            const label = createLabel(value, ClassNames.SORT_LABEL, SortLabels[key as keyof typeof SortLabels]);
+            if (
+                this.currentParams &&
+                this.currentParams[PossibleUrlParams.SORT] &&
+                this.currentParams[PossibleUrlParams.SORT].join('') === value
+            ) {
+                this.storeModel.sortProduct(value);
+                radioBtn.checked = true;
+            }
+            sortContainer.append(radioBtn, label);
+        });
         return sortContainer;
+    }
+
+    private handleSort(elem: HTMLInputElement) {
+        if (elem.checked) {
+            this.appController.router.addParameterToUrl(PossibleUrlParams.SORT, elem.value);
+        }
     }
 
     private createSearchInput() {

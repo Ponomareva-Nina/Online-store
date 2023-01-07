@@ -29,3 +29,15 @@ export enum HTMLTags {
     IMG = 'img',
     H3 = 'h3',
 }
+
+export enum SortOptions {
+    MIN_PRICE = 'min-price',
+    MAX_PRICE = 'max-price',
+    DISCOUNT = 'discount',
+}
+
+export enum SortLabels {
+    MIN_PRICE = 'Price (low to high)',
+    MAX_PRICE = 'Price (high to low)',
+    DISCOUNT = 'Discount',
+}

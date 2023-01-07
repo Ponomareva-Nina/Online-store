@@ -22,6 +22,7 @@ export enum ClassNames {
     SEARCH_INPUT_CONTAINER = 'search-input-container',
     SEARCH_INPUT = 'search-input',
     SEARCH_INPUT_LABEL = 'search-input__label',
-    SORT_CONTAINER = 'sortings-container',
-    SORT_RADIO = 'sortings-container__radio',
+    SORT_CONTAINER = 'sort-container',
+    SORT_RADIO = 'sort-container__radio',
+    SORT_LABEL = 'sort-container__label',
 }

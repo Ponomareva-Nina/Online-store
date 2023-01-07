@@ -37,11 +37,20 @@ export function createImage(className = '', src = '') {
     return img;
 }
 
-export function createRadioButton(name = '', className = '', value = '') {
+export function createRadioButton(name = '', className = '', value = '', id = '') {
     const input = document.createElement('input');
     input.setAttribute('type', 'radio');
     input.setAttribute('name', name);
     input.setAttribute('value', value);
+    input.setAttribute('id', id);
     input.className = className;
     return input;
+}
+
+export function createLabel(relevantInputId = '', className = '', text = '') {
+    const label = document.createElement('label');
+    label.setAttribute('for', relevantInputId);
+    label.className = className;
+    label.innerText = text;
+    return label;
 }

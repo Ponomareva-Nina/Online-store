@@ -1,5 +1,6 @@
 import data from '../../products.json';
 import { Product } from '../../types/interfaces';
+import { SortOptions } from '../../types/types';
 import AppController from '../app/app';
 
 export default class StoreModel {
@@ -40,6 +41,26 @@ export default class StoreModel {
                 newCurrentProducts.push(product);
             }
         });
+        this.currentProducts = newCurrentProducts;
+    }
+
+    public sortProduct(value: string) {
+        let newCurrentProducts: Array<Product> = [];
+        if (value === SortOptions.MAX_PRICE) {
+            newCurrentProducts = this.currentProducts.sort((a, b) => {
+                return b.price - a.price;
+            });
+        }
+        if (value === SortOptions.MIN_PRICE) {
+            newCurrentProducts = this.currentProducts.sort((a, b) => {
+                return a.price - b.price;
+            });
+        }
+        if (value === SortOptions.DISCOUNT) {
+            newCurrentProducts = this.currentProducts.sort((a, b) => {
+                return a.discount - b.discount;
+            });
+        }
         this.currentProducts = newCurrentProducts;
     }
 }
