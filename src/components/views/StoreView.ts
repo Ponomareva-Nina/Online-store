@@ -49,7 +49,7 @@ export default class StoreView implements ViewComponent {
 
     private createSorts() {
         const sortContainer = createElem(HTMLTags.DIV, ClassNames.SORT_CONTAINER);
-        const sortTitle = createElem(HTMLTags.P, '', 'Sort by');
+        const sortTitle = createElem(HTMLTags.P, 'sort-container__title', 'Sort by');
         sortContainer.append(sortTitle);
         const radioBtnsName = 'sort';
         Object.keys(SortOptions).forEach((key) => {

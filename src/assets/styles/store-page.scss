@@ -65,6 +65,7 @@
 .sort-container {
     display: flex;
     flex-direction: column;
+    row-gap: 1rem;
 
     .sort-container__radio {
         position: absolute;
@@ -88,4 +89,10 @@
     .sort-container__radio:checked+.sort-container__label::before  {
         background-image: url('./assets/images/light-check.svg')
     }
+}
+.sort-container__title {
+    @include font-main();
+    color: $color-accent;
+    text-align: center;
+    font-weight: 600;
 }
