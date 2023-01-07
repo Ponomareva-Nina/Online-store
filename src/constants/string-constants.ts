@@ -21,3 +21,6 @@ export const SEARCH_INPUT_PLACEHOLDER = 'Enter a keyword';
 export const NO_PRODUCTS_MESSAGE = 'Sorry. No products found.';
 export const CART_TITLE = 'Products in cart';
 export const CART_EMPTY = 'CART IS EMPTY';
+export const SORT_BY_MIN_PRICE = 'Price (low to high)';
+export const SORT_BY_MAX_PRICE = 'Price (high to low)';
+export const SORT_BY_DISCOUNT = 'Discount';

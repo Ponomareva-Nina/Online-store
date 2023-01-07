@@ -36,3 +36,12 @@ export function createImage(className = '', src = '') {
     img.setAttribute('src', src);
     return img;
 }
+
+export function createRadioButton(name = '', className = '', value = '') {
+    const input = document.createElement('input');
+    input.setAttribute('type', 'radio');
+    input.setAttribute('name', name);
+    input.setAttribute('value', value);
+    input.className = className;
+    return input;
+}

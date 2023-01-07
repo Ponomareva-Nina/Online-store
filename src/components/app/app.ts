@@ -89,7 +89,7 @@ export default class AppController implements AppControllerInterface {
         });
     }
 
-    private destroyAllChildNodes(parent: Node) {
+    public destroyAllChildNodes(parent: Node) {
         while (parent.firstChild) {
             parent.removeChild(parent.firstChild);
         }
