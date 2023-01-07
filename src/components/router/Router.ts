@@ -14,19 +14,19 @@ class Router implements RouterInterface {
     routes: Array<Route>;
     appController: AppController;
     UrlSeparator: RegExp;
-    currentPath: string;
+    currentPagePath: string;
 
     constructor(controller: AppController, routes: Array<Route>) {
         this.appController = controller;
         this.routes = routes;
         this.UrlSeparator = /\?|&|\//;
-        this.currentPath = '';
+        this.currentPagePath = '';
     }
 
     private updateCurrentPath() {
         const route = window.location.href.split(HASHTAG);
         const [, path] = route;
-        this.currentPath = route.length === 1 ? '' : path;
+        this.currentPagePath = route.length === 1 ? '' : path;
     }
 
     public changeCurrentPage(path: string) {
@@ -40,7 +40,7 @@ class Router implements RouterInterface {
 
         for (const key in newParams) {
             const params = newParams[key as PossibleUrlParams];
-            if (params && params.length > 0) {
+            if (params && !params.includes('')) {
                 const urlSegment = `${key}=${params.join(PARAM_VALUES_SEPARATOR)}`;
                 if (key === 'id') {
                     newPath = newPath.concat(SLASH_SEPARATOR).concat(urlSegment);
@@ -51,11 +51,11 @@ class Router implements RouterInterface {
                 }
             }
         }
-        window.history.pushState({}, '', newPath);
+        window.location.hash = newPath;
     }
 
     public addParameterToUrl(name: PossibleUrlParams, value: string): void {
-        const currentRoute = this.matchUrl(this.currentPath);
+        const currentRoute = this.matchUrl(this.currentPagePath);
 
         if (currentRoute) {
             currentRoute.addParameter(name, value);
@@ -64,7 +64,7 @@ class Router implements RouterInterface {
     }
 
     public deleteParameterFromUrl(name: PossibleUrlParams, value: string): void {
-        const currentRoute = this.matchUrl(this.currentPath);
+        const currentRoute = this.matchUrl(this.currentPagePath);
 
         if (currentRoute) {
             currentRoute.deleteParameter(name, value);
@@ -73,23 +73,24 @@ class Router implements RouterInterface {
     }
 
     private isCorrectParameters(paramsArr: string[]) {
-        const values = [
+        const params = [
             PossibleUrlParams.ID,
             PossibleUrlParams.CATEGORY,
             PossibleUrlParams.FACULTY,
             PossibleUrlParams.SORT,
             PossibleUrlParams.PRICE,
             PossibleUrlParams.STOCK,
+            PossibleUrlParams.SEARCH,
         ];
 
-        const validationExp = new RegExp(values.join(PARAM_VALUES_SEPARATOR));
+        const validationExp = new RegExp(params.join(PARAM_VALUES_SEPARATOR));
         const isCorrect = paramsArr.every((param) => {
             return validationExp.test(param);
         });
         return isCorrect;
     }
 
-    private matchRouteWithParameters(path: string) {
+    private matchUrl(path: string) {
         const [pageRoute, ...pathSegments] = path.split(this.UrlSeparator);
         if (!this.isCorrectParameters(pathSegments)) {
             return null;
@@ -101,34 +102,24 @@ class Router implements RouterInterface {
 
         if (matchedRoute) {
             matchedRoute.clearParameters();
-            pathSegments.forEach((param) => {
-                const [key, values] = param.split('=');
-                const valuesArr = values.split(PARAM_VALUES_SEPARATOR);
-                valuesArr.forEach((value) => {
-                    matchedRoute.addParameter(key as PossibleUrlParams, value);
+            if (pathSegments.length > 0) {
+                pathSegments.forEach((param) => {
+                    const [key, values] = param.split('=');
+                    const valuesArr = values.split(PARAM_VALUES_SEPARATOR);
+                    valuesArr.forEach((value) => {
+                        matchedRoute.addParameter(key as PossibleUrlParams, value);
+                    });
                 });
-            });
-        }
-        return matchedRoute;
-    }
-
-    private matchUrl(path: string) {
-        const matchedRoute = this.routes.find((route: Route) => {
-            if (route.pageName === path) {
-                return route;
             }
-        });
-        if (matchedRoute) {
             return matchedRoute;
-        } else {
-            return this.matchRouteWithParameters(path);
         }
     }
 
     public navigate() {
         this.updateCurrentPath();
-        const path = this.currentPath;
+        const path = this.currentPagePath;
         const matchedRoute = this.matchUrl(path);
+
         if (matchedRoute) {
             const params = matchedRoute.getParameters();
             this.appController.updatePage(matchedRoute.getView(), params);

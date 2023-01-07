@@ -13,26 +13,29 @@ import ProductPage from '../views/ProductPage';
 import '../models/StoreModel';
 import StoreModel from '../models/StoreModel';
 import Footer from '../views/FooterVew';
+import CartModel from '../models/CartModel';
 
 export default class AppController implements AppControllerInterface {
     private static instance: InstanceType<typeof AppController>;
-    mainContainer: HTMLElement;
-    header: Header;
-    routes: Route[];
-    router: Router;
-    cartView: CartView;
-    storeView: StoreView;
-    startPage: StartPageView;
-    menu: Menu;
-    productPage: ProductPage;
-    storeModel: StoreModel;
-    footer: Footer;
+    public mainContainer: HTMLElement;
+    public header: Header;
+    public routes: Route[];
+    public router: Router;
+    public cartView: CartView;
+    public storeView: StoreView;
+    public startPage: StartPageView;
+    public menu: Menu;
+    public productPage: ProductPage;
+    public storeModel: StoreModel;
+    public footer: Footer;
+    public cartModel: CartModel;
 
     constructor() {
         this.menu = new Menu(this);
         this.header = new Header(this);
+        this.cartModel = new CartModel(this);
+        this.cartView = new CartView(this.cartModel, this);
         this.mainContainer = createElem('main', 'main wrapper');
-        this.cartView = new CartView(this);
         this.startPage = new StartPageView(this);
         this.storeModel = new StoreModel(this);
         this.storeView = new StoreView(this.storeModel, this);
@@ -55,21 +58,35 @@ export default class AppController implements AppControllerInterface {
     public start() {
         document.body.append(this.header.createHeader(), this.mainContainer, this.footer.renderFooter());
         this.router.init();
+        //this.addToLocalStorage();
     }
 
     public updatePage(view: ViewComponent, params?: Props) {
         this.destroyAllChildNodes(this.mainContainer);
+        console.log(params);
         this.mainContainer.append(view.render(params));
     }
 
     public addProductToCart(product: Product) {
-        console.log(product);
-        console.log('method: addProductToCart');
+        // console.log(product);
+        // console.log('method: addProductToCart');
+        this.cartModel.addProduct(product);
+        this.cartView.updateCartInfo();
     }
 
     public deleteProductFromCart(product: Product) {
-        console.log(product);
-        console.log('method: deleteProductFromCart');
+        // console.log(product);
+        // console.log('method: deleteProductFromCart');
+        this.cartModel.deleteProduct(product);
+        this.cartView.updateCartInfo();
+    }
+
+    private addToLocalStorage() {
+        window.addEventListener('beforeunload', () => {
+            if (this.cartModel.productsInCart.length !== 0) {
+                localStorage.setItem('cart', JSON.stringify(this.cartModel.productsInCart));
+            }
+        });
     }
 
     private destroyAllChildNodes(parent: Node) {

@@ -3,9 +3,9 @@ import { Product } from '../../types/interfaces';
 import AppController from '../app/app';
 
 export default class StoreModel {
-    appController: AppController;
-    products: Product[];
-    currentProducts: Product[];
+    public appController: AppController;
+    private products: Product[];
+    public currentProducts: Product[];
 
     constructor(controller: AppController) {
         this.appController = controller;
@@ -13,11 +13,33 @@ export default class StoreModel {
         this.currentProducts = data.products;
     }
 
-    getProductById(id: number) {
+    public getProductById(id: number) {
         return this.products.find((product) => product.id === id);
     }
 
-    getCurrentProducts() {
+    public getCurrentProducts() {
         return this.currentProducts;
+    }
+
+    public restoreCurrentProducts() {
+        this.currentProducts = this.products;
+    }
+
+    public filterCardsByKeyword(value: string) {
+        const newCurrentProducts: Array<Product> = [];
+
+        this.currentProducts.forEach((product) => {
+            if (
+                product.category.toLowerCase().includes(value) ||
+                product.description.toLowerCase().includes(value) ||
+                product.title.toLowerCase().includes(value) ||
+                product.faculty.toLowerCase().includes(value) ||
+                product.price.toString() === value ||
+                product.discount.toString() === value
+            ) {
+                newCurrentProducts.push(product);
+            }
+        });
+        this.currentProducts = newCurrentProducts;
     }
 }

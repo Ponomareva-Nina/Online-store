@@ -7,6 +7,7 @@ export enum PossibleUrlParams {
     SORT = 'sort',
     PRICE = 'price',
     STOCK = 'stock',
+    SEARCH = 'search',
 }
 
 export type MethodVoid = () => void;
@@ -25,4 +26,6 @@ export enum HTMLTags {
     INPUT = 'input',
     LABEL = 'label',
     P = 'p',
+    IMG = 'img',
+    H3 = 'h3',
 }

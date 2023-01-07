@@ -1,10 +1,11 @@
+import { ViewComponent } from '../../types/interfaces';
 import { HTMLTags } from '../../types/types';
 import { createElem } from '../../utils/utils';
 import AppController from '../app/app';
 
-export default class StartPageView {
-    container: DocumentFragment;
-    appController: AppController;
+export default class StartPageView implements ViewComponent {
+    public container: DocumentFragment;
+    public appController: AppController;
 
     constructor(controller: AppController) {
         this.appController = controller;

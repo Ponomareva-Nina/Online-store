@@ -15,9 +15,13 @@ export default class Route {
     }
 
     public addParameter(name: PossibleUrlParams, value: string) {
-        const paramsArr = this.parameters[name];
+        let paramsArr = this.parameters[name];
         if (paramsArr && Array.isArray(paramsArr)) {
-            paramsArr.push(value);
+            if (name === PossibleUrlParams.SEARCH) {
+                paramsArr = [value];
+            } else {
+                paramsArr.push(value);
+            }
             this.parameters[name] = paramsArr;
         } else {
             const newParam = new Array(value);
@@ -43,6 +47,6 @@ export default class Route {
     }
 
     public clearParameters() {
-        this.parameters = {};
+        Object.keys(this.parameters).forEach((key) => delete this.parameters[key as keyof Props]);
     }
 }

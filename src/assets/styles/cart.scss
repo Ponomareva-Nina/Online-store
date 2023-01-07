@@ -1,12 +1,45 @@
+.page-header {
+    @include font-logo-title();
+}
+
+.wrapper {
+    width: -webkit-fill-available;
+}
+
+.cart-wrapper {
+    padding: 1.6rem 0 3rem;
+}
+
+
 .cart-container {
     display: flex;
     align-items: center;
     cursor: pointer;
+    flex-direction: column-reverse
 }
 
 .cart-link {
+    gap: 1rem;
     display: flex;
     align-items: center;
+}
+
+.cart-sum {
+    display: inline-flex;
+    width: 4rem;
+    color: #4A2B10;
+    line-height: 112%;
+    justify-content: center;
+
+    @media screen and (max-width: 600px) {
+        width: 3rem;
+        font-size: 2.3rem;
+    }
+
+    &::before {
+        content: '$';
+        padding-right: 0.5rem;
+    }
 }
 
 .cart-icon {
@@ -25,7 +58,186 @@
 }
 
 .cart-quantity {
-    padding-left: 8px;
+    width: 4rem;
     color: $color-main;
     line-height: 112%;
+    text-align: center;
+
+    @media screen and (max-width: 600px) {
+        width: 3rem;
+        font-size: 2.3rem;
+    }
+}
+
+
+.product-container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-top: 1px $color-main solid;
+    padding-bottom: 0.7rem;
+
+    &:last-child {
+        border-bottom: 1px $color-main solid;
+    }
+
+    @media screen and (max-width: 600px) {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+.product-content {
+    display: flex;
+    gap: 2rem;
+}
+
+.product-image {
+    width: 14.5rem;
+
+    @media screen and (max-width: 750px) {
+        width: 13rem;
+    }
+
+    @media screen and (max-width: 550px) {
+        width: 11rem;
+    }
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.card-title {
+    @include font-main($size: 2.4rem, $weight: 600, $color: $color-main, $height: 113%);
+    text-transform: uppercase;
+
+    @media screen and (max-width: 750px) {
+        font-size: 1.9rem;
+    }
+}
+
+.card-price {
+    color: $color-accent;
+
+    &::before {
+        content: '$';
+        padding-right: 0.5rem;
+    }
+}
+
+
+.counter-button {
+    width: 3rem;
+    height: 3rem;
+    content: '';
+    display: inline-flex;
+    background-size: contain;
+    background-repeat: no-repeat;
+    cursor: pointer;
+
+    @media screen and (max-width: 600px) {
+        width: 2.3rem;
+        height: 2.3rem;
+    }
+}
+
+.card-description {
+    @include font-main($size: 2.4rem, $weight: 400, $color: $color-main, $height: 113%);
+    @media screen and (max-width: 750px) {
+        font-size: 1.8rem;
+    }
+}
+
+.subtitle-name {
+    color: $color-accent;
+    text-transform: uppercase;
+}
+
+.subtitle-name_low {
+    text-transform: initial;
+}
+
+.buttons-container {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+
+    @media screen and (max-width: 750px) {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    @media screen and (max-width: 600px) {
+        flex-direction: row;
+        align-self: flex-end;
+    }
+}
+
+.price-counter-cont {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @media screen and (max-width: 600px) {
+        font-size: 2rem;
+
+    @media screen and (max-width: 550px) {
+        flex-direction: row;
+        gap: 0.5rem;
+        }
+    }
+}
+
+.product-price {
+    width: 12rem;
+    font-size: 2rem;
+    display: inline-flex;
+    justify-content: center;
+}
+
+.button-all-delete {
+
+    @media screen and (max-width: 750px) {
+        width: 13rem;
+    }
+    
+    @media screen and (max-width: 600px) {
+        width: 11rem;
+        font-size: 2rem;
+    }
+}
+
+.counter-container {
+    display: flex;
+    align-items: center;
+}
+
+.count-down {
+    background-image: url('./assets/images/counter_delete.svg');
+}
+
+.count-up {
+    background-image: url('./assets/images/counter_add.svg');
+}
+
+.product-quantity {
+    width: 4rem;
+    text-align: center;
+
+    @media screen and (max-width: 600px) {
+        width: 3rem;
+    }
+}
+
+.empty-cart {
+    @include font-main($size: 4rem, $weight: 600, $color: $color-main, $height: 150%);
+    margin-top: 5rem;
+    text-align: center;
+
+    @media screen and (max-width: 550px) {
+        font-size: 3rem;
+    }
 }
