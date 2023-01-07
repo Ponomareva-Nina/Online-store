@@ -40,6 +40,9 @@ export default class ProductCard implements ProductCardInterface {
         const btnsContainer = createElem(HTMLTags.DIV, ClassNames.PRODUCT_CARD_BTNS_CONTAINER);
         const buyNowBtn = createElem(HTMLTags.BUTTON, ClassNames.BTN, BUY_NOW_BUTTON_TEXT);
         const addDeleteProductBtn = createElem(HTMLTags.BUTTON, 'btn add-delete-btn btn_add', ADD_TO_CART_BUTTON_TEXT);
+        if (this.appController.cartModel.checkProductInCart(this.cardData.id)) {
+            addDeleteProductBtn.textContent = DELETE_FROM_CART_BUTTON_TEXT;
+        }
         addDeleteProductBtn.addEventListener('click', () => {
             this.handleClickOnAddButton(addDeleteProductBtn);
         });
@@ -69,6 +72,9 @@ export default class ProductCard implements ProductCardInterface {
             this.appController.router.changeCurrentPage(root);
         });
         const trunkBtn = createElem(HTMLTags.BUTTON, ClassNames.TRUNK_BTN, '');
+        if (this.appController.cartModel.checkProductInCart(this.cardData.id)) {
+            trunkBtn.classList.add(ClassNames.TRUNK_BTN_CHECKED);
+        }
         trunkBtn.innerHTML = trunkIconSvg;
         trunkBtn.addEventListener('click', () => {
             this.handleClickOnTrunkBtn(trunkBtn);
