@@ -73,6 +73,7 @@ export default class AppController implements AppControllerInterface {
         // console.log('method: addProductToCart');
         this.cartModel.addProduct(product);
         this.cartView.updateCartInfo();
+        this.cartView.updatePromoBlock();
     }
 
     public deleteProductFromCart(product: Product) {
@@ -80,6 +81,7 @@ export default class AppController implements AppControllerInterface {
         // console.log('method: deleteProductFromCart');
         this.cartModel.deleteProduct(product);
         this.cartView.updateCartInfo();
+        this.cartView.updatePromoBlock();
     }
 
     private addToLocalStorage() {

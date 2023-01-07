@@ -65,6 +65,7 @@ export default class CartModel {
             this.totalSum = Number((this.totalSum += product.price).toFixed(2));
             product.sum = Number((product.sum += product.price).toFixed(2));
             this.appController.cartView.updateCartInfo();
+            this.appController.cartView.updatePromoBlock();
             this.appController.cartView.updatePage();
         }
     }
@@ -78,6 +79,7 @@ export default class CartModel {
             this.deleteProduct(product);
             this.appController.cartView.updateCartInfo();
             this.appController.cartView.updatePage();
+            this.appController.cartView.updatePromoBlock();
             this.appController.cartView.checkCartIsEmpty();
         }
 
@@ -87,6 +89,7 @@ export default class CartModel {
             this.totalSum = Number((this.totalSum -= product.price).toFixed(2));
             product.sum = Number((product.sum -= product.price).toFixed(2));
             this.appController.cartView.updateCartInfo();
+            this.appController.cartView.updatePromoBlock();
             this.appController.cartView.updatePage();
         }
     }
