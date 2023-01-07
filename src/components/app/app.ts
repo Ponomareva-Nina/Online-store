@@ -58,7 +58,9 @@ export default class AppController implements AppControllerInterface {
     public start() {
         document.body.append(this.header.createHeader(), this.mainContainer, this.footer.renderFooter());
         this.router.init();
-        //this.addToLocalStorage();
+        this.addToLocalStorage();
+        console.log(this.cartModel.productsInCart, this.cartModel.productsQuantity, this.cartModel.totalSum);
+        //Добавить в localStorage сохранение общей суммы и кол-ва товаров в корзине
     }
 
     public updatePage(view: ViewComponent, params?: Props) {
@@ -82,9 +84,9 @@ export default class AppController implements AppControllerInterface {
 
     private addToLocalStorage() {
         window.addEventListener('beforeunload', () => {
-            if (this.cartModel.productsInCart.length !== 0) {
-                localStorage.setItem('cart', JSON.stringify(this.cartModel.productsInCart));
-            }
+            localStorage.setItem('cart', JSON.stringify(this.cartModel.productsInCart));
+            localStorage.setItem('totalSum', this.cartModel.totalSum.toString());
+            localStorage.setItem('productsQuantity', this.cartModel.productsQuantity.toString());
         });
     }
 

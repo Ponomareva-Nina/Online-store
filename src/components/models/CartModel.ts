@@ -9,8 +9,18 @@ export default class CartModel {
 
     constructor(controller: AppController) {
         this.appController = controller;
-        this.totalSum = 0;
-        this.productsQuantity = 0;
+
+        if (window.localStorage.getItem('totalSum')) {
+            this.totalSum = Number(localStorage.getItem('totalSum'));
+        } else {
+            this.totalSum = 0;
+        }
+
+        if (localStorage.getItem('productsQuantity')) {
+            this.productsQuantity = Number(localStorage.getItem('productsQuantity'));
+        } else {
+            this.productsQuantity = 0;
+        }
 
         if (localStorage.getItem('cart')) {
             this.productsInCart = JSON.parse(localStorage.getItem('cart') || '{}');
