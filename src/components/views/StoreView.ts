@@ -1,4 +1,11 @@
-import { FacultyFiltersOptions, HTMLTags, PossibleUrlParams, SortLabels, SortOptions } from '../../types/types';
+import {
+    CategoryFiltersOptions,
+    FacultyFiltersOptions,
+    HTMLTags,
+    PossibleUrlParams,
+    SortLabels,
+    SortOptions,
+} from '../../types/types';
 import { createCheckbox, createElem, createLabel, createRadioButton } from '../../utils/utils';
 import { NO_PRODUCTS_MESSAGE, STORE_VIEW_TITLE } from '../../constants/string-constants';
 import AppController from '../app/app';
@@ -44,8 +51,40 @@ export default class StoreView implements ViewComponent {
         const searchInput = this.createSearchInput();
         const sorts = this.createSorts();
         const facultyFilters = this.createFacultyFilters();
-        sidePanelContainer.append(searchInput, sorts, facultyFilters);
+        const categoryFilters = this.createCategoryFilters();
+        sidePanelContainer.append(searchInput, sorts, facultyFilters, categoryFilters);
         return sidePanelContainer;
+    }
+
+    private createCategoryFilters() {
+        const filterContainer = createElem(HTMLTags.DIV, ClassNames.FILTER_CONTAINER);
+        const FilterByCategoryTitle = createElem(HTMLTags.P, ClassNames.FILTER_CONTAINER_TITLE, 'Choose category');
+        filterContainer.append(FilterByCategoryTitle);
+        const checkboxName = 'faculty-filter';
+        Object.keys(CategoryFiltersOptions).forEach((key) => {
+            const value = CategoryFiltersOptions[key as keyof typeof CategoryFiltersOptions];
+            const checkbox = createCheckbox(checkboxName, ClassNames.FILTER_CHECKBOX, value, value);
+            checkbox.addEventListener('click', () => {
+                this.handleCategoryFilter(checkbox);
+            });
+            const label = createLabel(value, ClassNames.FILTER_LABEL, value);
+            if (this.currentParams && this.currentParams[PossibleUrlParams.CATEGORY]) {
+                const checkedFaculties = this.currentParams[PossibleUrlParams.CATEGORY];
+                if (checkedFaculties.includes(value)) {
+                    checkbox.checked = true;
+                }
+            }
+            filterContainer.append(checkbox, label);
+        });
+        return filterContainer;
+    }
+
+    private handleCategoryFilter(checkbox: HTMLInputElement) {
+        if (checkbox.checked) {
+            this.appController.router.addParameterToUrl(PossibleUrlParams.CATEGORY, checkbox.value);
+        } else {
+            this.appController.router.deleteParameterFromUrl(PossibleUrlParams.CATEGORY, checkbox.value);
+        }
     }
 
     private createFacultyFilters() {

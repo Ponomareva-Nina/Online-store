@@ -29,6 +29,10 @@ export default class StoreModel {
             this.currentProducts = this.filterByFaculty(params.faculty, this.currentProducts);
         }
 
+        if (params.category) {
+            this.currentProducts = this.filterByCategory(params.category, this.currentProducts);
+        }
+
         if (params.search) {
             const searchValue = params.search.join('');
             this.currentProducts = this.filterCardsByKeyword(searchValue, this.currentProducts);
@@ -40,14 +44,21 @@ export default class StoreModel {
         }
     }
 
-    public filterByFaculty(valuesArr: string[], arr: Array<Product>) {
+    private filterByCategory(valuesArr: string[], arr: Array<Product>) {
+        const filteredArr = arr.filter((product) => {
+            return valuesArr.includes(product.category);
+        });
+        return filteredArr;
+    }
+
+    private filterByFaculty(valuesArr: string[], arr: Array<Product>) {
         const filteredArr = arr.filter((product) => {
             return valuesArr.includes(product.faculty);
         });
         return filteredArr;
     }
 
-    public filterCardsByKeyword(value: string, arr: Array<Product>) {
+    private filterCardsByKeyword(value: string, arr: Array<Product>) {
         const filteredProducts: Array<Product> = [];
         arr.forEach((product) => {
             if (
@@ -64,7 +75,7 @@ export default class StoreModel {
         return filteredProducts;
     }
 
-    public sortProducts(value: string, arr: Array<Product>) {
+    private sortProducts(value: string, arr: Array<Product>) {
         let sortedProducts: Array<Product> = [];
         if (value === SortOptions.MAX_PRICE) {
             sortedProducts = arr.sort((a, b) => {
