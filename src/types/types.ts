@@ -29,3 +29,35 @@ export enum HTMLTags {
     IMG = 'img',
     H3 = 'h3',
 }
+
+export enum SortOptions {
+    MIN_PRICE = 'min-price',
+    MAX_PRICE = 'max-price',
+    DISCOUNT = 'max-discount',
+}
+
+export enum SortLabels {
+    MIN_PRICE = 'Price (low to high)',
+    MAX_PRICE = 'Price (high to low)',
+    DISCOUNT = 'Max discount',
+}
+
+export enum CategoryFiltersOptions {
+    CLOTHING = 'clothing',
+    BAGS = 'bags',
+    COLLECTABLES = 'collectables',
+    HOMEWEAR = 'homewear',
+    JEWELLERY = 'jewellery',
+    KIDS = 'kids',
+    SOUVENIRS = 'souvenirs',
+    TRAVEL = 'travel',
+    TRUNKS = 'trunks',
+    WANDS = 'wands',
+}
+
+export enum FacultyFiltersOptions {
+    GRYFFINDOR = 'gryffindor',
+    SLYTHERIN = 'slytherin',
+    RAVENCLAW = 'ravenclaw',
+    HUFFLEPUFF = 'hufflepuff',
+}

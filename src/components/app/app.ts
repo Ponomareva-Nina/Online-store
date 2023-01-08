@@ -63,7 +63,6 @@ export default class AppController implements AppControllerInterface {
 
     public updatePage(view: ViewComponent, params?: Props) {
         this.destroyAllChildNodes(this.mainContainer);
-        console.log(params);
         this.mainContainer.append(view.render(params));
     }
 
@@ -89,7 +88,7 @@ export default class AppController implements AppControllerInterface {
         });
     }
 
-    private destroyAllChildNodes(parent: Node) {
+    public destroyAllChildNodes(parent: Node) {
         while (parent.firstChild) {
             parent.removeChild(parent.firstChild);
         }

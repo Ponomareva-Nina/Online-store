@@ -1,0 +1,57 @@
+.range-input-container {
+    position: relative;
+}
+
+.range-input {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    height: 1rem;
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    background: none;
+    pointer-events: none;
+}
+
+input[type='range']::-webkit-slider-thumb {
+    width: 2rem;
+    height: 2rem;
+    -webkit-appearance: none;
+    pointer-events: auto;
+    background: $color-main;
+    border-radius: 50%;
+    border: none;
+}
+
+input[type='range']::-moz-range-thumb {
+    width: 2rem;
+    height: 2rem;
+    border: none;
+    -moz-appearance: none;
+    pointer-events: auto;
+    background: $color-main;
+    border-radius: 50%;
+}
+
+.custom-range-container {
+    position: relative;
+    height: 1rem;
+    border: 1px solid $color-main;
+    border-radius: .5rem;
+}
+
+.custom-progress-bar {
+    position: absolute;
+    background-color: $color-accent;
+    top: 0;
+    bottom: 0;
+    left: 25%;
+    right: 25%;
+}
+.dual-slider-container__text-values {
+    @include font-main(2rem, 400, $color-accent);
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+}
