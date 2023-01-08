@@ -286,10 +286,18 @@
     justify-content: space-between;
 }
 
+.total-products {
+    font-weight: 600;
+}
+
 .products-content {
-    width: 4rem;
+    width: 3rem;
     display: inline-flex;
     justify-content: center;
+}
+
+.total-promo-sum {
+    font-weight: 600;
 }
 
 .sum-content {
@@ -301,6 +309,47 @@
         content: '$';
         padding-left: 0.5rem;
     }
+}
+
+.promo-codes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    @media screen and (max-width: 750px) {
+        font-size: 1.8rem;
+    }
+}
+
+.promo-code-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.promo-codes-discout {
+    &::after {
+        content: '$';
+        padding-left: 0.5rem;
+    }
+}
+
+.promo-code-button {
+    width: 6.5rem;
+    padding: 0.2rem 0.8rem;
+    background: none;
+    @include font-main($size: 2rem, $weight: 400, $color: $color-main, $height: 110%);
+    border: 1px #4A2B10 solid;
+    border-radius: 5px;
+    text-transform: uppercase;
+
+    @media screen and (max-width: 750px) {
+        width: 6.5rem;
+        @include font-main($size: 1.8rem, $weight: 400, $color: $color-main, $height: 110%);
+    }
+}
+
+.promo-added {
+    background-color: $color-accent;
 }
 
 .input-container {
@@ -340,9 +389,14 @@
 .promo-apply-btn {
     padding: 0.2rem 1.2rem;
     background: none;
+    font: inherit;
     border: 1px $color-main solid;
     border-radius: 5px;
     text-transform: uppercase;
+
+    &:hover {
+        background-color: $color-aux;
+    }
 }
 
 .decor-buy {

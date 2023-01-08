@@ -1,14 +1,21 @@
-import { Product } from '../../types/interfaces';
+import { Product, Promocode } from '../../types/interfaces';
 import AppController from '../app/app';
+import promos from '../../promocodes.json';
 
 export default class CartModel {
     appController: AppController;
     productsInCart: Product[];
     totalSum: number;
     productsQuantity: number;
+    promocodes: Promocode[];
+    enteredPromocodes: Promocode[];
+    activatedPromocodes: Promocode[];
 
     constructor(controller: AppController) {
         this.appController = controller;
+        this.promocodes = promos.promocodes;
+        this.enteredPromocodes = [];
+        this.activatedPromocodes = [];
 
         if (window.localStorage.getItem('totalSum')) {
             this.totalSum = Number(localStorage.getItem('totalSum'));
@@ -27,6 +34,12 @@ export default class CartModel {
         } else {
             this.productsInCart = [];
         }
+
+        // if (localStorage.getItem('activatedPromocodes')) {
+        //     this.activatedPromocodes = JSON.parse(localStorage.getItem('activatedPromocodes') || '{}');
+        // } else {
+        //     this.activatedPromocodes = [];
+        // }
     }
 
     addProduct(product: Product) {
@@ -91,10 +104,11 @@ export default class CartModel {
             this.appController.cartView.updateCartInfo();
             this.appController.cartView.updatePromoBlock();
             this.appController.cartView.updatePage();
+            this.appController.cartView.updatePromoBlock();
         }
     }
 
-    checkProductInCart(id: number) {
+    public checkProductInCart(id: number) {
         //метод проверяет по id есть ли такой товар в корзине и возвращает true или false
         //(необходим для присвоения корректного класса кнопкам добавить в корзину
         //(на странице товара и на странице каталога) после перезагрузки страницы)
@@ -104,5 +118,21 @@ export default class CartModel {
         } else {
             return false;
         }
+    }
+
+    public findEnteredPromoInPromocodes(enteredValue: string) {
+        this.promocodes.forEach((promocode) => {
+            if (enteredValue.toLocaleUpperCase() === promocode.value) {
+                if (this.enteredPromocodes.length === 0) {
+                    this.enteredPromocodes.push(promocode);
+                    this.appController.cartView.createPromoCodeView(promocode);
+                }
+
+                if (!this.enteredPromocodes.find((enteredPromocode) => enteredPromocode.id === promocode.id)) {
+                    this.enteredPromocodes.push(promocode);
+                    this.appController.cartView.createPromoCodeView(promocode);
+                }
+            }
+        });
     }
 }
