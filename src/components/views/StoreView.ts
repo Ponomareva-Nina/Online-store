@@ -59,7 +59,7 @@ export default class StoreView implements ViewComponent {
             checkbox.addEventListener('click', () => {
                 this.handleFacultyFilter(checkbox);
             });
-            const label = createLabel(value, ClassNames.SORT_LABEL, value);
+            const label = createLabel(value, ClassNames.FILTER_LABEL, value);
             if (this.currentParams && this.currentParams[PossibleUrlParams.FACULTY]) {
                 const checkedFaculties = this.currentParams[PossibleUrlParams.FACULTY];
                 if (checkedFaculties.includes(value)) {

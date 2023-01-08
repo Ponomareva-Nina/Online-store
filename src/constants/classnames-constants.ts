@@ -28,4 +28,5 @@ export enum ClassNames {
     FILTER_CONTAINER = 'filter-container',
     FILTER_CONTAINER_TITLE = 'filter-container__title',
     FILTER_CHECKBOX = 'filter-container__checkbox',
+    FILTER_LABEL = 'filter-container__label',
 }
