@@ -40,7 +40,7 @@ class Router implements RouterInterface {
 
         for (const key in newParams) {
             const params = newParams[key as PossibleUrlParams];
-            if (params && !params.includes('')) {
+            if (params && !params.includes('') && params.length > 0) {
                 const urlSegment = `${key}=${params.join(PARAM_VALUES_SEPARATOR)}`;
                 if (key === 'id') {
                     newPath = newPath.concat(SLASH_SEPARATOR).concat(urlSegment);
