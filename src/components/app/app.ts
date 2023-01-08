@@ -88,7 +88,10 @@ export default class AppController implements AppControllerInterface {
             localStorage.setItem('cart', JSON.stringify(this.cartModel.productsInCart));
             localStorage.setItem('totalSum', this.cartModel.totalSum.toString());
             localStorage.setItem('productsQuantity', this.cartModel.productsQuantity.toString());
-            //localStorage.setItem('activatedPromocodes', JSON.stringify(this.cartModel.activatedPromocodes));
+            localStorage.setItem('activatedPromocodes', JSON.stringify(this.cartModel.activatedPromocodes));
+            if (this.cartModel.totalSumWithDiscount !== 0) {
+                localStorage.setItem('totalSumWithDiscount', this.cartModel.totalSumWithDiscount.toString());
+            }
         });
     }
 

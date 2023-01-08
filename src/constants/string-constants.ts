@@ -27,3 +27,4 @@ export const PROMO_BUY_BUTTON = 'Buy Now';
 export const PROMO_CODES = `'RS'/'EMP'/'FRONT'`;
 export const ACTIVATE_PROMOCODE_BUTTON = 'Add';
 export const DEACTIVATE_PROMOCODE_BUTTON = 'Del';
+export const PROMO_TITLE_TOTAL_SUM_DISCOUNT = 'Sum with discount: ';

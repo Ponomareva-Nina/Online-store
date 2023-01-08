@@ -70,4 +70,5 @@ export interface Promocode {
     value: string;
     title: string;
     discount: number;
+    active?: boolean;
 }

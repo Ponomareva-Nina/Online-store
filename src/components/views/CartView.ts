@@ -10,6 +10,7 @@ import {
     PROMO_TITLE,
     PROMO_TITLE_TOTAL_PRODUCTS,
     PROMO_TITLE_TOTAL_SUM,
+    PROMO_TITLE_TOTAL_SUM_DISCOUNT,
 } from '../../constants/string-constants';
 import { Product, Promocode, ViewComponent } from '../../types/interfaces';
 import { HTMLTags } from '../../types/types';
@@ -29,7 +30,8 @@ export default class CartView implements ViewComponent {
     totalSumContent: HTMLSpanElement;
     promoCodesTitle: HTMLSpanElement;
     promoCodesContainer: HTMLDivElement;
-    //promoCodeContainer: HTMLDivElement;
+    totalSumDiscountContent: HTMLSpanElement;
+    totalDiscountContainer: HTMLParagraphElement;
 
     constructor(cart: CartModel, controller: AppController) {
         this.appController = controller;
@@ -43,6 +45,8 @@ export default class CartView implements ViewComponent {
         this.totalSumContent = createElem(HTMLTags.SPAN, 'sum-content');
         this.promoCodesTitle = createElem(HTMLTags.SPAN, 'promo-codes-title');
         this.promoCodesContainer = createElem(HTMLTags.DIV, 'promo-codes-container') as HTMLDivElement;
+        this.totalSumDiscountContent = createElem(HTMLTags.SPAN, 'sum-content-discount');
+        this.totalDiscountContainer = createElem(HTMLTags.P, 'total-discount-container') as HTMLParagraphElement;
     }
 
     public createPage() {
@@ -62,9 +66,16 @@ export default class CartView implements ViewComponent {
                 this.cartContainer.append(productContainer);
             });
         }
-        const promo = this.createPromoBlock();
-        this.container.append(title, this.cartContainer, promo);
-        this.checkCartIsEmpty();
+        if (productInCart.length !== 0) {
+            const promo = this.createPromoBlock();
+            this.container.append(title, this.cartContainer, promo);
+        } else {
+            this.container.append(title, this.cartContainer);
+            this.checkCartIsEmpty();
+        }
+        // const promo = this.createPromoBlock();
+        // this.container.append(title, this.cartContainer, promo);
+        //this.checkCartIsEmpty();
         return this.container;
     }
 
@@ -127,6 +138,7 @@ export default class CartView implements ViewComponent {
             this.updateCartInfo();
             this.updatePromoBlock();
             this.updatePage();
+            this.updateDiscountInfo();
         });
         buttonsContainer.append(counterPriceContainer, cartDeleteProduct);
 
@@ -190,6 +202,7 @@ export default class CartView implements ViewComponent {
     }
 
     public createPromoBlock() {
+        this.destroyAllChildNodes(this.promoCodesContainer);
         const promoContainer = createElem(HTMLTags.DIV, 'promo-container');
         const promoTitle = createElem(HTMLTags.P, 'page-header', PROMO_TITLE);
         const promoContentContainer = createElem(HTMLTags.DIV, 'content-container');
@@ -202,8 +215,21 @@ export default class CartView implements ViewComponent {
         const totalSum = createElem(HTMLTags.P, 'total-promo-sum');
         const totalSumTitle = createElem(HTMLTags.SPAN, 'sum-title', PROMO_TITLE_TOTAL_SUM);
         this.totalSumContent.textContent = `${this.cartModel.totalSum}`;
+        if (this.cartModel.activatedPromocodes.length !== 0) {
+            this.createBlockWithDiscountSum();
+        }
+
+        this.cartModel.activatedPromocodes.forEach((activatedPromocode) => {
+            if (activatedPromocode.active) {
+                this.createPromoCodeView(activatedPromocode);
+            }
+        });
+
         totalSum.append(totalSumTitle, this.totalSumContent);
-        promoTotalContainer.append(totalProducts, totalSum);
+        const promoWithoutDiscountContainer = createElem(HTMLTags.P, 'promo-without-discount-container');
+        this.destroyAllChildNodes(promoWithoutDiscountContainer);
+        promoWithoutDiscountContainer.append(totalProducts, totalSum);
+        promoTotalContainer.append(promoWithoutDiscountContainer, this.totalDiscountContainer);
 
         const promoInputContainer = createElem(HTMLTags.DIV, 'input-container');
         const promoInput = createElem(HTMLTags.INPUT, 'promo-input') as HTMLInputElement;
@@ -242,6 +268,9 @@ export default class CartView implements ViewComponent {
     public updatePromoBlock() {
         this.totalProductsContent.textContent = `${this.cartModel.productsQuantity}`;
         this.totalSumContent.textContent = `${this.cartModel.totalSum}`;
+        if (this.cartModel.productsInCart.length === 0) {
+            this.totalSumContent.classList.remove('crossline');
+        }
     }
 
     public createPromoCodeView(promocode: Promocode) {
@@ -251,28 +280,58 @@ export default class CartView implements ViewComponent {
         const promoCodeDiscount = createElem(HTMLTags.SPAN, 'promo-codes-discout', `${promocode.discount}`);
         promoCodesDescription.append(promoCodesTitle, promoCodeDiscount);
         const promoCodeButtom = createElem(HTMLTags.BUTTON, 'promo-code-button', ACTIVATE_PROMOCODE_BUTTON);
+        if (promocode.active) {
+            promoCodeButtom.classList.add('promo-added');
+            promoCodeButtom.textContent = DEACTIVATE_PROMOCODE_BUTTON;
+            this.totalSumContent.classList.add('crossline');
+        }
         promoCodeButtom.addEventListener('click', () => {
-            promoCodeButtom.classList.toggle('promo-added');
-            if (promoCodeButtom.classList.contains('promo-added')) {
-                promoCodeButtom.textContent = DEACTIVATE_PROMOCODE_BUTTON;
-            } else {
+            if (promocode.active) {
+                promoCodeButtom.classList.remove('promo-added');
                 promoCodeButtom.textContent = ACTIVATE_PROMOCODE_BUTTON;
-            }
-            if (this.cartModel.activatedPromocodes.length === 0) {
-                this.cartModel.activatedPromocodes.push(promocode);
-            }
-            if (
-                !this.cartModel.activatedPromocodes.find((activatedPromocode) => activatedPromocode.id === promocode.id)
-            ) {
-                this.cartModel.activatedPromocodes.push(promocode);
+                this.cartModel.handleDeletePromocode(promocode);
+            } else {
+                promoCodeButtom.classList.add('promo-added');
+                promoCodeButtom.textContent = DEACTIVATE_PROMOCODE_BUTTON;
+                this.cartModel.handleAddPromocode(promocode);
             }
 
-            console.log('активированные промокоды', this.cartModel.activatedPromocodes);
+            const checkIsPromocodesAplied = this.cartModel.checkIsPromocodesAplied();
+            if (checkIsPromocodesAplied) {
+                this.totalSumContent.classList.add('crossline');
+            } else {
+                this.totalSumContent.classList.remove('crossline');
+            }
         });
+
         promoCodeContainer.append(promoCodesDescription, promoCodeButtom);
         this.promoCodesContainer.append(promoCodeContainer);
 
         return this.promoCodesContainer;
+    }
+
+    public createBlockWithDiscountSum() {
+        this.destroyAllChildNodes(this.totalDiscountContainer);
+        const totalOneDiscountContainer = createElem(HTMLTags.P);
+        this.cartModel.activatedPromocodes.forEach(() => {
+            this.destroyAllChildNodes(totalOneDiscountContainer);
+            const totalSumTitleDiscount = createElem(
+                HTMLTags.SPAN,
+                'sum-title-discount',
+                PROMO_TITLE_TOTAL_SUM_DISCOUNT
+            );
+            this.totalSumDiscountContent.textContent = `${this.cartModel.totalSumWithDiscount}`;
+            totalOneDiscountContainer.append(totalSumTitleDiscount, this.totalSumDiscountContent);
+            this.totalDiscountContainer.append(totalOneDiscountContainer);
+        });
+        return this.totalDiscountContainer;
+    }
+
+    public updateDiscountInfo() {
+        this.totalSumDiscountContent.textContent = `${this.cartModel.totalSumWithDiscount}`;
+        if (this.cartModel.productsInCart.length === 0) {
+            this.destroyAllChildNodes(this.totalDiscountContainer);
+        }
     }
 
     public render() {

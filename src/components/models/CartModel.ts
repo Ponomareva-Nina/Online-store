@@ -10,12 +10,12 @@ export default class CartModel {
     promocodes: Promocode[];
     enteredPromocodes: Promocode[];
     activatedPromocodes: Promocode[];
+    totalSumWithDiscount: number;
 
     constructor(controller: AppController) {
         this.appController = controller;
         this.promocodes = promos.promocodes;
         this.enteredPromocodes = [];
-        this.activatedPromocodes = [];
 
         if (window.localStorage.getItem('totalSum')) {
             this.totalSum = Number(localStorage.getItem('totalSum'));
@@ -35,15 +35,20 @@ export default class CartModel {
             this.productsInCart = [];
         }
 
-        // if (localStorage.getItem('activatedPromocodes')) {
-        //     this.activatedPromocodes = JSON.parse(localStorage.getItem('activatedPromocodes') || '{}');
-        // } else {
-        //     this.activatedPromocodes = [];
-        // }
+        if (localStorage.getItem('activatedPromocodes')) {
+            this.activatedPromocodes = JSON.parse(localStorage.getItem('activatedPromocodes') || '{}');
+        } else {
+            this.activatedPromocodes = [];
+        }
+
+        if (window.localStorage.getItem('totalSumWithDiscount')) {
+            this.totalSumWithDiscount = Number(localStorage.getItem('totalSumWithDiscount'));
+        } else {
+            this.totalSumWithDiscount = this.totalSum;
+        }
     }
 
     addProduct(product: Product) {
-        //добавляет полученный из каталога объект в массив this.productsInCart. с товарами корзины
         const isInCart = this.checkProductInCart(product.id);
         if (!isInCart) {
             this.productsInCart.push(product);
@@ -52,12 +57,14 @@ export default class CartModel {
             this.productsQuantity += product.inCart;
             this.totalSum = Number((this.totalSum += product.inCart * product.price).toFixed(2));
             this.appController.addProductToCart(product);
+            const currentTotalPercentDiscount = this.getCurrentTotalPercentDiscount();
+            this.totalSumWithDiscount = Number((this.totalSum * (1 - currentTotalPercentDiscount / 100)).toFixed(2));
+            this.appController.cartView.updateDiscountInfo();
             return this.productsInCart;
         }
     }
 
     deleteProduct(product: Product) {
-        //удаляет полученный объект из массива this.productsInCart. с товарами корзины
         const isInCart = this.checkProductInCart(product.id);
         if (isInCart) {
             const deletedIndex = this.productsInCart.indexOf(product);
@@ -66,6 +73,11 @@ export default class CartModel {
                 this.productsQuantity -= product.inCart;
                 this.totalSum = Number((this.totalSum -= product.inCart * product.price).toFixed(2));
                 this.appController.cartView.totalPerProduct = 0;
+                const currentTotalPercentDiscount = this.getCurrentTotalPercentDiscount();
+                this.totalSumWithDiscount = Number(
+                    (this.totalSum * (1 - currentTotalPercentDiscount / 100)).toFixed(2)
+                );
+                this.appController.cartView.updateDiscountInfo();
             }
         }
         return this.productsInCart;
@@ -77,9 +89,12 @@ export default class CartModel {
             this.productsQuantity += 1;
             this.totalSum = Number((this.totalSum += product.price).toFixed(2));
             product.sum = Number((product.sum += product.price).toFixed(2));
+            const currentTotalPercentDiscount = this.getCurrentTotalPercentDiscount();
+            this.totalSumWithDiscount = Number((this.totalSum * (1 - currentTotalPercentDiscount / 100)).toFixed(2));
             this.appController.cartView.updateCartInfo();
             this.appController.cartView.updatePromoBlock();
             this.appController.cartView.updatePage();
+            this.appController.cartView.updateDiscountInfo();
         }
     }
 
@@ -89,11 +104,14 @@ export default class CartModel {
             this.productsQuantity -= 1;
             this.totalSum = Number((this.totalSum -= product.price).toFixed(2));
             product.sum = product.price;
+            const currentTotalPercentDiscount = this.getCurrentTotalPercentDiscount();
+            this.totalSumWithDiscount = Number((this.totalSum * (1 + currentTotalPercentDiscount / 100)).toFixed(2));
             this.deleteProduct(product);
             this.appController.cartView.updateCartInfo();
             this.appController.cartView.updatePage();
             this.appController.cartView.updatePromoBlock();
             this.appController.cartView.checkCartIsEmpty();
+            this.appController.cartView.updateDiscountInfo();
         }
 
         if (product.inCart && product.sum && product.inCart >= 2) {
@@ -101,17 +119,17 @@ export default class CartModel {
             this.productsQuantity -= 1;
             this.totalSum = Number((this.totalSum -= product.price).toFixed(2));
             product.sum = Number((product.sum -= product.price).toFixed(2));
+            const currentTotalPercentDiscount = this.getCurrentTotalPercentDiscount();
+            this.totalSumWithDiscount = Number((this.totalSum * (1 + currentTotalPercentDiscount / 100)).toFixed(2));
             this.appController.cartView.updateCartInfo();
             this.appController.cartView.updatePromoBlock();
             this.appController.cartView.updatePage();
             this.appController.cartView.updatePromoBlock();
+            this.appController.cartView.updateDiscountInfo();
         }
     }
 
     public checkProductInCart(id: number) {
-        //метод проверяет по id есть ли такой товар в корзине и возвращает true или false
-        //(необходим для присвоения корректного класса кнопкам добавить в корзину
-        //(на странице товара и на странице каталога) после перезагрузки страницы)
         const idProductInCart = this.productsInCart.find((product) => product.id === id);
         if (idProductInCart) {
             return this.productsInCart.includes(idProductInCart);
@@ -134,5 +152,48 @@ export default class CartModel {
                 }
             }
         });
+    }
+
+    public handleAddPromocode(promocode: Promocode) {
+        if (this.productsInCart.length !== 0) {
+            if (!this.activatedPromocodes.find((activatedPromocode) => activatedPromocode.id === promocode.id)) {
+                this.activatedPromocodes.push(promocode);
+                promocode.active = true;
+                console.log(this.totalSumWithDiscount, this.totalSum, promocode.discount);
+                this.totalSumWithDiscount = Number(
+                    (this.totalSumWithDiscount -= this.totalSum * (promocode.discount / 100)).toFixed(2)
+                );
+                this.appController.cartView.createBlockWithDiscountSum();
+            }
+        }
+    }
+
+    public handleDeletePromocode(promocode: Promocode) {
+        if (this.productsInCart.length !== 0) {
+            const deletedPromocodeId = this.activatedPromocodes.indexOf(promocode);
+            promocode.active = false;
+            this.activatedPromocodes.splice(deletedPromocodeId, 1);
+            this.totalSumWithDiscount = Number(
+                (this.totalSumWithDiscount += this.totalSum * (promocode.discount / 100)).toFixed(2)
+            );
+            this.appController.cartView.createBlockWithDiscountSum();
+        }
+    }
+
+    public checkIsPromocodesAplied() {
+        if (this.totalSum !== this.totalSumWithDiscount) {
+            return true;
+        }
+        return false;
+    }
+
+    private getCurrentTotalPercentDiscount() {
+        let currentTotalPercentDiscount = 0;
+        if (this.checkIsPromocodesAplied()) {
+            this.activatedPromocodes.forEach((activatedPromocode) => {
+                currentTotalPercentDiscount += activatedPromocode.discount;
+            });
+        }
+        return currentTotalPercentDiscount;
     }
 }

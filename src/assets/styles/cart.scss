@@ -283,7 +283,33 @@
 
 .total-container {
     display: flex;
+    flex-direction: column;
+}
+
+.promo-without-discount-container {
+    display: flex;
     justify-content: space-between;
+}
+
+.total-discount-container {
+    display: inline-flex;
+    justify-content: center;
+    @include font-main($size: 2.5rem, $weight: 600, $color: $color-main, $height: 110%);
+
+    @media screen and (max-width: 550px) {
+        font-size: 2.2rem;
+    }
+}
+
+.sum-content-discount {
+    width: 10rem;
+    display: inline-flex;
+    justify-content: center;
+
+    &::after {
+        content: '$';
+        padding-left: 0.5rem;
+    }
 }
 
 .total-products {
@@ -328,7 +354,7 @@
 
 .promo-codes-discout {
     &::after {
-        content: '$';
+        content: '%';
         padding-left: 0.5rem;
     }
 }
@@ -414,4 +440,8 @@
 
 .decor_right {
     transform: rotateY(180deg);
+}
+
+.crossline {
+    text-decoration: line-through;
 }

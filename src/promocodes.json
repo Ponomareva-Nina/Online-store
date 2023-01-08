@@ -4,19 +4,22 @@
             "id": 1,
             "value": "RS",
             "title": "Promo for RS - ",
-            "discount": 5
+            "discount": 5,
+            "active": false
         },
         {
             "id": 2,
             "value": "EMP",
             "title": "Promo for EMAP- ",
-            "discount": 10
+            "discount": 10,
+            "active": false
         },
         {
             "id": 3,
             "value": "FRONT",
             "title": "Promo for FrontEnd - ",
-            "discount": 15
+            "discount": 15,
+            "active": false
         }
     ]
 }
