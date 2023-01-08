@@ -19,19 +19,19 @@ import AppController from '../app/app';
 import CartModel from '../models/CartModel';
 
 export default class CartView implements ViewComponent {
-    container: DocumentFragment;
-    appController: AppController;
-    cartModel: CartModel;
-    cartContainer: HTMLElement;
-    totalPerProduct: number;
-    quantity: HTMLSpanElement;
-    cartSum: HTMLSpanElement;
-    totalProductsContent: HTMLSpanElement;
-    totalSumContent: HTMLSpanElement;
-    promoCodesTitle: HTMLSpanElement;
-    promoCodesContainer: HTMLDivElement;
-    totalSumDiscountContent: HTMLSpanElement;
-    totalDiscountContainer: HTMLParagraphElement;
+    public container: DocumentFragment;
+    public appController: AppController;
+    public cartModel: CartModel;
+    private cartContainer: HTMLElement;
+    public totalPerProduct: number;
+    private quantity: HTMLSpanElement;
+    private cartSum: HTMLSpanElement;
+    private totalProductsContent: HTMLSpanElement;
+    private totalSumContent: HTMLSpanElement;
+    private promoCodesTitle: HTMLSpanElement;
+    private promoCodesContainer: HTMLDivElement;
+    private totalSumDiscountContent: HTMLSpanElement;
+    private totalDiscountContainer: HTMLParagraphElement;
 
     constructor(cart: CartModel, controller: AppController) {
         this.appController = controller;
@@ -168,7 +168,6 @@ export default class CartView implements ViewComponent {
     }
 
     public updatePage() {
-        //берет из модели текущие товары корзины и отрисовывает их
         this.destroyAllChildNodes(this.cartContainer);
         this.cartModel.productsInCart.forEach((card) => {
             const productContainer = createElem(HTMLTags.DIV, 'product-container');
