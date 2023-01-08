@@ -23,25 +23,21 @@ export default class StoreModel {
     }
 
     public handleParams(params: Props) {
-        let newCurrentProducts = this.products;
+        this.currentProducts = this.products;
 
         if (params.faculty) {
-            newCurrentProducts = this.filterByFaculty(params.faculty, newCurrentProducts);
+            this.currentProducts = this.filterByFaculty(params.faculty, this.currentProducts);
         }
 
         if (params.search) {
             const searchValue = params.search.join('');
-            const filteredProducts = this.filterCardsByKeyword(searchValue, newCurrentProducts);
-            newCurrentProducts = filteredProducts;
+            this.currentProducts = this.filterCardsByKeyword(searchValue, this.currentProducts);
         }
 
         if (params.sort) {
             const sortValue = params.sort.join('');
-            const sortedProducts = this.sortProducts(sortValue, newCurrentProducts);
-            newCurrentProducts = sortedProducts;
+            this.currentProducts = this.sortProducts(sortValue, this.currentProducts);
         }
-
-        this.currentProducts = newCurrentProducts;
     }
 
     public filterByFaculty(valuesArr: string[], arr: Array<Product>) {
