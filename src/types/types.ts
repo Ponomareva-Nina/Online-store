@@ -41,3 +41,23 @@ export enum SortLabels {
     MAX_PRICE = 'Price (high to low)',
     DISCOUNT = 'Discount',
 }
+
+export enum CategoryFiltersOptions {
+    CLOTHING = 'clothing',
+    BAGS = 'bags',
+    COLLECTABLES = 'collectables',
+    HOMEWEAR = 'homewear',
+    JEWELLERY = 'jewellery',
+    KIDS = 'kids',
+    SOUVENIRS = 'souvenirs',
+    TRAVEL = 'travel',
+    TRUNKS = 'trunks',
+    WANDS = 'wands',
+}
+
+export enum FacultyFiltersOptions {
+    GRYFFINDOR = 'gryffindor',
+    SLYTHERIN = 'slytherin',
+    RAVENCLAW = 'ravenclaw',
+    HUFFLEPUFF = 'hufflepuff',
+}
