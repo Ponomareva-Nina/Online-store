@@ -14,6 +14,46 @@ export default class StoreModel {
         this.currentProducts = data.products;
     }
 
+    public getMinPrice() {
+        let minPrice = this.currentProducts[0].price;
+        this.currentProducts.forEach((product) => {
+            if (product.price < minPrice) {
+                minPrice = product.price;
+            }
+        });
+        return minPrice;
+    }
+
+    public getMaxPrice() {
+        let maxPrice = this.currentProducts[0].price;
+        this.currentProducts.forEach((product) => {
+            if (product.price > maxPrice) {
+                maxPrice = product.price;
+            }
+        });
+        return maxPrice;
+    }
+
+    public getMinStock() {
+        let minStock = this.currentProducts[0].quantity;
+        this.currentProducts.forEach((product) => {
+            if (product.quantity < minStock) {
+                minStock = product.quantity;
+            }
+        });
+        return minStock;
+    }
+
+    public getMaxStock() {
+        let maxStock = this.currentProducts[0].quantity;
+        this.currentProducts.forEach((product) => {
+            if (product.quantity > maxStock) {
+                maxStock = product.quantity;
+            }
+        });
+        return maxStock;
+    }
+
     public getProductById(id: number) {
         return this.products.find((product) => product.id === id);
     }
