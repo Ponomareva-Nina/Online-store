@@ -1,5 +1,5 @@
-import { HTMLTags, PossibleUrlParams, SortLabels, SortOptions } from '../../types/types';
-import { createElem, createLabel, createRadioButton } from '../../utils/utils';
+import { FacultyFiltersOptions, HTMLTags, PossibleUrlParams, SortLabels, SortOptions } from '../../types/types';
+import { createCheckbox, createElem, createLabel, createRadioButton } from '../../utils/utils';
 import { NO_PRODUCTS_MESSAGE, STORE_VIEW_TITLE } from '../../constants/string-constants';
 import AppController from '../app/app';
 import StoreModel from '../models/StoreModel';
@@ -43,8 +43,40 @@ export default class StoreView implements ViewComponent {
         const sidePanelContainer = createElem(HTMLTags.DIV, ClassNames.SIDE_PANEL) as HTMLDivElement;
         const searchInput = this.createSearchInput();
         const sorts = this.createSorts();
-        sidePanelContainer.append(searchInput, sorts);
+        const facultyFilters = this.createFacultyFilters();
+        sidePanelContainer.append(searchInput, sorts, facultyFilters);
         return sidePanelContainer;
+    }
+
+    private createFacultyFilters() {
+        const filterContainer = createElem(HTMLTags.DIV, ClassNames.FILTER_CONTAINER);
+        const FilterByFacultyTitle = createElem(HTMLTags.P, ClassNames.FILTER_CONTAINER_TITLE, 'Choose faculty');
+        filterContainer.append(FilterByFacultyTitle);
+        const checkboxName = 'faculty-filter';
+        Object.keys(FacultyFiltersOptions).forEach((key) => {
+            const value = FacultyFiltersOptions[key as keyof typeof FacultyFiltersOptions];
+            const checkbox = createCheckbox(checkboxName, ClassNames.FILTER_CHECKBOX, value, value);
+            checkbox.addEventListener('click', () => {
+                this.handleFacultyFilter(checkbox);
+            });
+            const label = createLabel(value, ClassNames.SORT_LABEL, value);
+            if (this.currentParams && this.currentParams[PossibleUrlParams.FACULTY]) {
+                const checkedFaculties = this.currentParams[PossibleUrlParams.FACULTY];
+                if (checkedFaculties.includes(value)) {
+                    checkbox.checked = true;
+                }
+            }
+            filterContainer.append(checkbox, label);
+        });
+        return filterContainer;
+    }
+
+    private handleFacultyFilter(checkbox: HTMLInputElement) {
+        if (checkbox.checked) {
+            this.appController.router.addParameterToUrl(PossibleUrlParams.FACULTY, checkbox.value);
+        } else {
+            this.appController.router.deleteParameterFromUrl(PossibleUrlParams.FACULTY, checkbox.value);
+        }
     }
 
     private createSorts() {
@@ -64,7 +96,6 @@ export default class StoreView implements ViewComponent {
                 this.currentParams[PossibleUrlParams.SORT] &&
                 this.currentParams[PossibleUrlParams.SORT].join('') === value
             ) {
-                this.storeModel.sortProduct(value);
                 radioBtn.checked = true;
             }
             sortContainer.append(radioBtn, label);
@@ -90,7 +121,6 @@ export default class StoreView implements ViewComponent {
         if (this.currentParams && this.currentParams[PossibleUrlParams.SEARCH]) {
             const searchValue = this.currentParams[PossibleUrlParams.SEARCH].join(' ');
             inputEl.value = searchValue;
-            this.storeModel.filterCardsByKeyword(searchValue);
         }
         inputEl.addEventListener('change', (e) => {
             const target = e.target as HTMLInputElement;
@@ -102,7 +132,6 @@ export default class StoreView implements ViewComponent {
     }
 
     private handleSearchInput(value: string) {
-        this.storeModel.filterCardsByKeyword(value);
         this.appController.router.addParameterToUrl(PossibleUrlParams.SEARCH, value);
     }
 
@@ -116,9 +145,9 @@ export default class StoreView implements ViewComponent {
     }
 
     public render(params?: Props) {
-        this.storeModel.restoreCurrentProducts();
         if (params) {
             this.currentParams = params;
+            this.storeModel.handleParams(params);
         }
         this.createPage();
         return this.container;

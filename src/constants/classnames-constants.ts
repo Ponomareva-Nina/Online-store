@@ -25,4 +25,7 @@ export enum ClassNames {
     SORT_CONTAINER = 'sort-container',
     SORT_RADIO = 'sort-container__radio',
     SORT_LABEL = 'sort-container__label',
+    FILTER_CONTAINER = 'filter-container',
+    FILTER_CONTAINER_TITLE = 'filter-container__title',
+    FILTER_CHECKBOX = 'filter-container__checkbox',
 }
