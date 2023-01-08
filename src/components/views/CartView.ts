@@ -32,6 +32,7 @@ export default class CartView implements ViewComponent {
     private promoCodesContainer: HTMLDivElement;
     private totalSumDiscountContent: HTMLSpanElement;
     private totalDiscountContainer: HTMLParagraphElement;
+    private promoContainer: HTMLDivElement;
 
     constructor(cart: CartModel, controller: AppController) {
         this.appController = controller;
@@ -47,6 +48,7 @@ export default class CartView implements ViewComponent {
         this.promoCodesContainer = createElem(HTMLTags.DIV, 'promo-codes-container') as HTMLDivElement;
         this.totalSumDiscountContent = createElem(HTMLTags.SPAN, 'sum-content-discount');
         this.totalDiscountContainer = createElem(HTMLTags.P, 'total-discount-container') as HTMLParagraphElement;
+        this.promoContainer = createElem(HTMLTags.DIV, 'promo-container') as HTMLDivElement;
     }
 
     public createPage() {
@@ -67,8 +69,8 @@ export default class CartView implements ViewComponent {
             });
         }
         if (productInCart.length !== 0) {
-            const promo = this.createPromoBlock();
-            this.container.append(title, this.cartContainer, promo);
+            this.createPromoBlock();
+            this.container.append(title, this.cartContainer, this.promoContainer);
         } else {
             this.container.append(title, this.cartContainer);
             this.checkCartIsEmpty();
@@ -76,7 +78,7 @@ export default class CartView implements ViewComponent {
         // const promo = this.createPromoBlock();
         // this.container.append(title, this.cartContainer, promo);
         //this.checkCartIsEmpty();
-        return this.container;
+        //return this.container;
     }
 
     private createCard(card: Product) {
@@ -138,7 +140,7 @@ export default class CartView implements ViewComponent {
             this.updateCartInfo();
             this.updatePromoBlock();
             this.updatePage();
-            this.updateDiscountInfo();
+            //this.updateDiscountInfo();
         });
         buttonsContainer.append(counterPriceContainer, cartDeleteProduct);
 
@@ -180,13 +182,11 @@ export default class CartView implements ViewComponent {
     public createCartIcon() {
         const cartContainer = createElem(HTMLTags.DIV, 'cart-container');
         const link = createElem(HTMLTags.LINK, 'cart-link');
-
         const cartIcon = createElem(HTMLTags.SPAN, 'cart-icon');
 
-        link.append(cartIcon, this.quantity);
         this.quantity.textContent = `${this.cartModel.productsQuantity}`;
-
-        cartContainer.append(this.cartSum, link);
+        link.append(this.quantity, cartIcon, this.cartSum);
+        cartContainer.append(link);
         this.cartSum.textContent = `${this.cartModel.totalSum}`;
         cartContainer.addEventListener('click', (e) => {
             this.appController.router.changeCurrentPage(LINKS.Cart);
@@ -201,8 +201,7 @@ export default class CartView implements ViewComponent {
     }
 
     public createPromoBlock() {
-        this.destroyAllChildNodes(this.promoCodesContainer);
-        const promoContainer = createElem(HTMLTags.DIV, 'promo-container');
+        this.destroyAllChildNodes(this.promoContainer);
         const promoTitle = createElem(HTMLTags.P, 'page-header', PROMO_TITLE);
         const promoContentContainer = createElem(HTMLTags.DIV, 'content-container');
 
@@ -260,8 +259,7 @@ export default class CartView implements ViewComponent {
             promoBuyContainer
         );
 
-        promoContainer.append(promoTitle, promoContentContainer);
-        return promoContainer;
+        this.promoContainer.append(promoTitle, promoContentContainer);
     }
 
     public updatePromoBlock() {
@@ -306,7 +304,7 @@ export default class CartView implements ViewComponent {
         promoCodeContainer.append(promoCodesDescription, promoCodeButtom);
         this.promoCodesContainer.append(promoCodeContainer);
 
-        return this.promoCodesContainer;
+        //return this.promoCodesContainer;
     }
 
     public createBlockWithDiscountSum() {
@@ -329,7 +327,7 @@ export default class CartView implements ViewComponent {
     public updateDiscountInfo() {
         this.totalSumDiscountContent.textContent = `${this.cartModel.totalSumWithDiscount}`;
         if (this.cartModel.productsInCart.length === 0) {
-            this.destroyAllChildNodes(this.totalDiscountContainer);
+            this.destroyAllChildNodes(this.promoContainer);
         }
     }
 
