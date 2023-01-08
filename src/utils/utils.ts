@@ -64,3 +64,13 @@ export function createLabel(relevantInputId = '', className = '', text = '') {
     label.innerText = text;
     return label;
 }
+
+export function createRange(min = '0', max = '200', value = '', className = '') {
+    const range = document.createElement('input');
+    range.setAttribute('type', 'range');
+    range.setAttribute('min', min);
+    range.setAttribute('max', max);
+    range.setAttribute('value', value);
+    range.className = className;
+    return range;
+}

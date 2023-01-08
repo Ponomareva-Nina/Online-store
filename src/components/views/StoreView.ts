@@ -6,7 +6,7 @@ import {
     SortLabels,
     SortOptions,
 } from '../../types/types';
-import { createCheckbox, createElem, createLabel, createRadioButton } from '../../utils/utils';
+import { createCheckbox, createElem, createLabel, createRadioButton, createRange } from '../../utils/utils';
 import { NO_PRODUCTS_MESSAGE, STORE_VIEW_TITLE } from '../../constants/string-constants';
 import AppController from '../app/app';
 import StoreModel from '../models/StoreModel';
@@ -52,8 +52,31 @@ export default class StoreView implements ViewComponent {
         const sorts = this.createSorts();
         const facultyFilters = this.createFacultyFilters();
         const categoryFilters = this.createCategoryFilters();
-        sidePanelContainer.append(searchInput, sorts, facultyFilters, categoryFilters);
+        const priceSlider = this.createDualSliders();
+        sidePanelContainer.append(searchInput, sorts, facultyFilters, categoryFilters, priceSlider);
         return sidePanelContainer;
+    }
+
+    private createDualSliders() {
+        const priceSliderContainer = createElem(HTMLTags.DIV, ClassNames.DUAL_SLIDER_CONTAINER);
+        const priceSliderTitle = createElem(HTMLTags.P, ClassNames.DUAL_SLIDER_TITLE, 'Price');
+        const customRange = createElem(HTMLTags.DIV, ClassNames.CUSTOM_RANGE_INPUT_CONTAINER);
+        const priceRangeInputContainer = createElem(HTMLTags.DIV, ClassNames.RANGE_INPUT_CONTAINER);
+        const minPrice = this.storeModel.getMinPrice().toString();
+        const maxPrice = this.storeModel.getMaxPrice().toString();
+        const inputMin = createRange(minPrice, maxPrice, minPrice, ClassNames.DUAL_SLIDER_INPUT);
+        const inputMax = createRange(minPrice, maxPrice, maxPrice, ClassNames.DUAL_SLIDER_INPUT);
+        priceRangeInputContainer.append(inputMin, inputMax);
+        const progressBar = createElem(HTMLTags.DIV, ClassNames.CUSTOM_RANGE__PROGRESS_BAR);
+        customRange.append(progressBar, priceRangeInputContainer);
+
+        const valuesContainer = createElem(HTMLTags.DIV, ClassNames.DUAL_SLIDER_VALUES);
+        const minValue = createElem(HTMLTags.SPAN, ClassNames.DUAL_SLIDER_VALUE_FIELD, `$ ${minPrice}`);
+        const maxValue = createElem(HTMLTags.SPAN, ClassNames.DUAL_SLIDER_VALUE_FIELD, `$ ${maxPrice}`);
+        valuesContainer.append(minValue, maxValue);
+
+        priceSliderContainer.append(priceSliderTitle, customRange, valuesContainer);
+        return priceSliderContainer;
     }
 
     private createCategoryFilters() {

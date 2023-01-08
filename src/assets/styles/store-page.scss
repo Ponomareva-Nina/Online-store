@@ -61,7 +61,8 @@
 }
 
 .sort-container,
-.filter-container {
+.filter-container,
+.dual-slider-container {
     display: flex;
     flex-direction: column;
     row-gap: 1rem;
@@ -126,7 +127,8 @@
 
 
 .sort-container__title,
-.filter-container__title {
+.filter-container__title,
+.dual-slider-container__title {
     @include font-main(2rem);
     color: $color-accent;
     text-align: center;

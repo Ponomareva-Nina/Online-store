@@ -29,4 +29,12 @@ export enum ClassNames {
     FILTER_CONTAINER_TITLE = 'filter-container__title',
     FILTER_CHECKBOX = 'filter-container__checkbox',
     FILTER_LABEL = 'filter-container__label',
+    DUAL_SLIDER_CONTAINER = 'dual-slider-container',
+    RANGE_INPUT_CONTAINER = 'range-input-container',
+    DUAL_SLIDER_TITLE = 'dual-slider-container__title',
+    DUAL_SLIDER_INPUT = 'range-input',
+    CUSTOM_RANGE_INPUT_CONTAINER = 'custom-range-container',
+    CUSTOM_RANGE__PROGRESS_BAR = 'custom-progress-bar',
+    DUAL_SLIDER_VALUES = 'dual-slider-container__text-values',
+    DUAL_SLIDER_VALUE_FIELD = 'text-values__field',
 }
