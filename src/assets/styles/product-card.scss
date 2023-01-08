@@ -10,9 +10,6 @@
     background-color: $color-card-bg;
     padding: 1rem;
 
-    &:hover {
-        cursor: pointer;
-    }
     .card__title {
         @include font-main($weight: 600);
         overflow: hidden;
