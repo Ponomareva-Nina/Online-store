@@ -33,13 +33,13 @@ export enum HTMLTags {
 export enum SortOptions {
     MIN_PRICE = 'min-price',
     MAX_PRICE = 'max-price',
-    DISCOUNT = 'discount',
+    DISCOUNT = 'max-discount',
 }
 
 export enum SortLabels {
     MIN_PRICE = 'Price (low to high)',
     MAX_PRICE = 'Price (high to low)',
-    DISCOUNT = 'Discount',
+    DISCOUNT = 'Max discount',
 }
 
 export enum CategoryFiltersOptions {

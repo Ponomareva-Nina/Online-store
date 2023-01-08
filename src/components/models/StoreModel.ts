@@ -129,7 +129,7 @@ export default class StoreModel {
         }
         if (value === SortOptions.DISCOUNT) {
             sortedProducts = arr.sort((a, b) => {
-                return a.discount - b.discount;
+                return b.discount - a.discount;
             });
         }
         return sortedProducts;
