@@ -15,12 +15,14 @@ class Router implements RouterInterface {
     appController: AppController;
     UrlSeparator: RegExp;
     currentPagePath: string;
+    currentRoute: Route | null;
 
     constructor(controller: AppController, routes: Array<Route>) {
         this.appController = controller;
         this.routes = routes;
         this.UrlSeparator = /\?|&|\//;
         this.currentPagePath = '';
+        this.currentRoute = null;
     }
 
     private updateCurrentPath() {
@@ -55,20 +57,16 @@ class Router implements RouterInterface {
     }
 
     public addParameterToUrl(name: PossibleUrlParams, value: string): void {
-        const currentRoute = this.matchUrl(this.currentPagePath);
-
-        if (currentRoute) {
-            currentRoute.addParameter(name, value);
-            this.updatePageUrl(currentRoute);
+        if (this.currentRoute) {
+            this.currentRoute.addParameter(name, value);
+            this.updatePageUrl(this.currentRoute);
         }
     }
 
     public deleteParameterFromUrl(name: PossibleUrlParams, value: string): void {
-        const currentRoute = this.matchUrl(this.currentPagePath);
-
-        if (currentRoute) {
-            currentRoute.deleteParameter(name, value);
-            this.updatePageUrl(currentRoute);
+        if (this.currentRoute) {
+            this.currentRoute.deleteParameter(name, value);
+            this.updatePageUrl(this.currentRoute);
         }
     }
 
@@ -121,8 +119,9 @@ class Router implements RouterInterface {
         const matchedRoute = this.matchUrl(path);
 
         if (matchedRoute) {
-            const params = matchedRoute.getParameters();
-            this.appController.updatePage(matchedRoute.getView(), params);
+            this.currentRoute = matchedRoute;
+            const params = this.currentRoute.getParameters();
+            this.appController.updatePage(this.currentRoute.getView(), params);
         } else {
             window.location.href = 'https://Ponomareva-Nina.github.io/Online-store/404.html';
         }
