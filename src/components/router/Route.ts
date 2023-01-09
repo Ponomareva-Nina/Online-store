@@ -29,6 +29,16 @@ export default class Route {
         }
     }
 
+    public updatePriceParameter(name: PossibleUrlParams, minValue: string, maxValue: string) {
+        this.parameters.stock = [];
+        this.parameters.price = [minValue, maxValue];
+    }
+
+    public updateStockParameter(name: PossibleUrlParams, minValue: string, maxValue: string) {
+        this.parameters.price = [];
+        this.parameters.stock = [minValue, maxValue];
+    }
+
     public deleteParameter(name: PossibleUrlParams, value: string) {
         const parameters = this.parameters[name];
 

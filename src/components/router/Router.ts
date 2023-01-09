@@ -56,6 +56,13 @@ class Router implements RouterInterface {
         window.location.hash = newPath;
     }
 
+    public addPriceRangeToUrl(name: PossibleUrlParams, minValue: string, maxValue: string): void {
+        if (this.currentRoute) {
+            this.currentRoute.updatePriceParameter(name, minValue, maxValue);
+            this.updatePageUrl(this.currentRoute);
+        }
+    }
+
     public addParameterToUrl(name: PossibleUrlParams, value: string): void {
         if (this.currentRoute) {
             this.currentRoute.addParameter(name, value);
