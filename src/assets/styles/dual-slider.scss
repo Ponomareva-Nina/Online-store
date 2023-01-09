@@ -41,14 +41,6 @@ input[type='range']::-moz-range-thumb {
     border-radius: .5rem;
 }
 
-.custom-progress-bar {
-    position: absolute;
-    background-color: $color-accent;
-    top: 0;
-    bottom: 0;
-    left: 25%;
-    right: 25%;
-}
 .dual-slider-container__text-values {
     @include font-main(2rem, 400, $color-accent);
     display: flex;
