@@ -49,34 +49,141 @@ export default class StoreView implements ViewComponent {
     private createSidePanel() {
         const sidePanelContainer = createElem(HTMLTags.DIV, ClassNames.SIDE_PANEL) as HTMLDivElement;
         const searchInput = this.createSearchInput();
+        const resetAllBtn = this.createResetFiltersBtn();
         const sorts = this.createSorts();
         const facultyFilters = this.createFacultyFilters();
         const categoryFilters = this.createCategoryFilters();
-        const priceSlider = this.createDualSliders();
-        sidePanelContainer.append(searchInput, sorts, facultyFilters, categoryFilters, priceSlider);
+        const priceSlider = this.createPriceDualSlider();
+        const stockSlider = this.createStockDualSlider();
+        const copyLinkBtn = this.createCopyLinkBtn();
+        sidePanelContainer.append(
+            searchInput,
+            copyLinkBtn,
+            resetAllBtn,
+            sorts,
+            facultyFilters,
+            categoryFilters,
+            priceSlider,
+            stockSlider
+        );
         return sidePanelContainer;
     }
 
-    private createDualSliders() {
+    private createCopyLinkBtn() {
+        const container = createElem(HTMLTags.DIV, ClassNames.FILTER_BTNS_CONTAINER);
+        const copyLinkBtn = createElem(HTMLTags.BUTTON, 'side-panel-btn copy-link-btn', 'Copy link');
+        copyLinkBtn.addEventListener('click', () => {
+            const path = window.location.href;
+            navigator.clipboard.writeText(path).then(function () {
+                copyLinkBtn.classList.add('disabled');
+                copyLinkBtn.textContent = 'Link copied';
+            });
+        });
+        container.append(copyLinkBtn);
+        return container;
+    }
+
+    private createResetFiltersBtn() {
+        const container = createElem(HTMLTags.DIV, ClassNames.FILTER_BTNS_CONTAINER);
+
+        const radioNameIdValue = 'reset';
+        const showAllButton = createRadioButton(
+            radioNameIdValue,
+            ClassNames.FILTER_CHECKBOX,
+            radioNameIdValue,
+            radioNameIdValue
+        );
+        const showAllLabel = createLabel(radioNameIdValue, ClassNames.FILTER_LABEL, 'Show all products');
+
+        if (
+            this.currentParams &&
+            !Object.keys(this.currentParams).includes(PossibleUrlParams.CATEGORY) &&
+            !Object.keys(this.currentParams).includes(PossibleUrlParams.FACULTY) &&
+            !Object.keys(this.currentParams).includes(PossibleUrlParams.PRICE) &&
+            !Object.keys(this.currentParams).includes(PossibleUrlParams.STOCK)
+        ) {
+            showAllButton.checked = true;
+        }
+
+        showAllButton.addEventListener('click', () => {
+            if (showAllButton.checked) {
+                this.appController.router.clearAllFilters();
+            }
+        });
+        container.append(showAllButton, showAllLabel);
+        return container;
+    }
+
+    private createPriceDualSlider() {
         const priceSliderContainer = createElem(HTMLTags.DIV, ClassNames.DUAL_SLIDER_CONTAINER);
         const priceSliderTitle = createElem(HTMLTags.P, ClassNames.DUAL_SLIDER_TITLE, 'Price');
-        const customRange = createElem(HTMLTags.DIV, ClassNames.CUSTOM_RANGE_INPUT_CONTAINER);
-        const priceRangeInputContainer = createElem(HTMLTags.DIV, ClassNames.RANGE_INPUT_CONTAINER);
-        const minPrice = this.storeModel.getMinPrice().toString();
-        const maxPrice = this.storeModel.getMaxPrice().toString();
-        const inputMin = createRange(minPrice, maxPrice, minPrice, ClassNames.DUAL_SLIDER_INPUT);
-        const inputMax = createRange(minPrice, maxPrice, maxPrice, ClassNames.DUAL_SLIDER_INPUT);
-        priceRangeInputContainer.append(inputMin, inputMax);
-        const progressBar = createElem(HTMLTags.DIV, ClassNames.CUSTOM_RANGE__PROGRESS_BAR);
-        customRange.append(progressBar, priceRangeInputContainer);
+        const RangeInputContainer = createElem(HTMLTags.DIV, ClassNames.CUSTOM_RANGE_INPUT_CONTAINER);
+        const allProductsMinPrice = this.storeModel.absoluteMinPrice.toString();
+        const allProductsMaxPrice = this.storeModel.absoluteMaxPrice.toString();
+        const [minPrice, maxPrice] = this.currentParams?.price || [
+            Math.floor(this.storeModel.getCurrentMinPrice()).toString(),
+            Math.ceil(this.storeModel.getCurrentMaxPrice()).toString(),
+        ];
+        const inputMin = createRange(allProductsMinPrice, allProductsMaxPrice, minPrice, ClassNames.DUAL_SLIDER_INPUT);
+        const inputMax = createRange(allProductsMinPrice, allProductsMaxPrice, maxPrice, ClassNames.DUAL_SLIDER_INPUT);
+        inputMin.addEventListener('change', () => {
+            this.handlePriceDualSlider(inputMin, inputMax);
+        });
+        inputMax.addEventListener('change', () => {
+            this.handlePriceDualSlider(inputMin, inputMax);
+        });
+        RangeInputContainer.append(inputMin, inputMax);
 
         const valuesContainer = createElem(HTMLTags.DIV, ClassNames.DUAL_SLIDER_VALUES);
         const minValue = createElem(HTMLTags.SPAN, ClassNames.DUAL_SLIDER_VALUE_FIELD, `$ ${minPrice}`);
         const maxValue = createElem(HTMLTags.SPAN, ClassNames.DUAL_SLIDER_VALUE_FIELD, `$ ${maxPrice}`);
         valuesContainer.append(minValue, maxValue);
-
-        priceSliderContainer.append(priceSliderTitle, customRange, valuesContainer);
+        priceSliderContainer.append(priceSliderTitle, RangeInputContainer, valuesContainer);
         return priceSliderContainer;
+    }
+
+    private createStockDualSlider() {
+        const stockSliderContainer = createElem(HTMLTags.DIV, ClassNames.DUAL_SLIDER_CONTAINER);
+        const stockSliderTitle = createElem(HTMLTags.P, ClassNames.DUAL_SLIDER_TITLE, 'Stock');
+        const RangeInputContainer = createElem(HTMLTags.DIV, ClassNames.CUSTOM_RANGE_INPUT_CONTAINER);
+        const allProductsMinStock = this.storeModel.absoluteMinStock.toString();
+        const allProductsMaxStock = this.storeModel.absoluteMaxStock.toString();
+        const [minStock, maxStock] = this.currentParams?.stock || [
+            Math.floor(this.storeModel.getCurrentMinStock()).toString(),
+            Math.ceil(this.storeModel.getCurrentMaxStock()).toString(),
+        ];
+        const inputMin = createRange(allProductsMinStock, allProductsMaxStock, minStock, ClassNames.DUAL_SLIDER_INPUT);
+        const inputMax = createRange(allProductsMinStock, allProductsMaxStock, maxStock, ClassNames.DUAL_SLIDER_INPUT);
+        inputMin.addEventListener('change', () => {
+            this.handleStockDualSlider(inputMin, inputMax);
+        });
+        inputMax.addEventListener('change', () => {
+            this.handleStockDualSlider(inputMin, inputMax);
+        });
+        RangeInputContainer.append(inputMin, inputMax);
+
+        const valuesContainer = createElem(HTMLTags.DIV, ClassNames.DUAL_SLIDER_VALUES);
+        const minValue = createElem(HTMLTags.SPAN, ClassNames.DUAL_SLIDER_VALUE_FIELD, `${minStock}`);
+        const maxValue = createElem(HTMLTags.SPAN, ClassNames.DUAL_SLIDER_VALUE_FIELD, `${maxStock}`);
+        valuesContainer.append(minValue, maxValue);
+        stockSliderContainer.append(stockSliderTitle, RangeInputContainer, valuesContainer);
+        return stockSliderContainer;
+    }
+
+    private handlePriceDualSlider(inputMin: HTMLInputElement, inputMax: HTMLInputElement) {
+        if (Number(inputMin.value) > Number(inputMax.value)) {
+            this.appController.router.addPriceRangeToUrl(inputMax.value, inputMin.value);
+        } else {
+            this.appController.router.addPriceRangeToUrl(inputMin.value, inputMax.value);
+        }
+    }
+
+    private handleStockDualSlider(inputMin: HTMLInputElement, inputMax: HTMLInputElement) {
+        if (Number(inputMin.value) > Number(inputMax.value)) {
+            this.appController.router.addStockRangeToUrl(inputMax.value, inputMin.value);
+        } else {
+            this.appController.router.addStockRangeToUrl(inputMin.value, inputMax.value);
+        }
     }
 
     private createCategoryFilters() {

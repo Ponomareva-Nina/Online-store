@@ -41,17 +41,19 @@ input[type='range']::-moz-range-thumb {
     border-radius: .5rem;
 }
 
-.custom-progress-bar {
-    position: absolute;
-    background-color: $color-accent;
-    top: 0;
-    bottom: 0;
-    left: 25%;
-    right: 25%;
-}
 .dual-slider-container__text-values {
     @include font-main(2rem, 400, $color-accent);
     display: flex;
     gap: 1rem;
     justify-content: space-between;
+    position: relative;
+
+    &::before {
+        position: absolute;
+        content: '\27F7';
+        width: 2rem;
+        height: min-content;
+        top: 0;
+        left: calc(50% - 2rem);
+    }
 }
