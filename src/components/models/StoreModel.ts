@@ -7,14 +7,18 @@ export default class StoreModel {
     public appController: AppController;
     private products: Product[];
     public currentProducts: Product[];
+    absoluteMinPrice: number;
+    absoluteMaxPrice: number;
 
     constructor(controller: AppController) {
         this.appController = controller;
         this.products = data.products;
         this.currentProducts = data.products;
+        this.absoluteMinPrice = 3;
+        this.absoluteMaxPrice = 190;
     }
 
-    public getMinPrice() {
+    public getCurrentMinPrice() {
         let minPrice = this.currentProducts[0].price;
         this.currentProducts.forEach((product) => {
             if (product.price < minPrice) {
@@ -24,7 +28,7 @@ export default class StoreModel {
         return minPrice;
     }
 
-    public getMaxPrice() {
+    public getCurrentMaxPrice() {
         let maxPrice = this.currentProducts[0].price;
         this.currentProducts.forEach((product) => {
             if (product.price > maxPrice) {
@@ -34,7 +38,7 @@ export default class StoreModel {
         return maxPrice;
     }
 
-    public getMinStock() {
+    public getCurrentMinStock() {
         let minStock = this.currentProducts[0].quantity;
         this.currentProducts.forEach((product) => {
             if (product.quantity < minStock) {
@@ -44,7 +48,7 @@ export default class StoreModel {
         return minStock;
     }
 
-    public getMaxStock() {
+    public getCurrentMaxStock() {
         let maxStock = this.currentProducts[0].quantity;
         this.currentProducts.forEach((product) => {
             if (product.quantity > maxStock) {
@@ -78,10 +82,22 @@ export default class StoreModel {
             this.currentProducts = this.filterCardsByKeyword(searchValue, this.currentProducts);
         }
 
+        if (params.price) {
+            const [min, max] = params.price;
+            this.currentProducts = this.filterByPriceRange(Number(min), Number(max), this.currentProducts);
+        }
+
         if (params.sort) {
             const sortValue = params.sort.join('');
             this.currentProducts = this.sortProducts(sortValue, this.currentProducts);
         }
+    }
+
+    private filterByPriceRange(minValue: number, maxValue: number, arr: Array<Product>) {
+        const filteredArr = arr.filter((product) => {
+            return product.price >= minValue && product.price <= maxValue;
+        });
+        return filteredArr;
     }
 
     private filterByCategory(valuesArr: string[], arr: Array<Product>) {

@@ -52,31 +52,45 @@ export default class StoreView implements ViewComponent {
         const sorts = this.createSorts();
         const facultyFilters = this.createFacultyFilters();
         const categoryFilters = this.createCategoryFilters();
-        const priceSlider = this.createDualSliders();
+        const priceSlider = this.createPriceDualSlider();
         sidePanelContainer.append(searchInput, sorts, facultyFilters, categoryFilters, priceSlider);
         return sidePanelContainer;
     }
 
-    private createDualSliders() {
+    private createPriceDualSlider() {
         const priceSliderContainer = createElem(HTMLTags.DIV, ClassNames.DUAL_SLIDER_CONTAINER);
         const priceSliderTitle = createElem(HTMLTags.P, ClassNames.DUAL_SLIDER_TITLE, 'Price');
-        const customRange = createElem(HTMLTags.DIV, ClassNames.CUSTOM_RANGE_INPUT_CONTAINER);
-        const priceRangeInputContainer = createElem(HTMLTags.DIV, ClassNames.RANGE_INPUT_CONTAINER);
-        const minPrice = this.storeModel.getMinPrice().toString();
-        const maxPrice = this.storeModel.getMaxPrice().toString();
-        const inputMin = createRange(minPrice, maxPrice, minPrice, ClassNames.DUAL_SLIDER_INPUT);
-        const inputMax = createRange(minPrice, maxPrice, maxPrice, ClassNames.DUAL_SLIDER_INPUT);
-        priceRangeInputContainer.append(inputMin, inputMax);
-        const progressBar = createElem(HTMLTags.DIV, ClassNames.CUSTOM_RANGE__PROGRESS_BAR);
-        customRange.append(progressBar, priceRangeInputContainer);
+        const RangeInputContainer = createElem(HTMLTags.DIV, ClassNames.CUSTOM_RANGE_INPUT_CONTAINER);
+        const allProductsMinPrice = this.storeModel.absoluteMinPrice.toString();
+        const allProductsMaxPrice = this.storeModel.absoluteMaxPrice.toString();
+        const [minPrice, maxPrice] = this.currentParams?.price || [
+            Math.ceil(this.storeModel.getCurrentMaxPrice()).toString(),
+            Math.ceil(this.storeModel.getCurrentMaxPrice()).toString(),
+        ];
+        const inputMin = createRange(allProductsMinPrice, allProductsMaxPrice, minPrice, ClassNames.DUAL_SLIDER_INPUT);
+        const inputMax = createRange(allProductsMinPrice, allProductsMaxPrice, maxPrice, ClassNames.DUAL_SLIDER_INPUT);
+        inputMin.addEventListener('change', () => {
+            this.handlePriceDualSlider(inputMin, inputMax);
+        });
+        inputMax.addEventListener('change', () => {
+            this.handlePriceDualSlider(inputMin, inputMax);
+        });
+        RangeInputContainer.append(inputMin, inputMax);
 
         const valuesContainer = createElem(HTMLTags.DIV, ClassNames.DUAL_SLIDER_VALUES);
         const minValue = createElem(HTMLTags.SPAN, ClassNames.DUAL_SLIDER_VALUE_FIELD, `$ ${minPrice}`);
         const maxValue = createElem(HTMLTags.SPAN, ClassNames.DUAL_SLIDER_VALUE_FIELD, `$ ${maxPrice}`);
         valuesContainer.append(minValue, maxValue);
-
-        priceSliderContainer.append(priceSliderTitle, customRange, valuesContainer);
+        priceSliderContainer.append(priceSliderTitle, RangeInputContainer, valuesContainer);
         return priceSliderContainer;
+    }
+
+    private handlePriceDualSlider(inputMin: HTMLInputElement, inputMax: HTMLInputElement) {
+        if (Number(inputMin.value) > Number(inputMax.value)) {
+            this.appController.router.addPriceRangeToUrl(PossibleUrlParams.PRICE, inputMax.value, inputMin.value);
+        } else {
+            this.appController.router.addPriceRangeToUrl(PossibleUrlParams.PRICE, inputMin.value, inputMax.value);
+        }
     }
 
     private createCategoryFilters() {
