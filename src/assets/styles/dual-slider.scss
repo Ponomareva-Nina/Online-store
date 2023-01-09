@@ -46,4 +46,14 @@ input[type='range']::-moz-range-thumb {
     display: flex;
     gap: 1rem;
     justify-content: space-between;
+    position: relative;
+
+    &::before {
+        position: absolute;
+        content: '\27F7';
+        width: 2rem;
+        height: min-content;
+        top: 0;
+        left: calc(50% - 2rem);
+    }
 }

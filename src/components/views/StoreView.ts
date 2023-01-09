@@ -85,7 +85,7 @@ export default class StoreView implements ViewComponent {
         const allProductsMinPrice = this.storeModel.absoluteMinPrice.toString();
         const allProductsMaxPrice = this.storeModel.absoluteMaxPrice.toString();
         const [minPrice, maxPrice] = this.currentParams?.price || [
-            Math.ceil(this.storeModel.getCurrentMinPrice()).toString(),
+            Math.floor(this.storeModel.getCurrentMinPrice()).toString(),
             Math.ceil(this.storeModel.getCurrentMaxPrice()).toString(),
         ];
         const inputMin = createRange(allProductsMinPrice, allProductsMaxPrice, minPrice, ClassNames.DUAL_SLIDER_INPUT);
@@ -113,7 +113,7 @@ export default class StoreView implements ViewComponent {
         const allProductsMinStock = this.storeModel.absoluteMinStock.toString();
         const allProductsMaxStock = this.storeModel.absoluteMaxStock.toString();
         const [minStock, maxStock] = this.currentParams?.stock || [
-            Math.ceil(this.storeModel.getCurrentMinStock()).toString(),
+            Math.floor(this.storeModel.getCurrentMinStock()).toString(),
             Math.ceil(this.storeModel.getCurrentMaxStock()).toString(),
         ];
         const inputMin = createRange(allProductsMinStock, allProductsMaxStock, minStock, ClassNames.DUAL_SLIDER_INPUT);
@@ -127,8 +127,8 @@ export default class StoreView implements ViewComponent {
         RangeInputContainer.append(inputMin, inputMax);
 
         const valuesContainer = createElem(HTMLTags.DIV, ClassNames.DUAL_SLIDER_VALUES);
-        const minValue = createElem(HTMLTags.SPAN, ClassNames.DUAL_SLIDER_VALUE_FIELD, `$ ${minStock}`);
-        const maxValue = createElem(HTMLTags.SPAN, ClassNames.DUAL_SLIDER_VALUE_FIELD, `$ ${maxStock}`);
+        const minValue = createElem(HTMLTags.SPAN, ClassNames.DUAL_SLIDER_VALUE_FIELD, `${minStock}`);
+        const maxValue = createElem(HTMLTags.SPAN, ClassNames.DUAL_SLIDER_VALUE_FIELD, `${maxStock}`);
         valuesContainer.append(minValue, maxValue);
         stockSliderContainer.append(stockSliderTitle, RangeInputContainer, valuesContainer);
         return stockSliderContainer;

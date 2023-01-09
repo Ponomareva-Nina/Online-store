@@ -11,6 +11,7 @@ export default class StoreModel {
     absoluteMaxPrice: number;
     absoluteMinStock: number;
     absoluteMaxStock: number;
+    firstIndexInArr = 0;
 
     constructor(controller: AppController) {
         this.appController = controller;
@@ -23,43 +24,59 @@ export default class StoreModel {
     }
 
     public getCurrentMinPrice() {
-        let minPrice = this.currentProducts[0].price;
-        this.currentProducts.forEach((product) => {
-            if (product.price < minPrice) {
-                minPrice = product.price;
-            }
-        });
-        return minPrice;
+        if (this.currentProducts.length > 0) {
+            let minPrice = this.currentProducts[this.firstIndexInArr].price;
+            this.currentProducts.forEach((product) => {
+                if (product.price < minPrice) {
+                    minPrice = product.price;
+                }
+            });
+            return minPrice;
+        } else {
+            return this.absoluteMinPrice;
+        }
     }
 
     public getCurrentMaxPrice() {
-        let maxPrice = this.currentProducts[0].price;
-        this.currentProducts.forEach((product) => {
-            if (product.price > maxPrice) {
-                maxPrice = product.price;
-            }
-        });
-        return maxPrice;
+        if (this.currentProducts.length > 0) {
+            let maxPrice = this.currentProducts[this.firstIndexInArr].price;
+            this.currentProducts.forEach((product) => {
+                if (product.price > maxPrice) {
+                    maxPrice = product.price;
+                }
+            });
+            return maxPrice;
+        } else {
+            return this.absoluteMaxPrice;
+        }
     }
 
     public getCurrentMinStock() {
-        let minStock = this.currentProducts[0].quantity;
-        this.currentProducts.forEach((product) => {
-            if (product.quantity < minStock) {
-                minStock = product.quantity;
-            }
-        });
-        return minStock;
+        if (this.currentProducts.length > 0) {
+            let minStock = this.currentProducts[this.firstIndexInArr].quantity;
+            this.currentProducts.forEach((product) => {
+                if (product.quantity < minStock) {
+                    minStock = product.quantity;
+                }
+            });
+            return minStock;
+        } else {
+            return this.absoluteMinStock;
+        }
     }
 
     public getCurrentMaxStock() {
-        let maxStock = this.currentProducts[0].quantity;
-        this.currentProducts.forEach((product) => {
-            if (product.quantity > maxStock) {
-                maxStock = product.quantity;
-            }
-        });
-        return maxStock;
+        if (this.currentProducts.length > 0) {
+            let maxStock = this.currentProducts[this.firstIndexInArr].quantity;
+            this.currentProducts.forEach((product) => {
+                if (product.quantity > maxStock) {
+                    maxStock = product.quantity;
+                }
+            });
+            return maxStock;
+        } else {
+            return this.absoluteMaxStock;
+        }
     }
 
     public getProductById(id: number) {
