@@ -1,0 +1,155 @@
+.order-container {
+    display: none;
+    width: 96.4%;
+    margin: 0 auto;
+    padding: 6% 9%;
+    flex-direction: column;
+    gap: 4rem;
+    position: absolute;
+    top: 9%;
+    left: 2%;
+    z-index: 2;
+    border-radius: 0;
+    background-color: $color-page-bg;
+    border: 1px solid $color-accent;
+    box-shadow: inset 0 0 0 2px #fdfbf8, inset 0 0 0px 4px #a76029;
+
+    @media screen and (max-width: 600px) {
+        gap: 2rem;
+    }
+
+    @media screen and (max-width: 450px) {
+        gap: 1rem;
+    }
+}
+
+.payment-title {
+    @include font-main($size: 2.4rem, $weight: 700, $color: $color-main, $height: 113%);
+    padding-bottom: 2rem;
+}
+
+.personal-info-content {
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+
+    @media screen and (max-width: 600px) {
+        gap: 1rem;
+    }
+}
+
+.payment-input {
+    height: 3.7rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.6rem;
+    border: 1px $color-aux solid;
+    @include font-main($size: 2rem, $weight: 400, $color: $color-aux, $height: 110%);
+}
+
+.personal-input-firstname {
+    @media screen and (max-width: 600px) {
+        grid-column: 1/3;
+    }
+}
+
+.personal-input-lastname {
+
+    @media screen and (max-width: 600px) {
+        grid-column: 1/3;
+    }
+
+}
+
+.contact-input-phone {
+    @media screen and (max-width: 600px) {
+        grid-column: 1/3;
+    }
+}
+
+.contact-input-mail {
+    @media screen and (max-width: 600px) {
+        grid-column: 1/3;
+    }
+}
+
+.personal-input-address {
+    grid-column: 1/3;
+}
+
+.contact-info-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+
+    @media screen and (max-width: 600px) {
+        gap: 1rem;
+    }
+}
+
+.contact-agree-container {
+    display: flex;
+    align-items: center;
+    grid-column: 1/3;
+    @include font-main($size: 2rem, $weight: 400, $color: $color-aux, $height: 110%);
+}
+
+.contact-input-argeement {
+    width: 2.2rem;
+    height: 2.2rem;
+
+}
+
+.contact-label-argeement {
+    padding-left: 1.9rem;
+}
+
+.payment-info-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+
+    @media screen and (max-width: 600px) {
+        gap: 1rem;
+    }
+}
+
+.payment-input-card {
+    grid-column: 1/3;
+}
+
+.payment-input-valid {
+
+    @media screen and (max-width: 600px) {
+        grid-column: 1/3;
+    }
+}
+
+.payment-input-cvv {
+    @media screen and (max-width: 600px) {
+        grid-column: 1/3;
+    }
+}
+
+.checkout-container {
+    margin: auto;
+}
+
+.popup_active {
+    display: flex;
+}
+
+.inactive-order {
+    overflow: hidden;
+
+    &:after {
+        content: "";
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        background-color: rgba(0,0,0,.6);
+        z-index: 0;
+    }
+}

@@ -330,11 +330,7 @@ export default class CartView implements ViewComponent {
             this.destroyAllChildNodes(this.promoContainer);
         }
     }
-    /* так точно не надо делать - showPurchasePopup() должен быть методом в классе Checkout Page, который вешает
-    private showPurchasePopup() {
-        this.container.append(this.checkoutPage.createPayCard());
-    }
-    */
+
     public render() {
         this.createPage();
         return this.container;
