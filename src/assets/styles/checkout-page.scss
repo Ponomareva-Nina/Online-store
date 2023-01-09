@@ -8,7 +8,7 @@
     position: absolute;
     top: 9%;
     left: 2%;
-    z-index: 2;
+    z-index: 10;
     border-radius: 0;
     background-color: $color-page-bg;
     border: 1px solid $color-accent;
@@ -150,6 +150,6 @@
         top: 0;
         left: 0;
         background-color: rgba(0,0,0,.6);
-        z-index: 0;
+        z-index: 5;
     }
 }
