@@ -17,6 +17,8 @@ export default class ProductPage implements ViewComponent {
             const card = new ProductCard(data, this.appController);
             const cardView = card.createFullCard();
             this.container.append(cardView);
+        } else {
+            window.location.href = 'https://Ponomareva-Nina.github.io/Online-store/404.html';
         }
     }
 

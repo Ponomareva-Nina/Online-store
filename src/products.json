@@ -731,24 +731,6 @@
             ]
         },
         {
-            "id": 50,
-            "faculty": "gryffindor",
-            "category": "trunks",
-            "title": "Gryffindor Mini Gift Trunk",
-            "description": "Take home this mini version of the Hogwarts School Trunk, crafted to resemble those used by Hogwarts students travelling on the Hogwarts Express. This bespoke Gryffindor gift trunk features some exclusive items from our knitwear collection, as well as a Hogwarts Acceptance Letter, personalised with your own name and complete with an exclusive supplies list.",
-            "quantity": 28,
-            "price": 75,
-            "discount": 7.56,
-            "thumbnail": "https://cdn.shopify.com/s/files/1/0514/6332/3817/products/UK_MiniTrunkGryff_800x.png",
-            "images": [
-                "https://cdn.shopify.com/s/files/1/0514/6332/3817/products/Gryff_Mascot_PomBeanie_823d0911-7e13-414e-8191-e2d5805c872d_800x.png",
-                "https://cdn.shopify.com/s/files/1/0514/6332/3817/products/Gryff_Mascot_Scarf_335f19b4-32f0-4a88-b084-e937f5846ae0_800x.png",
-                "https://cdn.shopify.com/s/files/1/0514/6332/3817/products/Gryff_Mascot_Gloves_4782f648-7706-403d-be6e-b4adbb196c0a_800x.png",
-                "https://cdn.shopify.com/s/files/1/0514/6332/3817/products/Product_GryffMini2_800x.png",
-                "https://cdn.shopify.com/s/files/1/0514/6332/3817/products/PL00010397_6_bbbb44dd-9038-4b95-a6cd-36e6a9c64894_800x.png"
-            ]
-        },
-        {
             "id": 51,
             "faculty": "gryffindor",
             "category": "wands",
