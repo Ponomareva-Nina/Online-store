@@ -12,11 +12,12 @@ import {
     PROMO_TITLE_TOTAL_SUM_DISCOUNT,
     QUANTITY_TO_COMPARE_ITEMS_IN_CART,
 } from '../../constants/string-constants';
-import { Product, Promocode, ViewComponent } from '../../types/interfaces';
+import { ICheckoutCard, Product, Promocode, ViewComponent } from '../../types/interfaces';
 import { HTMLTags } from '../../types/types';
 import { createElem } from '../../utils/utils';
 import AppController from '../app/app';
 import CartModel from '../models/CartModel';
+import CheckoutPage from './CheckoutPage';
 
 export default class CartView implements ViewComponent {
     public container: DocumentFragment;
@@ -32,6 +33,7 @@ export default class CartView implements ViewComponent {
     private totalSumDiscountContent: HTMLSpanElement;
     private totalDiscountContainer: HTMLParagraphElement;
     private promoContainer: HTMLDivElement;
+    public checkoutPage: ICheckoutCard;
 
     constructor(cart: CartModel, controller: AppController) {
         this.appController = controller;
@@ -47,12 +49,12 @@ export default class CartView implements ViewComponent {
         this.totalSumDiscountContent = createElem(HTMLTags.SPAN, 'sum-content-discount');
         this.totalDiscountContainer = createElem(HTMLTags.P, 'total-discount-container') as HTMLParagraphElement;
         this.promoContainer = createElem(HTMLTags.DIV, 'promo-container') as HTMLDivElement;
+        this.checkoutPage = new CheckoutPage();
     }
 
     public createPage() {
         this.destroyAllChildNodes(this.container);
         this.destroyAllChildNodes(this.cartContainer);
-
         const title = createElem(HTMLTags.H2, 'page-header', CART_TITLE);
 
         const productInCart = this.cartModel.productsInCart;
@@ -245,6 +247,9 @@ export default class CartView implements ViewComponent {
         const promoBuyLeft = createElem(HTMLTags.SPAN, 'decor-buy decor_left');
         const promoBuyButton = createElem(HTMLTags.BUTTON, 'btn buy-button', PROMO_BUY_BUTTON);
         const promoBuyRight = createElem(HTMLTags.SPAN, 'decor-buy decor_right');
+        promoBuyButton.addEventListener('click', () => {
+            this.showPurchasePopup();
+        });
         promoBuyContainer.append(promoBuyLeft, promoBuyButton, promoBuyRight);
 
         promoContentContainer.append(
@@ -321,6 +326,10 @@ export default class CartView implements ViewComponent {
         if (this.cartModel.productsInCart.length === 0) {
             this.destroyAllChildNodes(this.promoContainer);
         }
+    }
+
+    private showPurchasePopup() {
+        this.container.append(this.checkoutPage.createPayCard());
     }
 
     public render() {

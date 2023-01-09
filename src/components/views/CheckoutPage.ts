@@ -9,17 +9,17 @@ import {
 import { ICheckoutCard } from '../../types/interfaces';
 import { HTMLTags } from '../../types/types';
 import { createElem } from '../../utils/utils';
-import AppController from '../app/app';
+//import AppController from '../app/app';
 
 export default class CheckoutPage implements ICheckoutCard {
     public container: DocumentFragment;
-    public appController: AppController;
+    //public appController: AppController;
     private personalContainer: HTMLDivElement;
     private contactContainer: HTMLDivElement;
     private paymentContainer: HTMLDivElement;
 
-    constructor(controller: AppController) {
-        this.appController = controller;
+    constructor(/*controller: AppController*/) {
+        //this.appController = controller;
         this.container = document.createDocumentFragment();
         this.personalContainer = createElem(HTMLTags.DIV, 'personal-container') as HTMLDivElement;
         this.contactContainer = createElem(HTMLTags.DIV, 'contact-container') as HTMLDivElement;
@@ -46,7 +46,8 @@ export default class CheckoutPage implements ICheckoutCard {
             this.paymentContainer,
             checkoutButtonContainer
         );
-        this.container.append();
+        this.container.append(orderContainer);
+        return this.container;
     }
 
     private createPersonalInfo() {
@@ -88,7 +89,7 @@ export default class CheckoutPage implements ICheckoutCard {
     }
 
     private createPaymentInfo() {
-        this.destroyAllChildNodes(this.personalContainer);
+        this.destroyAllChildNodes(this.paymentContainer);
         const paymentTitle = createElem(HTMLTags.P, 'payment-title payment-title', CHECKOUT_PAYMENT_INFO_TITLE);
 
         const paymentlInfoContent = createElem(HTMLTags.DIV, 'payment-info-content');
