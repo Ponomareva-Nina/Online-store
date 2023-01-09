@@ -12,7 +12,7 @@ import {
     PROMO_TITLE_TOTAL_SUM_DISCOUNT,
     QUANTITY_TO_COMPARE_ITEMS_IN_CART,
 } from '../../constants/string-constants';
-import { ICheckoutCard, Product, Promocode, ViewComponent } from '../../types/interfaces';
+import { Product, Promocode, ViewComponent } from '../../types/interfaces';
 import { HTMLTags } from '../../types/types';
 import { createElem } from '../../utils/utils';
 import AppController from '../app/app';
@@ -33,7 +33,7 @@ export default class CartView implements ViewComponent {
     private totalSumDiscountContent: HTMLSpanElement;
     private totalDiscountContainer: HTMLParagraphElement;
     private promoContainer: HTMLDivElement;
-    public checkoutPage: ICheckoutCard;
+    public checkoutPage: CheckoutPage;
 
     constructor(cart: CartModel, controller: AppController) {
         this.appController = controller;
@@ -53,7 +53,7 @@ export default class CartView implements ViewComponent {
     }
 
     public createPage() {
-        this.destroyAllChildNodes(this.container);
+        // this.destroyAllChildNodes(this.container); для фрагмента это не нужно, после помещения элементов в дом фрагмент очищается самостоятельно
         this.destroyAllChildNodes(this.cartContainer);
         const title = createElem(HTMLTags.H2, 'page-header', CART_TITLE);
 
@@ -75,6 +75,9 @@ export default class CartView implements ViewComponent {
             this.container.append(title, this.cartContainer);
             this.checkCartIsEmpty();
         }
+
+        const checkoutModal = this.checkoutPage.createPayCard();
+        this.container.append(checkoutModal);
     }
 
     private createCard(card: Product) {
@@ -248,7 +251,7 @@ export default class CartView implements ViewComponent {
         const promoBuyButton = createElem(HTMLTags.BUTTON, 'btn buy-button', PROMO_BUY_BUTTON);
         const promoBuyRight = createElem(HTMLTags.SPAN, 'decor-buy decor_right');
         promoBuyButton.addEventListener('click', () => {
-            this.showPurchasePopup();
+            this.checkoutPage.showModal();
         });
         promoBuyContainer.append(promoBuyLeft, promoBuyButton, promoBuyRight);
 
@@ -327,11 +330,11 @@ export default class CartView implements ViewComponent {
             this.destroyAllChildNodes(this.promoContainer);
         }
     }
-
+    /* так точно не надо делать - showPurchasePopup() должен быть методом в классе Checkout Page, который вешает
     private showPurchasePopup() {
         this.container.append(this.checkoutPage.createPayCard());
     }
-
+    */
     public render() {
         this.createPage();
         return this.container;
