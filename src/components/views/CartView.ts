@@ -1,30 +1,52 @@
 import { LINKS } from '../../constants/route-constants';
-import { CART_EMPTY, CART_TITLE } from '../../constants/string-constants';
-import { Product, ViewComponent } from '../../types/interfaces';
+import {
+    ACTIVATE_PROMOCODE_BUTTON,
+    CART_EMPTY,
+    CART_TITLE,
+    DEACTIVATE_PROMOCODE_BUTTON,
+    PROMO_BUY_BUTTON,
+    PROMO_CODES,
+    PROMO_TITLE,
+    PROMO_TITLE_TOTAL_PRODUCTS,
+    PROMO_TITLE_TOTAL_SUM,
+    PROMO_TITLE_TOTAL_SUM_DISCOUNT,
+    QUANTITY_TO_COMPARE_ITEMS_IN_CART,
+} from '../../constants/string-constants';
+import { Product, Promocode, ViewComponent } from '../../types/interfaces';
 import { HTMLTags } from '../../types/types';
 import { createElem } from '../../utils/utils';
 import AppController from '../app/app';
 import CartModel from '../models/CartModel';
 
 export default class CartView implements ViewComponent {
-    container: DocumentFragment;
-    appController: AppController;
-    cartModel: CartModel;
-    cartContainer: HTMLElement;
-    totalPerProduct: number;
-    quantity: HTMLSpanElement;
-    cartSum: HTMLSpanElement;
+    public container: DocumentFragment;
+    public appController: AppController;
+    public cartModel: CartModel;
+    private cartContainer: HTMLElement;
+    public totalPerProduct: number;
+    private quantity: HTMLSpanElement;
+    private cartSum: HTMLSpanElement;
+    private totalProductsContent: HTMLSpanElement;
+    private totalSumContent: HTMLSpanElement;
+    private promoCodesContainer: HTMLDivElement;
+    private totalSumDiscountContent: HTMLSpanElement;
+    private totalDiscountContainer: HTMLParagraphElement;
+    private promoContainer: HTMLDivElement;
 
     constructor(cart: CartModel, controller: AppController) {
         this.appController = controller;
         this.cartModel = cart;
-        // this.totalSum = 0;
-        // this.productsQuantity = 0;
         this.totalPerProduct = 0;
         this.container = document.createDocumentFragment();
         this.cartContainer = createElem(HTMLTags.DIV, 'cart-wrapper');
         this.quantity = createElem(HTMLTags.SPAN, 'cart-quantity');
         this.cartSum = createElem(HTMLTags.SPAN, 'cart-sum');
+        this.totalProductsContent = createElem(HTMLTags.SPAN, 'products-content');
+        this.totalSumContent = createElem(HTMLTags.SPAN, 'sum-content');
+        this.promoCodesContainer = createElem(HTMLTags.DIV, 'promo-codes-container') as HTMLDivElement;
+        this.totalSumDiscountContent = createElem(HTMLTags.SPAN, 'sum-content-discount');
+        this.totalDiscountContainer = createElem(HTMLTags.P, 'total-discount-container') as HTMLParagraphElement;
+        this.promoContainer = createElem(HTMLTags.DIV, 'promo-container') as HTMLDivElement;
     }
 
     public createPage() {
@@ -44,9 +66,13 @@ export default class CartView implements ViewComponent {
                 this.cartContainer.append(productContainer);
             });
         }
-        this.container.append(title, this.cartContainer);
-        this.checkCartIsEmpty();
-        //return this.container;
+        if (productInCart.length !== 0) {
+            this.createPromoBlock();
+            this.container.append(title, this.cartContainer, this.promoContainer);
+        } else {
+            this.container.append(title, this.cartContainer);
+            this.checkCartIsEmpty();
+        }
     }
 
     private createCard(card: Product) {
@@ -106,8 +132,8 @@ export default class CartView implements ViewComponent {
         cartDeleteProduct.addEventListener('click', () => {
             this.cartModel.deleteProduct(card);
             this.updateCartInfo();
-
-            this.appController.updatePage(this.appController.cartView); //
+            this.updatePromoBlock();
+            this.updatePage();
         });
         buttonsContainer.append(counterPriceContainer, cartDeleteProduct);
 
@@ -136,31 +162,165 @@ export default class CartView implements ViewComponent {
         }
     }
 
-    private updatePage() {
-        //берет из модели текущие товары корзины и отрисовывает их
-    }
-
-    public updateCartInfo() {
-        this.quantity.textContent = `${this.cartModel.productsQuantity}`;
-        this.cartSum.textContent = `${this.cartModel.totalSum}`;
+    public updatePage() {
+        this.destroyAllChildNodes(this.cartContainer);
+        this.cartModel.productsInCart.forEach((card) => {
+            const productContainer = createElem(HTMLTags.DIV, 'product-container');
+            productContainer.append(this.createCard(card), this.createManagePanel(card));
+            this.cartContainer.append(productContainer);
+        });
+        this.checkCartIsEmpty();
     }
 
     public createCartIcon() {
         const cartContainer = createElem(HTMLTags.DIV, 'cart-container');
         const link = createElem(HTMLTags.LINK, 'cart-link');
-
         const cartIcon = createElem(HTMLTags.SPAN, 'cart-icon');
-
-        link.append(cartIcon, this.quantity);
-        this.quantity.textContent = `${this.cartModel.productsQuantity}`;
-
-        cartContainer.append(this.cartSum, link);
-        this.cartSum.textContent = `${this.cartModel.totalSum}`;
+        link.append(this.quantity, cartIcon, this.cartSum);
+        cartContainer.append(link);
+        this.updateCartInfo();
         cartContainer.addEventListener('click', (e) => {
             this.appController.router.changeCurrentPage(LINKS.Cart);
             this.appController.header.handleNavigationClick(e);
         });
         return cartContainer;
+    }
+
+    public updateCartInfo() {
+        if (this.cartModel.productsQuantity < Number(QUANTITY_TO_COMPARE_ITEMS_IN_CART)) {
+            this.quantity.textContent = `${this.cartModel.productsQuantity} item`;
+        } else {
+            this.quantity.textContent = `${this.cartModel.productsQuantity} items`;
+        }
+        this.cartSum.textContent = `${this.cartModel.totalSum}`;
+    }
+
+    public createPromoBlock() {
+        this.destroyAllChildNodes(this.promoContainer);
+        this.destroyAllChildNodes(this.promoCodesContainer);
+        const promoTitle = createElem(HTMLTags.P, 'page-header', PROMO_TITLE);
+        const promoContentContainer = createElem(HTMLTags.DIV, 'content-container');
+
+        const promoTotalContainer = createElem(HTMLTags.DIV, 'total-container');
+        const totalProducts = createElem(HTMLTags.P, 'total-products');
+        const totalProductsTitle = createElem(HTMLTags.SPAN, 'products-title', PROMO_TITLE_TOTAL_PRODUCTS);
+        this.totalProductsContent.textContent = `${this.cartModel.productsQuantity}`;
+        totalProducts.append(totalProductsTitle, this.totalProductsContent);
+        const totalSum = createElem(HTMLTags.P, 'total-promo-sum');
+        const totalSumTitle = createElem(HTMLTags.SPAN, 'sum-title', PROMO_TITLE_TOTAL_SUM);
+        this.totalSumContent.textContent = `${this.cartModel.totalSum}`;
+        if (this.cartModel.activatedPromocodes.length !== 0) {
+            this.createBlockWithDiscountSum();
+        }
+
+        this.cartModel.activatedPromocodes.forEach((activatedPromocode) => {
+            if (activatedPromocode.active) {
+                this.createPromoCodeView(activatedPromocode);
+            }
+        });
+
+        this.cartModel.enteredPromocodes.forEach((enteredPromocode) => {
+            if (!enteredPromocode.active) {
+                this.createPromoCodeView(enteredPromocode);
+            }
+        });
+
+        totalSum.append(totalSumTitle, this.totalSumContent);
+        const promoWithoutDiscountContainer = createElem(HTMLTags.P, 'promo-without-discount-container');
+        this.destroyAllChildNodes(promoWithoutDiscountContainer);
+        promoWithoutDiscountContainer.append(totalProducts, totalSum);
+        promoTotalContainer.append(promoWithoutDiscountContainer, this.totalDiscountContainer);
+
+        const promoInputContainer = createElem(HTMLTags.DIV, 'input-container');
+        const promoInput = createElem(HTMLTags.INPUT, 'promo-input') as HTMLInputElement;
+        promoInput.placeholder = PROMO_CODES;
+        promoInput.addEventListener('input', () => {
+            this.cartModel.findEnteredPromoInPromocodes(promoInput.value);
+            console.log(this.cartModel.enteredPromocodes);
+        });
+
+        promoInputContainer.append(promoInput);
+
+        const promoBuyContainer = createElem(HTMLTags.DIV, 'buy-container');
+        const promoBuyLeft = createElem(HTMLTags.SPAN, 'decor-buy decor_left');
+        const promoBuyButton = createElem(HTMLTags.BUTTON, 'btn buy-button', PROMO_BUY_BUTTON);
+        const promoBuyRight = createElem(HTMLTags.SPAN, 'decor-buy decor_right');
+        promoBuyContainer.append(promoBuyLeft, promoBuyButton, promoBuyRight);
+
+        promoContentContainer.append(
+            promoTotalContainer,
+            this.promoCodesContainer,
+            promoInputContainer,
+            promoBuyContainer
+        );
+
+        this.promoContainer.append(promoTitle, promoContentContainer);
+    }
+
+    public updatePromoBlock() {
+        this.totalProductsContent.textContent = `${this.cartModel.productsQuantity}`;
+        this.totalSumContent.textContent = `${this.cartModel.totalSum}`;
+        if (this.cartModel.productsInCart.length === 0) {
+            this.totalSumContent.classList.remove('crossline');
+        }
+    }
+
+    public createPromoCodeView(promocode: Promocode) {
+        const promoCodeContainer = createElem(HTMLTags.DIV, 'promo-code-container') as HTMLDivElement;
+        const promoCodesDescription = createElem(HTMLTags.P, 'promo-codes-description');
+        const promoCodesTitle = createElem(HTMLTags.SPAN, 'promo-codes-title', `${promocode.title}`);
+        const promoCodeDiscount = createElem(HTMLTags.SPAN, 'promo-codes-discout', `${promocode.discount}`);
+        promoCodesDescription.append(promoCodesTitle, promoCodeDiscount);
+        const promoCodeButtom = createElem(HTMLTags.BUTTON, 'promo-code-button', ACTIVATE_PROMOCODE_BUTTON);
+        if (promocode.active) {
+            promoCodeButtom.classList.add('promo-added');
+            promoCodeButtom.textContent = DEACTIVATE_PROMOCODE_BUTTON;
+            this.totalSumContent.classList.add('crossline');
+        }
+        promoCodeButtom.addEventListener('click', () => {
+            if (promocode.active) {
+                promoCodeButtom.classList.remove('promo-added');
+                promoCodeButtom.textContent = ACTIVATE_PROMOCODE_BUTTON;
+                this.cartModel.handleDeletePromocode(promocode);
+            } else {
+                promoCodeButtom.classList.add('promo-added');
+                promoCodeButtom.textContent = DEACTIVATE_PROMOCODE_BUTTON;
+                this.cartModel.handleAddPromocode(promocode);
+            }
+            const checkIsPromocodesAplied = this.cartModel.checkIsPromocodesAplied();
+            if (checkIsPromocodesAplied) {
+                this.totalSumContent.classList.add('crossline');
+            } else {
+                this.totalSumContent.classList.remove('crossline');
+            }
+        });
+
+        promoCodeContainer.append(promoCodesDescription, promoCodeButtom);
+        this.promoCodesContainer.append(promoCodeContainer);
+    }
+
+    public createBlockWithDiscountSum() {
+        this.destroyAllChildNodes(this.totalDiscountContainer);
+        const totalOneDiscountContainer = createElem(HTMLTags.P);
+        this.cartModel.activatedPromocodes.forEach(() => {
+            this.destroyAllChildNodes(totalOneDiscountContainer);
+            const totalSumTitleDiscount = createElem(
+                HTMLTags.SPAN,
+                'sum-title-discount',
+                PROMO_TITLE_TOTAL_SUM_DISCOUNT
+            );
+            this.totalSumDiscountContent.textContent = `${this.cartModel.totalSumWithDiscount}`;
+            totalOneDiscountContainer.append(totalSumTitleDiscount, this.totalSumDiscountContent);
+            this.totalDiscountContainer.append(totalOneDiscountContainer);
+        });
+        return this.totalDiscountContainer;
+    }
+
+    public updateDiscountInfo() {
+        this.totalSumDiscountContent.textContent = `${this.cartModel.totalSumWithDiscount}`;
+        if (this.cartModel.productsInCart.length === 0) {
+            this.destroyAllChildNodes(this.promoContainer);
+        }
     }
 
     public render() {
