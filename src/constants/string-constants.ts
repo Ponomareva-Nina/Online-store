@@ -30,3 +30,4 @@ export const PROMO_CODES = `'RS'/'EPM'/'FRONT'`;
 export const ACTIVATE_PROMOCODE_BUTTON = 'Add';
 export const DEACTIVATE_PROMOCODE_BUTTON = 'Del';
 export const PROMO_TITLE_TOTAL_SUM_DISCOUNT = 'Sum with discount: ';
+export const QUANTITY_TO_COMPARE_ITEMS_IN_CART = '2';

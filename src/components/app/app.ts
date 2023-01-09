@@ -59,7 +59,6 @@ export default class AppController implements AppControllerInterface {
         document.body.append(this.header.createHeader(), this.mainContainer, this.footer.renderFooter());
         this.router.init();
         this.addToLocalStorage();
-        console.log(this.cartModel.productsInCart, this.cartModel.productsQuantity, this.cartModel.totalSum);
     }
 
     public updatePage(view: ViewComponent, params?: Props) {

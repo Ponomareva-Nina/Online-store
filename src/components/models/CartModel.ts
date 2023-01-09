@@ -15,18 +15,8 @@ export default class CartModel {
     constructor(controller: AppController) {
         this.appController = controller;
         this.promocodes = promos.promocodes;
-
-        if (window.localStorage.getItem('totalSum')) {
-            this.totalSum = Number(localStorage.getItem('totalSum'));
-        } else {
-            this.totalSum = 0;
-        }
-
-        if (localStorage.getItem('productsQuantity')) {
-            this.productsQuantity = Number(localStorage.getItem('productsQuantity'));
-        } else {
-            this.productsQuantity = 0;
-        }
+        this.totalSum = this.checkTotalSumInLocalStorage();
+        this.productsQuantity = this.checkProductQuantityInLocalStorage();
 
         if (localStorage.getItem('cart')) {
             this.productsInCart = JSON.parse(localStorage.getItem('cart') || '{}');
@@ -40,13 +30,39 @@ export default class CartModel {
             this.activatedPromocodes = [];
         }
 
-        if (window.localStorage.getItem('totalSumWithDiscount')) {
-            this.totalSumWithDiscount = Number(localStorage.getItem('totalSumWithDiscount'));
+        this.totalSumWithDiscount = this.checkTotalSumWithDiscountInLocalStorage();
+
+        this.enteredPromocodes = this.setEnteredPromocodesAfterReload();
+    }
+
+    private checkTotalSumInLocalStorage() {
+        const totalSumInLocalStorage = window.localStorage.getItem('totalSum');
+        if (totalSumInLocalStorage) {
+            this.totalSum = Number(totalSumInLocalStorage);
+        } else {
+            this.totalSum = 0;
+        }
+        return this.totalSum;
+    }
+
+    private checkTotalSumWithDiscountInLocalStorage() {
+        const totalSumWithDiscountInLocalStorage = window.localStorage.getItem('totalSumWithDiscount');
+        if (totalSumWithDiscountInLocalStorage) {
+            this.totalSumWithDiscount = Number(totalSumWithDiscountInLocalStorage);
         } else {
             this.totalSumWithDiscount = this.totalSum;
         }
+        return this.totalSumWithDiscount;
+    }
 
-        this.enteredPromocodes = this.setEnteredPromocodesAfterReload();
+    private checkProductQuantityInLocalStorage() {
+        const productQuantityInLocalStorage = localStorage.getItem('productsQuantity');
+        if (productQuantityInLocalStorage) {
+            this.productsQuantity = Number(productQuantityInLocalStorage);
+        } else {
+            this.productsQuantity = 0;
+        }
+        return this.productsQuantity;
     }
 
     addProduct(product: Product) {
@@ -58,8 +74,7 @@ export default class CartModel {
             this.productsQuantity += product.inCart;
             this.totalSum = Number((this.totalSum += product.inCart * product.price).toFixed(2));
             this.appController.addProductToCart(product);
-            const currentTotalPercentDiscount = this.getCurrentTotalPercentDiscount();
-            this.totalSumWithDiscount = Number((this.totalSum * (1 - currentTotalPercentDiscount / 100)).toFixed(2));
+            this.calculateAddingSumDiscoutDelete();
             this.appController.cartView.updateDiscountInfo();
             return this.productsInCart;
         }
@@ -73,6 +88,7 @@ export default class CartModel {
             if (product.inCart) {
                 this.productsQuantity -= product.inCart;
                 this.totalSum = Number((this.totalSum -= product.inCart * product.price).toFixed(2));
+                product.inCart = 0;
                 this.appController.cartView.totalPerProduct = 0;
                 const currentTotalPercentDiscount = this.getCurrentTotalPercentDiscount();
                 this.totalSumWithDiscount = Number(
@@ -90,8 +106,7 @@ export default class CartModel {
             this.productsQuantity += 1;
             this.totalSum = Number((this.totalSum += product.price).toFixed(2));
             product.sum = Number((product.sum += product.price).toFixed(2));
-            const currentTotalPercentDiscount = this.getCurrentTotalPercentDiscount();
-            this.totalSumWithDiscount = Number((this.totalSum * (1 - currentTotalPercentDiscount / 100)).toFixed(2));
+            this.calculateAddingSumDiscoutDelete();
             this.appController.cartView.updateCartInfo();
             this.appController.cartView.updatePromoBlock();
             this.appController.cartView.updatePage();
@@ -105,8 +120,7 @@ export default class CartModel {
             this.productsQuantity -= 1;
             this.totalSum = Number((this.totalSum -= product.price).toFixed(2));
             product.sum = product.price;
-            const currentTotalPercentDiscount = this.getCurrentTotalPercentDiscount();
-            this.totalSumWithDiscount = Number((this.totalSum * (1 - currentTotalPercentDiscount / 100)).toFixed(2));
+            this.calculateAddingSumDiscoutDelete();
             this.deleteProduct(product);
             this.appController.cartView.updateCartInfo();
             this.appController.cartView.updatePage();
@@ -120,14 +134,18 @@ export default class CartModel {
             this.productsQuantity -= 1;
             this.totalSum = Number((this.totalSum -= product.price).toFixed(2));
             product.sum = Number((product.sum -= product.price).toFixed(2));
-            const currentTotalPercentDiscount = this.getCurrentTotalPercentDiscount();
-            this.totalSumWithDiscount = Number((this.totalSum * (1 - currentTotalPercentDiscount / 100)).toFixed(2));
+            this.calculateAddingSumDiscoutDelete();
             this.appController.cartView.updateCartInfo();
             this.appController.cartView.updatePromoBlock();
             this.appController.cartView.updatePage();
             this.appController.cartView.updatePromoBlock();
             this.appController.cartView.updateDiscountInfo();
         }
+    }
+
+    private calculateAddingSumDiscoutDelete() {
+        const currentTotalPercentDiscount = this.getCurrentTotalPercentDiscount();
+        this.totalSumWithDiscount = Number((this.totalSum * (1 - currentTotalPercentDiscount / 100)).toFixed(2));
     }
 
     public checkProductInCart(id: number) {
@@ -155,7 +173,6 @@ export default class CartModel {
             if (!this.activatedPromocodes.find((activatedPromocode) => activatedPromocode.id === promocode.id)) {
                 this.activatedPromocodes.push(promocode);
                 promocode.active = true;
-                console.log(this.totalSumWithDiscount, this.totalSum, promocode.discount);
                 this.totalSumWithDiscount = Number(
                     (this.totalSumWithDiscount -= this.totalSum * (promocode.discount / 100)).toFixed(2)
                 );

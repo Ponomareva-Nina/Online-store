@@ -10,6 +10,7 @@ import {
     PROMO_TITLE_TOTAL_PRODUCTS,
     PROMO_TITLE_TOTAL_SUM,
     PROMO_TITLE_TOTAL_SUM_DISCOUNT,
+    QUANTITY_TO_COMPARE_ITEMS_IN_CART,
 } from '../../constants/string-constants';
 import { Product, Promocode, ViewComponent } from '../../types/interfaces';
 import { HTMLTags } from '../../types/types';
@@ -186,7 +187,7 @@ export default class CartView implements ViewComponent {
     }
 
     public updateCartInfo() {
-        if (this.cartModel.productsQuantity < 2) {
+        if (this.cartModel.productsQuantity < Number(QUANTITY_TO_COMPARE_ITEMS_IN_CART)) {
             this.quantity.textContent = `${this.cartModel.productsQuantity} item`;
         } else {
             this.quantity.textContent = `${this.cartModel.productsQuantity} items`;
