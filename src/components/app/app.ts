@@ -58,7 +58,6 @@ export default class AppController implements AppControllerInterface {
     public start() {
         document.body.append(this.header.createHeader(), this.mainContainer, this.footer.renderFooter());
         this.router.init();
-        //this.addToLocalStorage();
     }
 
     public updatePage(view: ViewComponent, params?: Props) {
@@ -67,15 +66,11 @@ export default class AppController implements AppControllerInterface {
     }
 
     public addProductToCart(product: Product) {
-        // console.log(product);
-        // console.log('method: addProductToCart');
         this.cartModel.addProduct(product);
         this.cartView.updateCartInfo();
     }
 
     public deleteProductFromCart(product: Product) {
-        // console.log(product);
-        // console.log('method: deleteProductFromCart');
         this.cartModel.deleteProduct(product);
         this.cartView.updateCartInfo();
     }
