@@ -55,8 +55,10 @@ export default class StoreView implements ViewComponent {
         const categoryFilters = this.createCategoryFilters();
         const priceSlider = this.createPriceDualSlider();
         const stockSlider = this.createStockDualSlider();
+        const copyLinkBtn = this.createCopyLinkBtn();
         sidePanelContainer.append(
             searchInput,
+            copyLinkBtn,
             resetAllBtn,
             sorts,
             facultyFilters,
@@ -67,9 +69,20 @@ export default class StoreView implements ViewComponent {
         return sidePanelContainer;
     }
 
+    private createCopyLinkBtn() {
+        const copyLinkBtn = createElem(HTMLTags.BUTTON, 'side-pane-btn copy-link-btn', 'Copy link');
+        copyLinkBtn.addEventListener('click', () => {
+            const path = window.location.href;
+            navigator.clipboard.writeText(path).then(function () {
+                copyLinkBtn.textContent = 'Link copied';
+            });
+        });
+        return copyLinkBtn;
+    }
+
     private createResetFiltersBtn() {
         const container = createElem(HTMLTags.DIV, 'reset-filters__container');
-        const showAllButton = createElem(HTMLTags.BUTTON, 'reset-btn', 'Show all products');
+        const showAllButton = createElem(HTMLTags.BUTTON, 'side-pane-btn reset-btn', 'Show all products');
 
         showAllButton.addEventListener('click', () => {
             this.appController.router.clearAllFilters();

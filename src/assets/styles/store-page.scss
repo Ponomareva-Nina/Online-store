@@ -149,7 +149,7 @@
     background: none;
     outline: none;
     border: none;
-    @include font-main();
+    @include font-main(2rem);
     vertical-align: middle;
     box-sizing: border-box;
     display: flex;
