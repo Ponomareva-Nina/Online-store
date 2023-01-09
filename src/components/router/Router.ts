@@ -90,7 +90,7 @@ class Router implements RouterInterface {
             this.updatePageUrl(this.currentRoute);
         }
     }
-
+    /* temporary turn off validation (according to the task description)
     private isCorrectParameters(paramsArr: string[]) {
         const params = [
             PossibleUrlParams.ID,
@@ -108,13 +108,14 @@ class Router implements RouterInterface {
         });
         return isCorrect;
     }
-
+    */
     private matchUrl(path: string) {
         const [pageRoute, ...pathSegments] = path.split(this.UrlSeparator);
+        /*
         if (!this.isCorrectParameters(pathSegments)) {
             return null;
         }
-
+        */
         const matchedRoute = this.routes.find((route: Route) => {
             return route.pageName === pageRoute;
         });
