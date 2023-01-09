@@ -14,6 +14,7 @@ import '../models/StoreModel';
 import StoreModel from '../models/StoreModel';
 import Footer from '../views/FooterVew';
 import CartModel from '../models/CartModel';
+import CheckoutPage from '../views/CheckoutPage';
 
 export default class AppController implements AppControllerInterface {
     private static instance: InstanceType<typeof AppController>;
@@ -29,6 +30,7 @@ export default class AppController implements AppControllerInterface {
     public storeModel: StoreModel;
     public footer: Footer;
     public cartModel: CartModel;
+    public checkoutPage: CheckoutPage;
 
     constructor() {
         this.menu = new Menu(this);
@@ -41,6 +43,7 @@ export default class AppController implements AppControllerInterface {
         this.storeView = new StoreView(this.storeModel, this);
         this.productPage = new ProductPage(this);
         this.footer = new Footer();
+        this.checkoutPage = new CheckoutPage(this);
         this.routes = [
             new Route('', LINKS.About, this.startPage),
             new Route('store', LINKS.Store, this.storeView),

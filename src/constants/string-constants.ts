@@ -21,3 +21,10 @@ export const SEARCH_INPUT_PLACEHOLDER = 'Enter a keyword';
 export const NO_PRODUCTS_MESSAGE = 'Sorry. No products found.';
 export const CART_TITLE = 'Products in cart';
 export const CART_EMPTY = 'CART IS EMPTY';
+export const ORDER_TITLE = 'Order information';
+export const CHECKOUT_BUTTON_CONTENT = 'Submit';
+export const CHECKOUT_PERSONAL_INFO_TITLE = 'Personal details';
+export const CHECKOUT_CONTACT_INFO_TITLE = 'Contact information';
+export const CHECKOUT_LICENSE_AGREEMENT_TEXT =
+    'By ticking the box, I agree to the Terms of Purchase and the Privacy Policy.';
+export const CHECKOUT_PAYMENT_INFO_TITLE = 'Payment information';

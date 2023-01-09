@@ -64,3 +64,8 @@ export interface IFooter {
     wrapper: HTMLDivElement;
     renderFooter: () => HTMLElement;
 }
+
+export interface ICheckoutCard {
+    container: DocumentFragment;
+    appController: AppController;
+}
