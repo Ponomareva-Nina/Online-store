@@ -70,24 +70,47 @@ export default class StoreView implements ViewComponent {
     }
 
     private createCopyLinkBtn() {
-        const copyLinkBtn = createElem(HTMLTags.BUTTON, 'side-pane-btn copy-link-btn', 'Copy link');
+        const container = createElem(HTMLTags.DIV, ClassNames.FILTER_BTNS_CONTAINER);
+        const copyLinkBtn = createElem(HTMLTags.BUTTON, 'side-panel-btn copy-link-btn', 'Copy link');
         copyLinkBtn.addEventListener('click', () => {
             const path = window.location.href;
             navigator.clipboard.writeText(path).then(function () {
+                copyLinkBtn.classList.add('disabled');
                 copyLinkBtn.textContent = 'Link copied';
             });
         });
-        return copyLinkBtn;
+        container.append(copyLinkBtn);
+        return container;
     }
 
     private createResetFiltersBtn() {
-        const container = createElem(HTMLTags.DIV, 'reset-filters__container');
-        const showAllButton = createElem(HTMLTags.BUTTON, 'side-pane-btn reset-btn', 'Show all products');
+        const container = createElem(HTMLTags.DIV, ClassNames.FILTER_BTNS_CONTAINER);
+
+        const radioNameIdValue = 'reset';
+        const showAllButton = createRadioButton(
+            radioNameIdValue,
+            ClassNames.FILTER_CHECKBOX,
+            radioNameIdValue,
+            radioNameIdValue
+        );
+        const showAllLabel = createLabel(radioNameIdValue, ClassNames.FILTER_LABEL, 'Show all products');
+
+        if (
+            this.currentParams &&
+            !Object.keys(this.currentParams).includes(PossibleUrlParams.CATEGORY) &&
+            !Object.keys(this.currentParams).includes(PossibleUrlParams.FACULTY) &&
+            !Object.keys(this.currentParams).includes(PossibleUrlParams.PRICE) &&
+            !Object.keys(this.currentParams).includes(PossibleUrlParams.STOCK)
+        ) {
+            showAllButton.checked = true;
+        }
 
         showAllButton.addEventListener('click', () => {
-            this.appController.router.clearAllFilters();
+            if (showAllButton.checked) {
+                this.appController.router.clearAllFilters();
+            }
         });
-        container.append(showAllButton);
+        container.append(showAllButton, showAllLabel);
         return container;
     }
 

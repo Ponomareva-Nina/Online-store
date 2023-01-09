@@ -35,4 +35,5 @@ export enum ClassNames {
     CUSTOM_RANGE_INPUT_CONTAINER = 'custom-range-container',
     DUAL_SLIDER_VALUES = 'dual-slider-container__text-values',
     DUAL_SLIDER_VALUE_FIELD = 'text-values__field',
+    FILTER_BTNS_CONTAINER = 'filter-btns_container',
 }
