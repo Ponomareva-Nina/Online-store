@@ -9,6 +9,8 @@ export default class StoreModel {
     public currentProducts: Product[];
     absoluteMinPrice: number;
     absoluteMaxPrice: number;
+    absoluteMinStock: number;
+    absoluteMaxStock: number;
 
     constructor(controller: AppController) {
         this.appController = controller;
@@ -16,6 +18,8 @@ export default class StoreModel {
         this.currentProducts = data.products;
         this.absoluteMinPrice = 3;
         this.absoluteMaxPrice = 190;
+        this.absoluteMinStock = 3;
+        this.absoluteMaxStock = 123;
     }
 
     public getCurrentMinPrice() {
@@ -87,10 +91,22 @@ export default class StoreModel {
             this.currentProducts = this.filterByPriceRange(Number(min), Number(max), this.currentProducts);
         }
 
+        if (params.stock) {
+            const [min, max] = params.stock;
+            this.currentProducts = this.filterByStockRange(Number(min), Number(max), this.currentProducts);
+        }
+
         if (params.sort) {
             const sortValue = params.sort.join('');
             this.currentProducts = this.sortProducts(sortValue, this.currentProducts);
         }
+    }
+
+    private filterByStockRange(minValue: number, maxValue: number, arr: Array<Product>) {
+        const filteredArr = arr.filter((product) => {
+            return product.quantity >= minValue && product.quantity <= maxValue;
+        });
+        return filteredArr;
     }
 
     private filterByPriceRange(minValue: number, maxValue: number, arr: Array<Product>) {

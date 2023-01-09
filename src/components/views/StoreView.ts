@@ -53,7 +53,8 @@ export default class StoreView implements ViewComponent {
         const facultyFilters = this.createFacultyFilters();
         const categoryFilters = this.createCategoryFilters();
         const priceSlider = this.createPriceDualSlider();
-        sidePanelContainer.append(searchInput, sorts, facultyFilters, categoryFilters, priceSlider);
+        const stockSlider = this.createStockDualSlider();
+        sidePanelContainer.append(searchInput, sorts, facultyFilters, categoryFilters, priceSlider, stockSlider);
         return sidePanelContainer;
     }
 
@@ -64,7 +65,7 @@ export default class StoreView implements ViewComponent {
         const allProductsMinPrice = this.storeModel.absoluteMinPrice.toString();
         const allProductsMaxPrice = this.storeModel.absoluteMaxPrice.toString();
         const [minPrice, maxPrice] = this.currentParams?.price || [
-            Math.ceil(this.storeModel.getCurrentMaxPrice()).toString(),
+            Math.ceil(this.storeModel.getCurrentMinPrice()).toString(),
             Math.ceil(this.storeModel.getCurrentMaxPrice()).toString(),
         ];
         const inputMin = createRange(allProductsMinPrice, allProductsMaxPrice, minPrice, ClassNames.DUAL_SLIDER_INPUT);
@@ -85,11 +86,47 @@ export default class StoreView implements ViewComponent {
         return priceSliderContainer;
     }
 
+    private createStockDualSlider() {
+        const stockSliderContainer = createElem(HTMLTags.DIV, ClassNames.DUAL_SLIDER_CONTAINER);
+        const stockSliderTitle = createElem(HTMLTags.P, ClassNames.DUAL_SLIDER_TITLE, 'Stock');
+        const RangeInputContainer = createElem(HTMLTags.DIV, ClassNames.CUSTOM_RANGE_INPUT_CONTAINER);
+        const allProductsMinStock = this.storeModel.absoluteMinStock.toString();
+        const allProductsMaxStock = this.storeModel.absoluteMaxStock.toString();
+        const [minStock, maxStock] = this.currentParams?.stock || [
+            Math.ceil(this.storeModel.getCurrentMinStock()).toString(),
+            Math.ceil(this.storeModel.getCurrentMaxStock()).toString(),
+        ];
+        const inputMin = createRange(allProductsMinStock, allProductsMaxStock, minStock, ClassNames.DUAL_SLIDER_INPUT);
+        const inputMax = createRange(allProductsMinStock, allProductsMaxStock, maxStock, ClassNames.DUAL_SLIDER_INPUT);
+        inputMin.addEventListener('change', () => {
+            this.handleStockDualSlider(inputMin, inputMax);
+        });
+        inputMax.addEventListener('change', () => {
+            this.handleStockDualSlider(inputMin, inputMax);
+        });
+        RangeInputContainer.append(inputMin, inputMax);
+
+        const valuesContainer = createElem(HTMLTags.DIV, ClassNames.DUAL_SLIDER_VALUES);
+        const minValue = createElem(HTMLTags.SPAN, ClassNames.DUAL_SLIDER_VALUE_FIELD, `$ ${minStock}`);
+        const maxValue = createElem(HTMLTags.SPAN, ClassNames.DUAL_SLIDER_VALUE_FIELD, `$ ${maxStock}`);
+        valuesContainer.append(minValue, maxValue);
+        stockSliderContainer.append(stockSliderTitle, RangeInputContainer, valuesContainer);
+        return stockSliderContainer;
+    }
+
     private handlePriceDualSlider(inputMin: HTMLInputElement, inputMax: HTMLInputElement) {
         if (Number(inputMin.value) > Number(inputMax.value)) {
-            this.appController.router.addPriceRangeToUrl(PossibleUrlParams.PRICE, inputMax.value, inputMin.value);
+            this.appController.router.addPriceRangeToUrl(inputMax.value, inputMin.value);
         } else {
-            this.appController.router.addPriceRangeToUrl(PossibleUrlParams.PRICE, inputMin.value, inputMax.value);
+            this.appController.router.addPriceRangeToUrl(inputMin.value, inputMax.value);
+        }
+    }
+
+    private handleStockDualSlider(inputMin: HTMLInputElement, inputMax: HTMLInputElement) {
+        if (Number(inputMin.value) > Number(inputMax.value)) {
+            this.appController.router.addStockRangeToUrl(inputMax.value, inputMin.value);
+        } else {
+            this.appController.router.addStockRangeToUrl(inputMin.value, inputMax.value);
         }
     }
 
