@@ -55,11 +55,6 @@
 .cart-quantity {
     display: inline-flex;
     justify-content: center;
-
-    &::after {
-        content: 'item';
-        padding-left: 0.5rem;
-    }
 }
 
 
@@ -277,6 +272,15 @@
 .total-container {
     display: flex;
     flex-direction: column;
+    @include font-main($size: 2.2rem, $weight: 600, $color: $color-main, $height: 110%);
+
+    @media screen and (max-width: 750px) {
+        font-size: 2.1rem;
+    }
+
+    @media screen and (max-width: 750px) {
+        font-size: 1.8rem;
+    }
 }
 
 .promo-without-discount-container {
@@ -287,10 +291,14 @@
 .total-discount-container {
     display: inline-flex;
     justify-content: center;
-    @include font-main($size: 2.5rem, $weight: 600, $color: $color-main, $height: 110%);
+    @include font-main($size: 2.2rem, $weight: 600, $color: $color-main, $height: 110%);
 
-    @media screen and (max-width: 550px) {
-        font-size: 2.2rem;
+    @media screen and (max-width: 750px) {
+        font-size: 2.1rem;
+    }
+
+    @media screen and (max-width: 750px) {
+        font-size: 1.8rem;
     }
 }
 
@@ -342,7 +350,8 @@
 
 .promo-code-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: 0.5rem;
 }
 
 .promo-codes-discout {
@@ -353,8 +362,7 @@
 }
 
 .promo-code-button {
-    width: 6.5rem;
-    padding: 0.2rem 0.8rem;
+    width: 5.5rem;
     background: none;
     @include font-main($size: 2rem, $weight: 400, $color: $color-main, $height: 110%);
     border: 1px #4A2B10 solid;
@@ -362,7 +370,7 @@
     text-transform: uppercase;
 
     @media screen and (max-width: 750px) {
-        width: 6.5rem;
+        width: 5rem;
         @include font-main($size: 1.8rem, $weight: 400, $color: $color-main, $height: 110%);
     }
 }
@@ -373,7 +381,7 @@
 
 .input-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .buy-container {
@@ -392,11 +400,12 @@
 }
 
 .promo-input {
-    width: 21rem;
+    width: 25rem;
     padding: 5px 7px;
     border: 1px $color-main solid;
     border-radius: 5px;
     @include font-main($size: 2rem, $weight: 400, $color: $color-aux, $height: 110%);
+    text-align: center;
 
     @media screen and (max-width: 750px) {
         padding: 3px 5px;
