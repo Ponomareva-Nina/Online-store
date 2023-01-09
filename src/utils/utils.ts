@@ -36,3 +36,41 @@ export function createImage(className = '', src = '') {
     img.setAttribute('src', src);
     return img;
 }
+
+export function createRadioButton(name = '', className = '', value = '', id = '') {
+    const input = document.createElement('input');
+    input.setAttribute('type', 'radio');
+    input.setAttribute('name', name);
+    input.setAttribute('value', value);
+    input.setAttribute('id', id);
+    input.className = className;
+    return input;
+}
+
+export function createCheckbox(name = '', className = '', value = '', id = '') {
+    const input = document.createElement('input');
+    input.setAttribute('type', 'checkbox');
+    input.setAttribute('name', name);
+    input.setAttribute('value', value);
+    input.setAttribute('id', id);
+    input.className = className;
+    return input;
+}
+
+export function createLabel(relevantInputId = '', className = '', text = '') {
+    const label = document.createElement('label');
+    label.setAttribute('for', relevantInputId);
+    label.className = className;
+    label.innerText = text;
+    return label;
+}
+
+export function createRange(min = '0', max = '200', value = '', className = '') {
+    const range = document.createElement('input');
+    range.setAttribute('type', 'range');
+    range.setAttribute('min', min);
+    range.setAttribute('max', max);
+    range.setAttribute('value', value);
+    range.className = className;
+    return range;
+}

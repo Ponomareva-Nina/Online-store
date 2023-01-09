@@ -3,8 +3,8 @@ import AppController from '../app/app';
 import ProductCard from './ProductCard';
 
 export default class ProductPage implements ViewComponent {
-    container: DocumentFragment;
-    appController: AppController;
+    public container: DocumentFragment;
+    public appController: AppController;
 
     constructor(controller: AppController) {
         this.appController = controller;

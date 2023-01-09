@@ -17,18 +17,18 @@ import CartModel from '../models/CartModel';
 
 export default class AppController implements AppControllerInterface {
     private static instance: InstanceType<typeof AppController>;
-    mainContainer: HTMLElement;
-    header: Header;
-    routes: Route[];
-    router: Router;
-    cartView: CartView;
-    storeView: StoreView;
-    startPage: StartPageView;
-    menu: Menu;
-    productPage: ProductPage;
-    storeModel: StoreModel;
-    footer: Footer;
-    cartModel: CartModel;
+    public mainContainer: HTMLElement;
+    public header: Header;
+    public routes: Route[];
+    public router: Router;
+    public cartView: CartView;
+    public storeView: StoreView;
+    public startPage: StartPageView;
+    public menu: Menu;
+    public productPage: ProductPage;
+    public storeModel: StoreModel;
+    public footer: Footer;
+    public cartModel: CartModel;
 
     constructor() {
         this.menu = new Menu(this);
@@ -95,7 +95,7 @@ export default class AppController implements AppControllerInterface {
         });
     }
 
-    private destroyAllChildNodes(parent: Node) {
+    public destroyAllChildNodes(parent: Node) {
         while (parent.firstChild) {
             parent.removeChild(parent.firstChild);
         }
