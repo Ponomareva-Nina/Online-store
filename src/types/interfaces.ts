@@ -69,3 +69,10 @@ export interface ICheckoutCard {
     container: DocumentFragment;
     appController: AppController;
 }
+export interface Promocode {
+    id: number;
+    value: string;
+    title: string;
+    discount: number;
+    active?: boolean;
+}

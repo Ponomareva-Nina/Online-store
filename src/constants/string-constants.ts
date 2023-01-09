@@ -28,3 +28,13 @@ export const CHECKOUT_CONTACT_INFO_TITLE = 'Contact information';
 export const CHECKOUT_LICENSE_AGREEMENT_TEXT =
     'By ticking the box, I agree to the Terms of Purchase and the Privacy Policy.';
 export const CHECKOUT_PAYMENT_INFO_TITLE = 'Payment information';
+export const PROMO_TITLE = 'Total: ';
+export const PROMO_TITLE_TOTAL_PRODUCTS = 'Products: ';
+export const PROMO_TITLE_TOTAL_SUM = 'Sum: ';
+export const PROMO_APPLY_BUTTON = 'Apply';
+export const PROMO_BUY_BUTTON = 'Buy Now';
+export const PROMO_CODES = `'RS'/'EPM'/'FRONT'`;
+export const ACTIVATE_PROMOCODE_BUTTON = 'Add';
+export const DEACTIVATE_PROMOCODE_BUTTON = 'Del';
+export const PROMO_TITLE_TOTAL_SUM_DISCOUNT = 'Sum with discount: ';
+export const QUANTITY_TO_COMPARE_ITEMS_IN_CART = '2';
