@@ -4,7 +4,6 @@ import {
     CART_EMPTY,
     CART_TITLE,
     DEACTIVATE_PROMOCODE_BUTTON,
-    //PROMO_APPLY_BUTTON,
     PROMO_BUY_BUTTON,
     PROMO_CODES,
     PROMO_TITLE,
@@ -28,7 +27,6 @@ export default class CartView implements ViewComponent {
     private cartSum: HTMLSpanElement;
     private totalProductsContent: HTMLSpanElement;
     private totalSumContent: HTMLSpanElement;
-    private promoCodesTitle: HTMLSpanElement;
     private promoCodesContainer: HTMLDivElement;
     private totalSumDiscountContent: HTMLSpanElement;
     private totalDiscountContainer: HTMLParagraphElement;
@@ -44,7 +42,6 @@ export default class CartView implements ViewComponent {
         this.cartSum = createElem(HTMLTags.SPAN, 'cart-sum');
         this.totalProductsContent = createElem(HTMLTags.SPAN, 'products-content');
         this.totalSumContent = createElem(HTMLTags.SPAN, 'sum-content');
-        this.promoCodesTitle = createElem(HTMLTags.SPAN, 'promo-codes-title');
         this.promoCodesContainer = createElem(HTMLTags.DIV, 'promo-codes-container') as HTMLDivElement;
         this.totalSumDiscountContent = createElem(HTMLTags.SPAN, 'sum-content-discount');
         this.totalDiscountContainer = createElem(HTMLTags.P, 'total-discount-container') as HTMLParagraphElement;
@@ -75,10 +72,6 @@ export default class CartView implements ViewComponent {
             this.container.append(title, this.cartContainer);
             this.checkCartIsEmpty();
         }
-        // const promo = this.createPromoBlock();
-        // this.container.append(title, this.cartContainer, promo);
-        //this.checkCartIsEmpty();
-        //return this.container;
     }
 
     private createCard(card: Product) {
