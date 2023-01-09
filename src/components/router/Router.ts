@@ -36,6 +36,13 @@ class Router implements RouterInterface {
         this.navigate();
     }
 
+    public clearAllFilters() {
+        if (this.currentRoute) {
+            this.currentRoute.clearFilters();
+            this.updatePageUrl(this.currentRoute);
+        }
+    }
+
     private updatePageUrl(route: Route) {
         const newParams = route.getParameters();
         let newPath = route.path;
@@ -54,6 +61,20 @@ class Router implements RouterInterface {
             }
         }
         window.location.hash = newPath;
+    }
+
+    public addStockRangeToUrl(minValue: string, maxValue: string): void {
+        if (this.currentRoute) {
+            this.currentRoute.updateStockParameter(minValue, maxValue);
+            this.updatePageUrl(this.currentRoute);
+        }
+    }
+
+    public addPriceRangeToUrl(minValue: string, maxValue: string): void {
+        if (this.currentRoute) {
+            this.currentRoute.updatePriceParameter(minValue, maxValue);
+            this.updatePageUrl(this.currentRoute);
+        }
     }
 
     public addParameterToUrl(name: PossibleUrlParams, value: string): void {
