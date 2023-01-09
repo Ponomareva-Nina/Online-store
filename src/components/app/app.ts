@@ -58,6 +58,7 @@ export default class AppController implements AppControllerInterface {
     public start() {
         document.body.append(this.header.createHeader(), this.mainContainer, this.footer.renderFooter());
         this.router.init();
+        this.addToLocalStorage();
     }
 
     public updatePage(view: ViewComponent, params?: Props) {
@@ -68,17 +69,26 @@ export default class AppController implements AppControllerInterface {
     public addProductToCart(product: Product) {
         this.cartModel.addProduct(product);
         this.cartView.updateCartInfo();
+        this.cartView.updatePromoBlock();
     }
 
     public deleteProductFromCart(product: Product) {
         this.cartModel.deleteProduct(product);
         this.cartView.updateCartInfo();
+        this.cartView.updatePromoBlock();
     }
 
     private addToLocalStorage() {
         window.addEventListener('beforeunload', () => {
-            if (this.cartModel.productsInCart.length !== 0) {
-                localStorage.setItem('cart', JSON.stringify(this.cartModel.productsInCart));
+            localStorage.setItem('cart', JSON.stringify(this.cartModel.productsInCart));
+            localStorage.setItem('totalSum', this.cartModel.totalSum.toString());
+            localStorage.setItem('productsQuantity', this.cartModel.productsQuantity.toString());
+            localStorage.setItem('activatedPromocodes', JSON.stringify(this.cartModel.activatedPromocodes));
+            if (this.cartModel.totalSumWithDiscount !== 0) {
+                if (this.cartModel.totalSum == 0) {
+                    localStorage.setItem('totalSumWithDiscount', '0');
+                }
+                localStorage.setItem('totalSumWithDiscount', this.cartModel.totalSumWithDiscount.toString());
             }
         });
     }

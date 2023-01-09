@@ -64,3 +64,11 @@ export interface IFooter {
     wrapper: HTMLDivElement;
     renderFooter: () => HTMLElement;
 }
+
+export interface Promocode {
+    id: number;
+    value: string;
+    title: string;
+    discount: number;
+    active?: boolean;
+}
