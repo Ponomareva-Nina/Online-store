@@ -203,6 +203,7 @@ export default class CartView implements ViewComponent {
 
     public createPromoBlock() {
         this.destroyAllChildNodes(this.promoContainer);
+        this.destroyAllChildNodes(this.promoCodesContainer);
         const promoTitle = createElem(HTMLTags.P, 'page-header', PROMO_TITLE);
         const promoContentContainer = createElem(HTMLTags.DIV, 'content-container');
 
@@ -221,6 +222,12 @@ export default class CartView implements ViewComponent {
         this.cartModel.activatedPromocodes.forEach((activatedPromocode) => {
             if (activatedPromocode.active) {
                 this.createPromoCodeView(activatedPromocode);
+            }
+        });
+
+        this.cartModel.enteredPromocodes.forEach((enteredPromocode) => {
+            if (!enteredPromocode.active) {
+                this.createPromoCodeView(enteredPromocode);
             }
         });
 

@@ -15,7 +15,6 @@ export default class CartModel {
     constructor(controller: AppController) {
         this.appController = controller;
         this.promocodes = promos.promocodes;
-        this.enteredPromocodes = [];
 
         if (window.localStorage.getItem('totalSum')) {
             this.totalSum = Number(localStorage.getItem('totalSum'));
@@ -46,6 +45,8 @@ export default class CartModel {
         } else {
             this.totalSumWithDiscount = this.totalSum;
         }
+
+        this.enteredPromocodes = this.setEnteredPromocodesAfterReload();
     }
 
     addProduct(product: Product) {
@@ -105,7 +106,7 @@ export default class CartModel {
             this.totalSum = Number((this.totalSum -= product.price).toFixed(2));
             product.sum = product.price;
             const currentTotalPercentDiscount = this.getCurrentTotalPercentDiscount();
-            this.totalSumWithDiscount = Number((this.totalSum * (1 + currentTotalPercentDiscount / 100)).toFixed(2));
+            this.totalSumWithDiscount = Number((this.totalSum * (1 - currentTotalPercentDiscount / 100)).toFixed(2));
             this.deleteProduct(product);
             this.appController.cartView.updateCartInfo();
             this.appController.cartView.updatePage();
@@ -120,7 +121,7 @@ export default class CartModel {
             this.totalSum = Number((this.totalSum -= product.price).toFixed(2));
             product.sum = Number((product.sum -= product.price).toFixed(2));
             const currentTotalPercentDiscount = this.getCurrentTotalPercentDiscount();
-            this.totalSumWithDiscount = Number((this.totalSum * (1 + currentTotalPercentDiscount / 100)).toFixed(2));
+            this.totalSumWithDiscount = Number((this.totalSum * (1 - currentTotalPercentDiscount / 100)).toFixed(2));
             this.appController.cartView.updateCartInfo();
             this.appController.cartView.updatePromoBlock();
             this.appController.cartView.updatePage();
@@ -141,11 +142,6 @@ export default class CartModel {
     public findEnteredPromoInPromocodes(enteredValue: string) {
         this.promocodes.forEach((promocode) => {
             if (enteredValue.toLocaleUpperCase() === promocode.value) {
-                if (this.enteredPromocodes.length === 0) {
-                    this.enteredPromocodes.push(promocode);
-                    this.appController.cartView.createPromoCodeView(promocode);
-                }
-
                 if (!this.enteredPromocodes.find((enteredPromocode) => enteredPromocode.id === promocode.id)) {
                     this.enteredPromocodes.push(promocode);
                     this.appController.cartView.createPromoCodeView(promocode);
@@ -195,5 +191,14 @@ export default class CartModel {
             });
         }
         return currentTotalPercentDiscount;
+    }
+
+    private setEnteredPromocodesAfterReload() {
+        if (this.activatedPromocodes.length !== 0) {
+            this.enteredPromocodes = this.activatedPromocodes.slice();
+        } else {
+            this.enteredPromocodes = [];
+        }
+        return this.enteredPromocodes;
     }
 }
