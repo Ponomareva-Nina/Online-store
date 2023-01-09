@@ -59,4 +59,12 @@ export default class Route {
     public clearParameters() {
         Object.keys(this.parameters).forEach((key) => delete this.parameters[key as keyof Props]);
     }
+
+    public clearFilters() {
+        Object.keys(this.parameters).forEach((key) => {
+            if (key !== PossibleUrlParams.ID && key !== PossibleUrlParams.SORT) {
+                delete this.parameters[key as keyof Props];
+            }
+        });
+    }
 }

@@ -36,6 +36,13 @@ class Router implements RouterInterface {
         this.navigate();
     }
 
+    public clearAllFilters() {
+        if (this.currentRoute) {
+            this.currentRoute.clearFilters();
+            this.updatePageUrl(this.currentRoute);
+        }
+    }
+
     private updatePageUrl(route: Route) {
         const newParams = route.getParameters();
         let newPath = route.path;

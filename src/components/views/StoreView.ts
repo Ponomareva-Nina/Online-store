@@ -49,13 +49,33 @@ export default class StoreView implements ViewComponent {
     private createSidePanel() {
         const sidePanelContainer = createElem(HTMLTags.DIV, ClassNames.SIDE_PANEL) as HTMLDivElement;
         const searchInput = this.createSearchInput();
+        const resetAllBtn = this.createResetFiltersBtn();
         const sorts = this.createSorts();
         const facultyFilters = this.createFacultyFilters();
         const categoryFilters = this.createCategoryFilters();
         const priceSlider = this.createPriceDualSlider();
         const stockSlider = this.createStockDualSlider();
-        sidePanelContainer.append(searchInput, sorts, facultyFilters, categoryFilters, priceSlider, stockSlider);
+        sidePanelContainer.append(
+            searchInput,
+            resetAllBtn,
+            sorts,
+            facultyFilters,
+            categoryFilters,
+            priceSlider,
+            stockSlider
+        );
         return sidePanelContainer;
+    }
+
+    private createResetFiltersBtn() {
+        const container = createElem(HTMLTags.DIV, 'reset-filters__container');
+        const showAllButton = createElem(HTMLTags.BUTTON, 'reset-btn', 'Show all products');
+
+        showAllButton.addEventListener('click', () => {
+            this.appController.router.clearAllFilters();
+        });
+        container.append(showAllButton);
+        return container;
     }
 
     private createPriceDualSlider() {

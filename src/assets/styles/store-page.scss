@@ -134,3 +134,34 @@
     text-align: center;
     font-weight: 600;
 }
+
+.reset-filters__container {
+    width: 100%;
+    display: flex;
+    border-top: 1px solid $color-accent;
+    border-bottom: 1px solid $color-accent;
+    justify-content: center;
+    align-items: center;
+}
+
+.reset-btn {
+    background: none;
+    outline: none;
+    border: none;
+    @include font-main();
+    vertical-align: middle;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .2s ease;
+    padding: 1rem 0;
+
+    &:hover {
+        color: $color-accent;
+    }
+
+    &:active {
+        color: $color-main;
+    }
+}
