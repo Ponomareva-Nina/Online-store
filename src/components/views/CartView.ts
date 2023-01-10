@@ -17,6 +17,7 @@ import { HTMLTags } from '../../types/types';
 import { createElem } from '../../utils/utils';
 import AppController from '../app/app';
 import CartModel from '../models/CartModel';
+import CheckoutPage from './CheckoutPage';
 
 export default class CartView implements ViewComponent {
     public container: DocumentFragment;
@@ -32,6 +33,7 @@ export default class CartView implements ViewComponent {
     private totalSumDiscountContent: HTMLSpanElement;
     private totalDiscountContainer: HTMLParagraphElement;
     private promoContainer: HTMLDivElement;
+    public checkoutPage: CheckoutPage;
 
     constructor(cart: CartModel, controller: AppController) {
         this.appController = controller;
@@ -47,12 +49,12 @@ export default class CartView implements ViewComponent {
         this.totalSumDiscountContent = createElem(HTMLTags.SPAN, 'sum-content-discount');
         this.totalDiscountContainer = createElem(HTMLTags.P, 'total-discount-container') as HTMLParagraphElement;
         this.promoContainer = createElem(HTMLTags.DIV, 'promo-container') as HTMLDivElement;
+        this.checkoutPage = new CheckoutPage();
     }
 
     public createPage() {
-        this.destroyAllChildNodes(this.container);
+        // this.destroyAllChildNodes(this.container); для фрагмента это не нужно, после помещения элементов в дом фрагмент очищается самостоятельно
         this.destroyAllChildNodes(this.cartContainer);
-
         const title = createElem(HTMLTags.H2, 'page-header', CART_TITLE);
 
         const productInCart = this.cartModel.productsInCart;
@@ -73,6 +75,9 @@ export default class CartView implements ViewComponent {
             this.container.append(title, this.cartContainer);
             this.checkCartIsEmpty();
         }
+
+        const checkoutModal = this.checkoutPage.createPayCard();
+        this.container.append(checkoutModal);
     }
 
     private createCard(card: Product) {
@@ -245,6 +250,10 @@ export default class CartView implements ViewComponent {
         const promoBuyLeft = createElem(HTMLTags.SPAN, 'decor-buy decor_left');
         const promoBuyButton = createElem(HTMLTags.BUTTON, 'btn buy-button', PROMO_BUY_BUTTON);
         const promoBuyRight = createElem(HTMLTags.SPAN, 'decor-buy decor_right');
+        promoBuyButton.addEventListener('click', () => {
+            this.checkoutPage.addEventLestenerBuyButton();
+            this.checkoutPage.showModal();
+        });
         promoBuyContainer.append(promoBuyLeft, promoBuyButton, promoBuyRight);
 
         promoContentContainer.append(
