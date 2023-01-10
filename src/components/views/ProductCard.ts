@@ -10,15 +10,18 @@ import {
     DETAILS_BUTTON_TEXT,
 } from '../../constants/string-constants';
 import { ClassNames } from '../../constants/classnames-constants';
+import CheckoutPage from './CheckoutPage';
 
 export default class ProductCard implements ProductCardInterface {
     public cardData: Product;
     public appController: AppController;
     private activePreviewImage: NullableElement<HTMLImageElement>;
+    checkoutPage: CheckoutPage;
 
     constructor(card: Product, controller: AppController) {
         this.cardData = card;
         this.appController = controller;
+        this.checkoutPage = new CheckoutPage();
         this.activePreviewImage = null;
     }
 
@@ -39,6 +42,16 @@ export default class ProductCard implements ProductCardInterface {
 
         const btnsContainer = createElem(HTMLTags.DIV, ClassNames.PRODUCT_CARD_BTNS_CONTAINER);
         const buyNowBtn = createElem(HTMLTags.BUTTON, ClassNames.BTN, BUY_NOW_BUTTON_TEXT);
+        buyNowBtn.addEventListener('click', () => {
+            if (this.appController.cartModel.checkProductInCart(this.cardData.id)) {
+                this.checkoutPage.addEventLestenerBuyButton();
+                this.checkoutPage.showModal();
+            } else {
+                this.appController.addProductToCart(this.cardData);
+                this.checkoutPage.deleteEventLestenerBuyButton();
+                this.checkoutPage.showModal();
+            }
+        });
         const addDeleteProductBtn = createElem(HTMLTags.BUTTON, 'btn add-delete-btn btn_add', ADD_TO_CART_BUTTON_TEXT);
         if (this.appController.cartModel.checkProductInCart(this.cardData.id)) {
             addDeleteProductBtn.textContent = DELETE_FROM_CART_BUTTON_TEXT;
@@ -50,7 +63,8 @@ export default class ProductCard implements ProductCardInterface {
         btnsContainer.append(buyNowBtn, addDeleteProductBtn);
 
         infoSection.append(priceContainer, description, btnsContainer);
-        container.append(title, imagesSection, infoSection);
+        const checkoutPage = this.checkoutPage.createPayCard();
+        container.append(title, imagesSection, infoSection, checkoutPage);
         return container;
     }
 
