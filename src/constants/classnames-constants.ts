@@ -36,4 +36,7 @@ export enum ClassNames {
     DUAL_SLIDER_VALUES = 'dual-slider-container__text-values',
     DUAL_SLIDER_VALUE_FIELD = 'text-values__field',
     FILTER_BTNS_CONTAINER = 'filter-btns_container',
+    BREADCRUMPS_CONTAINER = 'breadcrumps-container',
+    STEPS_LINE = 'steps-line',
+    BREADCRUMPS_LINKS_CONTAINER = 'breadcrumps-links',
 }

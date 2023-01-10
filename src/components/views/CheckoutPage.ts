@@ -11,6 +11,7 @@ import {
     INPUT_TYPE_CARD_NUMBER_PATTERN,
     INPUT_TYPE_CARD_VALID_TIME_PATTERN,
     INPUT_TYPE_MAIL_PATTERN,
+    INPUT_TYPE_NUMBER,
     INPUT_TYPE_PHONE_PATTERN,
     INPUT_TYPE_TEXT,
     ORDER_PLACEHOLDER_ADDRESS,
@@ -73,7 +74,6 @@ export default class CheckoutPage {
 
             this.checkAllInputsFull();
             this.deleteEventLestenerBuyButton();
-            //this.hideModal();
         });
         checkoutButtonContainer.append(checkoutButton);
         form.append(personalInfoBlock, contactInfoBlock, paymentInfoBlock, checkoutButtonContainer);
@@ -158,31 +158,54 @@ export default class CheckoutPage {
         const paymentContainer = createElem(HTMLTags.DIV, 'payment-container') as HTMLDivElement;
         const paymentTitle = createElem(HTMLTags.P, 'payment-title payment-title', CHECKOUT_PAYMENT_INFO_TITLE);
         const paymentlInfoContent = createElem(HTMLTags.DIV, 'payment-info-content');
+        const paymentInputCardContainer = createElem(HTMLTags.DIV, 'payment-input-card-container');
+        const paymentSystemLogo = createElem(HTMLTags.SPAN, 'payment-system-logo logo');
         const paymentInputCard = (createElem(
             HTMLTags.INPUT,
             'payment-input-card payment-input'
         ) as unknown) as HTMLInputElement;
         paymentInputCard.setAttribute('placeholder', ORDER_PLACEHOLDER_CARD);
-        paymentInputCard.setAttribute('type', INPUT_TYPE_TEXT);
+        paymentInputCard.setAttribute('type', INPUT_TYPE_NUMBER);
+        paymentInputCard.setAttribute('min', '1000000000000000');
+        paymentInputCard.setAttribute('max', '9999999999999999');
         paymentInputCard.setAttribute('required', '');
         paymentInputCard.setAttribute('pattern', INPUT_TYPE_CARD_NUMBER_PATTERN);
-        paymentInputCard.addEventListener('change', () => this.checkCardNumber(paymentInputCard.value));
+        paymentInputCard.addEventListener('input', () => {
+            this.checkCardNumber(paymentInputCard.value);
+            paymentInputCard.value = paymentInputCard.value.slice(0, 16);
+            const paymentSstemLogoClass = this.checkCardNumber(paymentInputCard.value);
+            if (paymentSstemLogoClass) {
+                paymentSystemLogo.classList.remove('visa-logo');
+                paymentSystemLogo.classList.remove('mastercard-logo');
+                paymentSystemLogo.classList.remove('a-express-logo');
+                paymentSystemLogo.classList.remove('nocard-logo');
+                paymentSystemLogo.classList.add(paymentSstemLogoClass);
+            }
+        });
+        paymentInputCardContainer.append(paymentSystemLogo, paymentInputCard);
 
         const paymentInputValid = createElem(HTMLTags.INPUT, 'payment-input-valid payment-input') as HTMLInputElement;
         paymentInputValid.setAttribute('placeholder', ORDER_PLACEHOLDER_CARD_VALID);
         paymentInputValid.setAttribute('type', INPUT_TYPE_TEXT);
         paymentInputValid.setAttribute('required', '');
         paymentInputValid.setAttribute('pattern', INPUT_TYPE_CARD_VALID_TIME_PATTERN);
-        paymentInputValid.addEventListener('change', () => this.checkCardValid(paymentInputValid.value));
+        paymentInputValid.addEventListener('change', () => {
+            this.checkCardValid(paymentInputValid.value);
+        });
 
         const paymentInputCvv = createElem(HTMLTags.INPUT, 'payment-input-cvv payment-input') as HTMLInputElement;
         paymentInputCvv.setAttribute('placeholder', ORDER_PLACEHOLDER_CARD_CVV);
-        paymentInputCvv.setAttribute('type', INPUT_TYPE_TEXT);
+        paymentInputCvv.setAttribute('type', INPUT_TYPE_NUMBER);
+        paymentInputCvv.setAttribute('min', '100');
+        paymentInputCvv.setAttribute('max', '999');
         paymentInputCvv.setAttribute('required', '');
         paymentInputCvv.setAttribute('pattern', INPUT_TYPE_CARD_CVV_PATTERN);
-        paymentInputCvv.addEventListener('change', () => this.checkCardCVV(paymentInputCvv.value));
+        paymentInputCvv.addEventListener('input', () => {
+            paymentInputCvv.value = paymentInputCvv.value.slice(0, 3);
+            this.checkCardCVV(paymentInputCvv.value);
+        });
 
-        paymentlInfoContent.append(paymentInputCard, paymentInputValid, paymentInputCvv);
+        paymentlInfoContent.append(paymentInputCardContainer, paymentInputValid, paymentInputCvv);
 
         paymentContainer.append(paymentTitle, paymentlInfoContent);
         return paymentContainer;
@@ -256,6 +279,18 @@ export default class CheckoutPage {
 
     private checkCardNumber(cardNumber: string) {
         this.cardNumber = cardNumber;
+        const paymentSystemIdStr = cardNumber.slice(0, 1);
+        const paymentSystemId = Number(paymentSystemIdStr);
+        switch (paymentSystemId) {
+            case 4:
+                return 'visa-logo';
+            case 5:
+                return 'mastercard-logo';
+            case 3:
+                return 'a-express-logo';
+            default:
+                return 'nocard-logo';
+        }
     }
 
     private checkCardValid(paymentInputValid: string) {
@@ -298,6 +333,7 @@ export default class CheckoutPage {
             this.appController.cartModel.eraseAllAfterPurchaseg();
             this.hideModal();
             this.agree = false;
+            this.eraseAllInputWithSavedInfo();
         }
     }
 
@@ -311,5 +347,6 @@ export default class CheckoutPage {
         this.cardNumber = '';
         this.cardValidTime = '';
         this.cvv = '';
+        this.contactAgree.checked = false;
     }
 }
