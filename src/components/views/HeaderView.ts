@@ -1,7 +1,7 @@
 import { createElem, createWelcomeLine } from '../../utils/utils';
 import AppController from '../app/app';
 import { LINKS } from '../../constants/route-constants';
-import { HTMLTags, NullableElement } from '../../types/types';
+import { HTMLTags } from '../../types/types';
 import { HASHTAG, MAIN_LOGO_PART1, MAIN_LOGO_PART2 } from '../../constants/string-constants';
 import { ViewComponent } from '../../types/interfaces';
 
@@ -9,15 +9,16 @@ export default class Header implements ViewComponent {
     container: DocumentFragment;
     appController: AppController;
     wrapper: HTMLDivElement;
-    currentActiveLink: NullableElement<HTMLElement>;
+
     headerContainer: HTMLDivElement;
+    links: Array<HTMLElement>;
 
     constructor(controller: AppController) {
         this.appController = controller;
         this.wrapper = createElem(HTMLTags.DIV, 'wrapper') as HTMLDivElement;
         this.headerContainer = createElem('header', 'header') as HTMLDivElement;
         this.container = document.createDocumentFragment();
-        this.currentActiveLink = null;
+        this.links = [];
     }
 
     public createLogo() {
@@ -29,9 +30,8 @@ export default class Header implements ViewComponent {
         const link = createElem(HTMLTags.LINK, 'logo-link');
         link.setAttribute('href', LINKS.About);
         link.append(title);
-        logoContainer.addEventListener('click', (e) => {
+        logoContainer.addEventListener('click', () => {
             this.appController.router.changeCurrentPage(LINKS.About);
-            this.appController.header.handleNavigationClick(e);
         });
         logoContainer.append(link);
         return logoContainer;
@@ -43,17 +43,14 @@ export default class Header implements ViewComponent {
 
         for (const link in LINKS) {
             const li = createElem(HTMLTags.LIST, 'main-nav__list_item');
-            const navLink = createElem(HTMLTags.LINK, 'nav-link', link);
+            const navLink = createElem(HTMLTags.LINK, 'nav-link', link) as HTMLLinkElement;
             navLink.setAttribute('href', LINKS[link as keyof typeof LINKS]);
-            const initialRoute = this.getLinkRouteFromURL();
-            if (navLink.getAttribute('href') === initialRoute) {
-                this.currentActiveLink = navLink;
-                this.currentActiveLink.classList.add('nav-link_active');
-            }
+
             navLink.addEventListener('click', (e) => {
                 e.preventDefault();
-                this.handleNavigationClick(e);
+                this.handleNavigationClick(navLink.href);
             });
+            this.links.push(navLink);
             li.append(navLink);
             navList.append(li);
         }
@@ -62,14 +59,14 @@ export default class Header implements ViewComponent {
         return navigation;
     }
 
-    public handleNavigationClick(event: MouseEvent) {
-        const target = event.target as HTMLElement;
-        const href = target.getAttribute('href') || '';
+    public handleNavigationClick(href: string) {
         this.appController.router.changeCurrentPage(href);
-        const newActiveLink = document.querySelectorAll('.nav-link');
-        newActiveLink.forEach((link) => {
-            const route = this.getLinkRouteFromURL();
-            if (link.getAttribute('href') === route) {
+    }
+
+    public setActiveLink() {
+        const activeRoute = this.appController.router.currentRoute?.path;
+        this.links.forEach((link) => {
+            if (link.getAttribute('href') === activeRoute) {
                 link.classList.add('nav-link_active');
             } else {
                 link.classList.remove('nav-link_active');
