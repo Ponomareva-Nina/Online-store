@@ -93,7 +93,7 @@ export default class CheckoutPage {
         personalInputFirstname.setAttribute('type', INPUT_TYPE_TEXT);
         personalInputFirstname.setAttribute('required', '');
         personalInputFirstname.setAttribute('pattern', INPUT_STRING_FIRSTNAME_LASTNAME_PATTERN);
-        personalInputFirstname.addEventListener('change', () => this.checkFirstName(personalInputFirstname.value));
+        personalInputFirstname.addEventListener('input', () => this.checkFirstName(personalInputFirstname.value));
 
         const personalInputLastname = createElem(
             HTMLTags.INPUT,
@@ -103,7 +103,7 @@ export default class CheckoutPage {
         personalInputLastname.setAttribute('type', INPUT_TYPE_TEXT);
         personalInputLastname.setAttribute('required', '');
         personalInputLastname.setAttribute('pattern', INPUT_STRING_FIRSTNAME_LASTNAME_PATTERN);
-        personalInputLastname.addEventListener('change', () => this.checkLastName(personalInputLastname.value));
+        personalInputLastname.addEventListener('input', () => this.checkLastName(personalInputLastname.value));
 
         const personalInputAddress = createElem(
             HTMLTags.INPUT,
@@ -113,7 +113,7 @@ export default class CheckoutPage {
         personalInputAddress.setAttribute('type', INPUT_TYPE_TEXT);
         personalInputAddress.setAttribute('required', '');
         personalInputAddress.setAttribute('pattern', INPUT_STRING_ADDRESS_PATTERN);
-        personalInputAddress.addEventListener('change', () => this.checkAddress(personalInputAddress.value));
+        personalInputAddress.addEventListener('input', () => this.checkAddress(personalInputAddress.value));
         personalInfoContent.append(personalInputFirstname, personalInputLastname, personalInputAddress);
         personalContainer.append(personalTitle, personalInfoContent);
         return personalContainer;
@@ -128,18 +128,19 @@ export default class CheckoutPage {
         contactPhone.setAttribute('type', INPUT_TYPE_TEXT);
         contactPhone.setAttribute('required', '');
         contactPhone.setAttribute('pattern', INPUT_TYPE_PHONE_PATTERN);
-        contactPhone.addEventListener('change', () => this.checkPhone(contactPhone.value));
+        contactPhone.addEventListener('input', () => this.checkPhone(contactPhone.value));
 
         const contactMail = createElem(HTMLTags.INPUT, 'contact-input-mail payment-input') as HTMLInputElement;
         contactMail.setAttribute('placeholder', ORDER_PLACEHOLDER_MAIL);
         contactMail.setAttribute('type', INPUT_TYPE_TEXT);
         contactMail.setAttribute('required', '');
         contactMail.setAttribute('pattern', INPUT_TYPE_MAIL_PATTERN);
-        contactMail.addEventListener('change', () => this.checkMail(contactMail.value));
+        contactMail.addEventListener('input', () => this.checkMail(contactMail.value));
 
         const contactAgreeContainer = createElem(HTMLTags.DIV, 'contact-agree-container');
 
         this.contactAgree.setAttribute('type', 'checkbox');
+        this.contactAgree.setAttribute('required', '');
         this.contactAgree.setAttribute('id', 'license');
         const contactAgreeLabel = createElem(
             HTMLTags.LABEL,
@@ -189,7 +190,7 @@ export default class CheckoutPage {
         paymentInputValid.setAttribute('type', INPUT_TYPE_TEXT);
         paymentInputValid.setAttribute('required', '');
         paymentInputValid.setAttribute('pattern', INPUT_TYPE_CARD_VALID_TIME_PATTERN);
-        paymentInputValid.addEventListener('change', () => {
+        paymentInputValid.addEventListener('input', () => {
             this.checkCardValid(paymentInputValid.value);
         });
 
