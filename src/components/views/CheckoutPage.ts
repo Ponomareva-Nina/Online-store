@@ -71,9 +71,7 @@ export default class CheckoutPage {
         checkoutButton.setAttribute('value', CHECKOUT_BUTTON_CONTENT);
         checkoutButton.addEventListener('click', () => {
             this.checkIsUserAgree();
-
             this.checkAllInputsFull();
-            this.deleteEventLestenerBuyButton();
         });
         checkoutButtonContainer.append(checkoutButton);
         form.append(personalInfoBlock, contactInfoBlock, paymentInfoBlock, checkoutButtonContainer);
@@ -189,8 +187,8 @@ export default class CheckoutPage {
         paymentInputValid.setAttribute('type', INPUT_TYPE_TEXT);
         paymentInputValid.setAttribute('required', '');
         paymentInputValid.setAttribute('pattern', INPUT_TYPE_CARD_VALID_TIME_PATTERN);
-        paymentInputValid.addEventListener('change', () => {
-            this.checkCardValid(paymentInputValid.value);
+        paymentInputValid.addEventListener('input', () => {
+            this.checkCardValid(paymentInputValid);
         });
 
         const paymentInputCvv = createElem(HTMLTags.INPUT, 'payment-input-cvv payment-input') as HTMLInputElement;
@@ -220,20 +218,14 @@ export default class CheckoutPage {
     public showModal() {
         this.container.classList.add('popup_active');
         document.body.classList.add('inactive-order');
-    }
-
-    public hideModal() {
-        this.container.classList.remove('popup_active');
-        document.body.classList.remove('inactive-order');
-    }
-
-    public addEventLestenerBuyButton() {
         document.body.addEventListener('click', (e: MouseEvent) => {
             this.checkClickWhenOrderOpen(e);
         });
     }
 
-    public deleteEventLestenerBuyButton() {
+    public hideModal() {
+        this.container.classList.remove('popup_active');
+        document.body.classList.remove('inactive-order');
         document.body.removeEventListener('click', (e: MouseEvent) => {
             this.checkClickWhenOrderOpen(e);
         });
@@ -243,7 +235,6 @@ export default class CheckoutPage {
         const target = e.target as HTMLElement;
         const currentTarget = e.currentTarget as HTMLElement;
         if (target.classList.contains('inactive-order') && !currentTarget.classList.contains('order-container')) {
-            this.deleteEventLestenerBuyButton();
             this.hideModal();
         }
     }
@@ -293,8 +284,31 @@ export default class CheckoutPage {
         }
     }
 
-    private checkCardValid(paymentInputValid: string) {
-        this.cardValidTime = paymentInputValid;
+    private checkCardValid(paymentInputValid: HTMLInputElement) {
+        if (!paymentInputValid.value.match(/[0-9]/g)) {
+            paymentInputValid.value = '';
+            return;
+        }
+        if (paymentInputValid.value.length === 3) {
+            if (paymentInputValid.value[2] === '/') {
+                return;
+            } else {
+                paymentInputValid.value = paymentInputValid.value
+                    .split('')
+                    .map((item, index) => {
+                        if (index === 2) {
+                            return (item = `/${item}`);
+                        } else {
+                            return item;
+                        }
+                    })
+                    .join('');
+            }
+        }
+        if (paymentInputValid.value.length > 5) {
+            paymentInputValid.value = paymentInputValid.value.substring(0, 5);
+            this.cardValidTime = paymentInputValid.value;
+        }
     }
 
     private checkCardCVV(paymentInputCvv: string) {
