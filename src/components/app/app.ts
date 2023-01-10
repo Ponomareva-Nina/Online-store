@@ -14,7 +14,6 @@ import '../models/StoreModel';
 import StoreModel from '../models/StoreModel';
 import Footer from '../views/FooterVew';
 import CartModel from '../models/CartModel';
-//import CheckoutPage from '../views/CheckoutPage';
 
 export default class AppController implements AppControllerInterface {
     private static instance: InstanceType<typeof AppController>;
