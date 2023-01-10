@@ -21,6 +21,11 @@ export const SEARCH_INPUT_PLACEHOLDER = 'Enter a keyword';
 export const NO_PRODUCTS_MESSAGE = 'Sorry. No products found.';
 export const CART_TITLE = 'Products in cart';
 export const CART_EMPTY = 'CART IS EMPTY';
+export const START_PAGE_TITLE_ABOUT = 'MERCH FOR WIZZARDS AND MUGGLES';
+export const START_PAGE_TITLE_TRENDS = 'TRENDING PRODUCTS';
+export const START_PAGE_ABOUT_DESCR =
+    'HOGWARTS STORE is the online shop where every fan will find magical and exclusive products, from clothes and souvenirs to rare collectables!';
+export const START_PAGE_BUTTON = 'Shop now';
 export const PROMO_TITLE = 'Total: ';
 export const PROMO_TITLE_TOTAL_PRODUCTS = 'Products: ';
 export const PROMO_TITLE_TOTAL_SUM = 'Sum: ';
