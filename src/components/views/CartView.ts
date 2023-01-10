@@ -25,8 +25,8 @@ export default class CartView implements ViewComponent {
     public cartModel: CartModel;
     private cartContainer: HTMLElement;
     public totalPerProduct: number;
-    private quantity: HTMLSpanElement;
-    private cartSum: HTMLSpanElement;
+    public quantity: HTMLSpanElement;
+    public cartSum: HTMLSpanElement;
     private totalProductsContent: HTMLSpanElement;
     private totalSumContent: HTMLSpanElement;
     private promoCodesContainer: HTMLDivElement;
@@ -49,11 +49,10 @@ export default class CartView implements ViewComponent {
         this.totalSumDiscountContent = createElem(HTMLTags.SPAN, 'sum-content-discount');
         this.totalDiscountContainer = createElem(HTMLTags.P, 'total-discount-container') as HTMLParagraphElement;
         this.promoContainer = createElem(HTMLTags.DIV, 'promo-container') as HTMLDivElement;
-        this.checkoutPage = new CheckoutPage();
+        this.checkoutPage = new CheckoutPage(this.appController);
     }
 
     public createPage() {
-        // this.destroyAllChildNodes(this.container); для фрагмента это не нужно, после помещения элементов в дом фрагмент очищается самостоятельно
         this.destroyAllChildNodes(this.cartContainer);
         const title = createElem(HTMLTags.H2, 'page-header', CART_TITLE);
 
@@ -241,7 +240,6 @@ export default class CartView implements ViewComponent {
         promoInput.placeholder = PROMO_CODES;
         promoInput.addEventListener('input', () => {
             this.cartModel.findEnteredPromoInPromocodes(promoInput.value);
-            console.log(this.cartModel.enteredPromocodes);
         });
 
         promoInputContainer.append(promoInput);

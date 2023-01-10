@@ -133,6 +133,13 @@
 
 .checkout-container {
     margin: auto;
+    display: flex;
+    margin-top: 2rem;
+    justify-content: center;
+}
+
+.checkout-button {
+    border: none;
 }
 
 .popup_active {
