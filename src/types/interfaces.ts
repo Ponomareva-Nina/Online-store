@@ -65,6 +65,11 @@ export interface IFooter {
     renderFooter: () => HTMLElement;
 }
 
+export interface ICheckoutCard {
+    container: DocumentFragment;
+    //appController: AppController;
+    createPayCard: () => DocumentFragment;
+}
 export interface Promocode {
     id: number;
     value: string;
