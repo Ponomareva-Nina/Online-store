@@ -250,7 +250,6 @@ export default class CartView implements ViewComponent {
         const promoBuyButton = createElem(HTMLTags.BUTTON, 'btn buy-button', PROMO_BUY_BUTTON);
         const promoBuyRight = createElem(HTMLTags.SPAN, 'decor-buy decor_right');
         promoBuyButton.addEventListener('click', () => {
-            this.checkoutPage.addEventLestenerBuyButton();
             this.checkoutPage.showModal();
         });
         promoBuyContainer.append(promoBuyLeft, promoBuyButton, promoBuyRight);

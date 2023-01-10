@@ -35,7 +35,6 @@ export default class CheckoutPage {
         const checkoutButton = createElem(HTMLTags.BUTTON, 'btn checkout-button', CHECKOUT_BUTTON_CONTENT);
         checkoutButton.addEventListener('click', () => {
             //need check if all data enetered correctly;
-            this.deleteEventLestenerBuyButton();
             this.hideModal();
         });
         checkoutButtonContainer.append(checkoutButton);
@@ -115,20 +114,14 @@ export default class CheckoutPage {
     public showModal() {
         this.container.classList.add('popup_active');
         document.body.classList.add('inactive-order');
-    }
-
-    public hideModal() {
-        this.container.classList.remove('popup_active');
-        document.body.classList.remove('inactive-order');
-    }
-
-    public addEventLestenerBuyButton() {
         document.body.addEventListener('click', (e: MouseEvent) => {
             this.checkClickWhenOrderOpen(e);
         });
     }
 
-    public deleteEventLestenerBuyButton() {
+    public hideModal() {
+        this.container.classList.remove('popup_active');
+        document.body.classList.remove('inactive-order');
         document.body.removeEventListener('click', (e: MouseEvent) => {
             this.checkClickWhenOrderOpen(e);
         });
@@ -138,7 +131,6 @@ export default class CheckoutPage {
         const target = e.target as HTMLElement;
         const currentTarget = e.currentTarget as HTMLElement;
         if (target.classList.contains('inactive-order') && !currentTarget.classList.contains('order-container')) {
-            this.deleteEventLestenerBuyButton();
             this.hideModal();
         }
     }

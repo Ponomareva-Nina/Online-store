@@ -10,21 +10,19 @@ import {
     DELETE_FROM_CART_BUTTON_TEXT,
     DETAILS_BUTTON_TEXT,
     QUERY_SEPARATOR,
+    STORE_VIEW_TITLE,
 } from '../../constants/string-constants';
 import { ClassNames } from '../../constants/classnames-constants';
-import CheckoutPage from './CheckoutPage';
 import { LINKS } from '../../constants/route-constants';
 
 export default class ProductCard implements ProductCardInterface {
     public cardData: Product;
     public appController: AppController;
     private activePreviewImage: NullableElement<HTMLImageElement>;
-    checkoutPage: CheckoutPage;
 
     constructor(card: Product, controller: AppController) {
         this.cardData = card;
         this.appController = controller;
-        this.checkoutPage = new CheckoutPage();
         this.activePreviewImage = null;
     }
 
@@ -32,7 +30,7 @@ export default class ProductCard implements ProductCardInterface {
         const container = createElem(HTMLTags.DIV, ClassNames.BREADCRUMPS_CONTAINER, '');
         const stepsLine = createElem(HTMLTags.DIV, ClassNames.STEPS_LINE, '');
         const linksContainer = createElem(HTMLTags.DIV, ClassNames.BREADCRUMPS_LINKS_CONTAINER, '');
-        const initialLink = createElem(HTMLTags.LINK, '', 'Catalogue') as HTMLLinkElement;
+        const initialLink = createElem(HTMLTags.LINK, '', STORE_VIEW_TITLE) as HTMLLinkElement;
         initialLink.setAttribute('href', LINKS.Store);
         initialLink.addEventListener('click', (e) => {
             this.navigateByBreadCrump(e, LINKS.Store);
@@ -77,12 +75,12 @@ export default class ProductCard implements ProductCardInterface {
         const buyNowBtn = createElem(HTMLTags.BUTTON, ClassNames.BTN, BUY_NOW_BUTTON_TEXT);
         buyNowBtn.addEventListener('click', () => {
             if (this.appController.cartModel.checkProductInCart(this.cardData.id)) {
-                this.checkoutPage.addEventLestenerBuyButton();
-                this.checkoutPage.showModal();
+                this.appController.router.changeCurrentPage(LINKS.Cart);
+                this.appController.cartView.checkoutPage.showModal();
             } else {
                 this.appController.addProductToCart(this.cardData);
-                this.checkoutPage.deleteEventLestenerBuyButton();
-                this.checkoutPage.showModal();
+                this.appController.router.changeCurrentPage(LINKS.Cart);
+                this.appController.cartView.checkoutPage.showModal();
             }
         });
         const addDeleteProductBtn = createElem(HTMLTags.BUTTON, 'btn add-delete-btn btn_add', ADD_TO_CART_BUTTON_TEXT);
@@ -96,8 +94,7 @@ export default class ProductCard implements ProductCardInterface {
         btnsContainer.append(buyNowBtn, addDeleteProductBtn);
 
         infoSection.append(priceContainer, description, btnsContainer);
-        const checkoutPage = this.checkoutPage.createPayCard();
-        container.append(breadcrumps, title, imagesSection, infoSection, checkoutPage);
+        container.append(breadcrumps, title, imagesSection, infoSection);
         return container;
     }
 
