@@ -73,7 +73,7 @@ export default class CheckoutPage {
 
             this.checkAllInputsFull();
             this.deleteEventLestenerBuyButton();
-            this.hideModal();
+            //this.hideModal();
         });
         checkoutButtonContainer.append(checkoutButton);
         form.append(personalInfoBlock, contactInfoBlock, paymentInfoBlock, checkoutButtonContainer);
@@ -279,6 +279,7 @@ export default class CheckoutPage {
             !this.agree
         ) {
             alert('Please checkout again and agree with Private Police');
+            this.eraseAllInputWithSavedInfo();
         } else if (
             this.firstname.length !== 0 &&
             this.lastname.length !== 0 &&
@@ -290,12 +291,25 @@ export default class CheckoutPage {
             this.cvv.length !== 0 &&
             this.agree
         ) {
-            this.appController.cartModel.eraseAllAfterPurchaseg();
-            this.hideModal();
             setTimeout(() => {
                 this.appController.router.changeCurrentPage(LINKS.About);
-            }, 4000);
+            }, 3000);
             alert('Your order has been placed. Thank you!\nYou will be redirected to main page');
+            this.appController.cartModel.eraseAllAfterPurchaseg();
+            this.hideModal();
+            this.agree = false;
         }
+    }
+
+    private eraseAllInputWithSavedInfo() {
+        this.firstname = '';
+        this.lastname = '';
+        this.address = '';
+        this.phone = '';
+        this.mail = '';
+        this.agree = false;
+        this.cardNumber = '';
+        this.cardValidTime = '';
+        this.cvv = '';
     }
 }
