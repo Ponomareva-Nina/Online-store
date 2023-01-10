@@ -2,7 +2,7 @@ import { createElem, createWelcomeLine } from '../../utils/utils';
 import AppController from '../app/app';
 import { LINKS } from '../../constants/route-constants';
 import { HTMLTags } from '../../types/types';
-import { HASHTAG, MAIN_LOGO_PART1, MAIN_LOGO_PART2 } from '../../constants/string-constants';
+import { MAIN_LOGO_PART1, MAIN_LOGO_PART2 } from '../../constants/string-constants';
 import { ViewComponent } from '../../types/interfaces';
 
 export default class Header implements ViewComponent {
@@ -68,16 +68,6 @@ export default class Header implements ViewComponent {
                 link.classList.remove('nav-link_active');
             }
         });
-    }
-
-    private getLinkRouteFromURL() {
-        const route = window.location.href.split(HASHTAG);
-        const [, params] = route;
-        if (params) {
-            const [initialRoute] = params.split(/\?|&|\//);
-            return `${HASHTAG}${initialRoute}`;
-        }
-        return '#';
     }
 
     public createContentHeader() {
