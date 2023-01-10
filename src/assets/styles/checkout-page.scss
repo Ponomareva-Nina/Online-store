@@ -1,13 +1,15 @@
 .order-container {
     display: none;
-    width: 96.4%;
+    width: 95%;
+    height: min-content;
     margin: 0 auto;
-    padding: 6% 9%;
+    padding: 4rem 5rem;
     flex-direction: column;
-    gap: 4rem;
+    gap: 2rem;
     position: absolute;
-    top: 9%;
-    left: 2%;
+    top: -6rem;
+    left: 0;
+    right: 0;
     z-index: 10;
     border-radius: 0;
     background-color: $color-page-bg;
@@ -140,7 +142,7 @@
 }
 
 .inactive-order {
-    overflow: hidden;
+    overflow: scroll;
 
     &:after {
         content: "";

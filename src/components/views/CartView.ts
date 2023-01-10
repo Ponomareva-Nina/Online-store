@@ -184,9 +184,8 @@ export default class CartView implements ViewComponent {
         link.append(this.quantity, cartIcon, this.cartSum);
         cartContainer.append(link);
         this.updateCartInfo();
-        cartContainer.addEventListener('click', (e) => {
+        cartContainer.addEventListener('click', () => {
             this.appController.router.changeCurrentPage(LINKS.Cart);
-            this.appController.header.handleNavigationClick(e);
         });
         return cartContainer;
     }

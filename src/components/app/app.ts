@@ -65,6 +65,7 @@ export default class AppController implements AppControllerInterface {
     public updatePage(view: ViewComponent, params?: Props) {
         this.destroyAllChildNodes(this.mainContainer);
         this.mainContainer.append(view.render(params));
+        this.header.setActiveLink();
     }
 
     public addProductToCart(product: Product) {

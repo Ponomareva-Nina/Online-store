@@ -40,10 +40,8 @@ export default class StartPageView {
         const buttonStart = createElem(HTMLTags.BUTTON, 'btn button-start', START_PAGE_BUTTON);
         const linkButton = createElem(HTMLTags.LINK, 'link-button');
         linkButton.setAttribute('href', LINKS.Store);
-        linkButton.addEventListener('click', (event: MouseEvent) => {
-            const target = event.target as HTMLElement;
-            const href = target.getAttribute('href') || '';
-            this.appController.router.changeCurrentPage(href);
+        linkButton.addEventListener('click', () => {
+            this.appController.router.changeCurrentPage(LINKS.Store);
         });
         linkButton.append(buttonStart);
         buttonContainer.append(linkButton);

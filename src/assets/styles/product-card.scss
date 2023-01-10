@@ -11,7 +11,7 @@
     padding: 1rem;
 
     .card__title {
-        @include font-main($weight: 600);
+        @include font-main($size: 2.2rem, $weight: 600);
         overflow: hidden;
         display: -webkit-box;
         -webkit-line-clamp: 1;
@@ -19,9 +19,8 @@
         text-align: center;
     }
     .card__image {
-        max-width: 280px;
-        max-height: 200px;
-        margin: .5rem 0;
+        max-width: 100%;
+        max-height: 17rem;
     }
 }
 .card__price,
@@ -52,6 +51,18 @@
     & svg {
         fill: $color-inCart;
     }
+}
+
+@media screen and (max-width: 780px) {
+
+    .card_brief {
+        font-size: 1.8rem;
+
+        .card__title {
+            font-size: 1.9rem;
+        }
+    }
+
 }
 .card_full {
     display: grid;
@@ -133,6 +144,8 @@
 @media screen and (max-width: 800px) {
     .card_full {
         grid-template-columns: 1fr;
+        font-size: 2rem;
+        row-gap: 1rem;
 
         .card__title {
             grid-column: span 1;
@@ -143,6 +156,11 @@
         }
         .card__btns-container {
             align-self: flex-end;
+            gap: 1rem;
+        }
+        .btn {
+            width: 15rem;
+            font-size: 2rem;
         }
     }
 }

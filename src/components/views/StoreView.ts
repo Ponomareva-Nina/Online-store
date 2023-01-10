@@ -56,7 +56,19 @@ export default class StoreView implements ViewComponent {
         const priceSlider = this.createPriceDualSlider();
         const stockSlider = this.createStockDualSlider();
         const copyLinkBtn = this.createCopyLinkBtn();
+        const openCloseBtn = createElem(HTMLTags.BUTTON, 'side-panel-toggle-btn', 'Show filters');
+        openCloseBtn.addEventListener('click', () => {
+            if (sidePanelContainer.classList.contains('side-panel_open')) {
+                sidePanelContainer.classList.remove('side-panel_open');
+                openCloseBtn.textContent = 'Show filters';
+            } else {
+                sidePanelContainer.classList.add('side-panel_open');
+                openCloseBtn.textContent = 'Hide filters';
+            }
+        });
+
         sidePanelContainer.append(
+            openCloseBtn,
             searchInput,
             copyLinkBtn,
             resetAllBtn,
@@ -187,7 +199,7 @@ export default class StoreView implements ViewComponent {
     }
 
     private createCategoryFilters() {
-        const filterContainer = createElem(HTMLTags.DIV, ClassNames.FILTER_CONTAINER);
+        const filterContainer = createElem(HTMLTags.DIV, `${ClassNames.FILTER_CONTAINER} category-filters`);
         const FilterByCategoryTitle = createElem(HTMLTags.P, ClassNames.FILTER_CONTAINER_TITLE, 'Choose category');
         filterContainer.append(FilterByCategoryTitle);
         const checkboxName = 'faculty-filter';
