@@ -2,9 +2,9 @@
     display: none;
     width: 96.4%;
     margin: 0 auto;
-    padding: 6% 9%;
+    padding: 4rem 5rem;
     flex-direction: column;
-    gap: 4rem;
+    gap: 2rem;
     position: absolute;
     top: 9%;
     left: 2%;
@@ -140,7 +140,7 @@
 }
 
 .inactive-order {
-    overflow: hidden;
+    overflow: scroll;
 
     &:after {
         content: "";

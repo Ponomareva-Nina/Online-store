@@ -144,6 +144,8 @@
 @media screen and (max-width: 800px) {
     .card_full {
         grid-template-columns: 1fr;
+        font-size: 2rem;
+        row-gap: 1rem;
 
         .card__title {
             grid-column: span 1;
@@ -154,6 +156,11 @@
         }
         .card__btns-container {
             align-self: flex-end;
+            gap: 1rem;
+        }
+        .btn {
+            width: 15rem;
+            font-size: 2rem;
         }
     }
 }
