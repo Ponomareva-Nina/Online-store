@@ -56,12 +56,19 @@ export default class StoreView implements ViewComponent {
         const priceSlider = this.createPriceDualSlider();
         const stockSlider = this.createStockDualSlider();
         const copyLinkBtn = this.createCopyLinkBtn();
-        const closeBtn = createElem(HTMLTags.BUTTON, 'side-panel-close-btn', 'x');
-        closeBtn.addEventListener('click', () => {
-            sidePanelContainer.classList.remove('open');
+        const openCloseBtn = createElem(HTMLTags.BUTTON, 'side-panel-toggle-btn', 'Show filters');
+        openCloseBtn.addEventListener('click', () => {
+            if (sidePanelContainer.classList.contains('side-panel_open')) {
+                sidePanelContainer.classList.remove('side-panel_open');
+                openCloseBtn.textContent = 'Show filters';
+            } else {
+                sidePanelContainer.classList.add('side-panel_open');
+                openCloseBtn.textContent = 'Hide filters';
+            }
         });
+
         sidePanelContainer.append(
-            closeBtn,
+            openCloseBtn,
             searchInput,
             copyLinkBtn,
             resetAllBtn,
@@ -314,10 +321,6 @@ export default class StoreView implements ViewComponent {
         const pageHeader = createElem(HTMLTags.PAGE_HEADER, ClassNames.PAGE_HEADER, STORE_VIEW_TITLE);
         const sidePanel = this.createSidePanel();
         const cards = this.createProductCards();
-        const openSidePanelBtn = createElem(HTMLTags.BUTTON, 'side-panel-open-btn', 'x');
-        openSidePanelBtn.addEventListener('click', () => {
-            sidePanel.classList.add('open');
-        });
         this.pageWrapper.append(pageHeader, sidePanel, cards);
         this.container.append(this.pageWrapper);
     }

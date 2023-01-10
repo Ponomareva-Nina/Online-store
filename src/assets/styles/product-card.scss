@@ -52,6 +52,18 @@
         fill: $color-inCart;
     }
 }
+
+@media screen and (max-width: 780px) {
+
+    .card_brief {
+        font-size: 1.8rem;
+
+        .card__title {
+            font-size: 1.9rem;
+        }
+    }
+
+}
 .card_full {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
