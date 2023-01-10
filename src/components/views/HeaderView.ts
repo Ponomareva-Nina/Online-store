@@ -48,7 +48,7 @@ export default class Header implements ViewComponent {
 
             navLink.addEventListener('click', (e) => {
                 e.preventDefault();
-                this.handleNavigationClick(navLink.href);
+                this.appController.router.changeCurrentPage(navLink.href);
             });
             this.links.push(navLink);
             li.append(navLink);
@@ -57,10 +57,6 @@ export default class Header implements ViewComponent {
 
         navigation.append(navList);
         return navigation;
-    }
-
-    public handleNavigationClick(href: string) {
-        this.appController.router.changeCurrentPage(href);
     }
 
     public setActiveLink() {
