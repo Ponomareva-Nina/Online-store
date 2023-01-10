@@ -289,9 +289,21 @@ export default class CheckoutPage {
             paymentInputValid.value = '';
             return;
         }
-        if (paymentInputValid.value.length === 2) {
-            paymentInputValid.value = paymentInputValid.value + '/';
-            return;
+        if (paymentInputValid.value.length === 3) {
+            if (paymentInputValid.value[2] === '/') {
+                return;
+            } else {
+                paymentInputValid.value = paymentInputValid.value
+                    .split('')
+                    .map((item, index) => {
+                        if (index === 2) {
+                            return (item = `/${item}`);
+                        } else {
+                            return item;
+                        }
+                    })
+                    .join('');
+            }
         }
         if (paymentInputValid.value.length > 5) {
             paymentInputValid.value = paymentInputValid.value.substring(0, 5);
