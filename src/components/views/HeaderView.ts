@@ -4,6 +4,7 @@ import { LINKS } from '../../constants/route-constants';
 import { HTMLTags, NullableElement } from '../../types/types';
 import { HASHTAG, MAIN_LOGO_PART1, MAIN_LOGO_PART2 } from '../../constants/string-constants';
 import { ViewComponent } from '../../types/interfaces';
+import Menu from '../views/Menu';
 
 export default class Header implements ViewComponent {
     container: DocumentFragment;
@@ -11,6 +12,7 @@ export default class Header implements ViewComponent {
     wrapper: HTMLDivElement;
     currentActiveLink: NullableElement<HTMLElement>;
     headerContainer: HTMLDivElement;
+    public menu: Menu;
 
     constructor(controller: AppController) {
         this.appController = controller;
@@ -18,6 +20,7 @@ export default class Header implements ViewComponent {
         this.headerContainer = createElem('header', 'header') as HTMLDivElement;
         this.container = document.createDocumentFragment();
         this.currentActiveLink = null;
+        this.menu = new Menu(this);
     }
 
     public createLogo() {
@@ -94,8 +97,8 @@ export default class Header implements ViewComponent {
         const navigation = this.createNavigation();
         centralContainer.append(logo, navigation);
         const container = createElem(HTMLTags.DIV, 'header-content');
-        const burger = this.appController.menu.getBurgerIcon();
-        const menu = this.appController.menu.createMenu();
+        const burger = this.menu.getBurgerIcon();
+        const menu = this.menu.createMenu();
         this.wrapper.append(menu);
         const cart = this.appController.cartView.createCartIcon();
         container.append(burger, centralContainer, cart);

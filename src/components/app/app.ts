@@ -3,8 +3,6 @@ import StartPageView from '../views/StartPageView';
 import StoreView from '../views/StoreView';
 import Header from '../views/HeaderView';
 import { createElem } from '../../utils/utils';
-
-import Menu from '../views/Menu';
 import { LINKS } from '../../constants/route-constants';
 import { AppControllerInterface, Product, Props, ViewComponent } from '../../types/interfaces';
 import Route from '../router/Route';
@@ -25,14 +23,12 @@ export default class AppController implements AppControllerInterface {
     public cartView: CartView;
     public storeView: StoreView;
     public startPage: StartPageView;
-    public menu: Menu;
     public productPage: ProductPage;
     public storeModel: StoreModel;
     public footer: Footer;
     public cartModel: CartModel;
 
     constructor() {
-        this.menu = new Menu(this);
         this.header = new Header(this);
         this.cartModel = new CartModel(this);
         this.cartView = new CartView(this.cartModel, this);

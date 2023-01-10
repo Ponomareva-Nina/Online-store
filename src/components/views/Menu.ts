@@ -1,16 +1,15 @@
 import { MENU_SOUND_TITLE, MENU_THEME_TITLE } from '../../constants/string-constants';
-import { IMenu } from '../../types/interfaces';
 import { HTMLTags } from '../../types/types';
 import { createAudio, createElem } from '../../utils/utils';
-import AppController from '../app/app';
+import Header from './HeaderView';
 
-export default class Menu implements IMenu {
-    appController: AppController;
+export default class Menu {
+    header: Header;
     menuContainer: HTMLDivElement;
     burgerIcon: HTMLDivElement;
 
-    constructor(controller: AppController) {
-        this.appController = controller;
+    constructor(header: Header) {
+        this.header = header;
         this.menuContainer = createElem(HTMLTags.DIV, 'menu') as HTMLDivElement;
         this.burgerIcon = createElem(HTMLTags.DIV, 'burger-menu') as HTMLDivElement;
     }
@@ -54,8 +53,8 @@ export default class Menu implements IMenu {
         document.body.addEventListener('click', (e) => {
             this.handleClick(e);
         });
-        const logo = this.appController.header.createLogo();
-        const navigation = this.appController.header.createNavigation();
+        const logo = this.header.createLogo();
+        const navigation = this.header.createNavigation();
         const theme = this.createTheme();
         const sound = this.createSound();
         this.menuContainer.append(logo, navigation, theme, sound);
