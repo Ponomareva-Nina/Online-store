@@ -187,8 +187,8 @@ export default class CheckoutPage {
         paymentInputValid.setAttribute('type', INPUT_TYPE_TEXT);
         paymentInputValid.setAttribute('required', '');
         paymentInputValid.setAttribute('pattern', INPUT_TYPE_CARD_VALID_TIME_PATTERN);
-        paymentInputValid.addEventListener('change', () => {
-            this.checkCardValid(paymentInputValid.value);
+        paymentInputValid.addEventListener('input', () => {
+            this.checkCardValid(paymentInputValid);
         });
 
         const paymentInputCvv = createElem(HTMLTags.INPUT, 'payment-input-cvv payment-input') as HTMLInputElement;
@@ -284,8 +284,19 @@ export default class CheckoutPage {
         }
     }
 
-    private checkCardValid(paymentInputValid: string) {
-        this.cardValidTime = paymentInputValid;
+    private checkCardValid(paymentInputValid: HTMLInputElement) {
+        if (!paymentInputValid.value.match(/[0-9]/g)) {
+            paymentInputValid.value = '';
+            return;
+        }
+        if (paymentInputValid.value.length === 2) {
+            paymentInputValid.value = paymentInputValid.value + '/';
+            return;
+        }
+        if (paymentInputValid.value.length > 5) {
+            paymentInputValid.value = paymentInputValid.value.substring(0, 5);
+            this.cardValidTime = paymentInputValid.value;
+        }
     }
 
     private checkCardCVV(paymentInputCvv: string) {
