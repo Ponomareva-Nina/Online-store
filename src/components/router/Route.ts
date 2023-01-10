@@ -29,6 +29,16 @@ export default class Route {
         }
     }
 
+    public updatePriceParameter(minValue: string, maxValue: string) {
+        this.parameters.stock = [];
+        this.parameters.price = [minValue, maxValue];
+    }
+
+    public updateStockParameter(minValue: string, maxValue: string) {
+        this.parameters.price = [];
+        this.parameters.stock = [minValue, maxValue];
+    }
+
     public deleteParameter(name: PossibleUrlParams, value: string) {
         const parameters = this.parameters[name];
 
@@ -48,5 +58,13 @@ export default class Route {
 
     public clearParameters() {
         Object.keys(this.parameters).forEach((key) => delete this.parameters[key as keyof Props]);
+    }
+
+    public clearFilters() {
+        Object.keys(this.parameters).forEach((key) => {
+            if (key !== PossibleUrlParams.ID && key !== PossibleUrlParams.SORT) {
+                delete this.parameters[key as keyof Props];
+            }
+        });
     }
 }

@@ -28,6 +28,11 @@ export const CHECKOUT_CONTACT_INFO_TITLE = 'Contact information';
 export const CHECKOUT_LICENSE_AGREEMENT_TEXT =
     'By ticking the box, I agree to the Terms of Purchase and the Privacy Policy.';
 export const CHECKOUT_PAYMENT_INFO_TITLE = 'Payment information';
+export const START_PAGE_TITLE_ABOUT = 'MERCH FOR WIZZARDS AND MUGGLES';
+export const START_PAGE_TITLE_TRENDS = 'TRENDING PRODUCTS';
+export const START_PAGE_ABOUT_DESCR =
+    'HOGWARTS STORE is the online shop where every fan will find magical and exclusive products, from clothes and souvenirs to rare collectables!';
+export const START_PAGE_BUTTON = 'Shop now';
 export const PROMO_TITLE = 'Total: ';
 export const PROMO_TITLE_TOTAL_PRODUCTS = 'Products: ';
 export const PROMO_TITLE_TOTAL_SUM = 'Sum: ';
