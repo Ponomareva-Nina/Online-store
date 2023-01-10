@@ -1,16 +1,19 @@
 import { Product, ProductCardInterface } from '../../types/interfaces';
-import { HTMLTags, NullableElement } from '../../types/types';
+import { HTMLTags, NullableElement, PossibleUrlParams } from '../../types/types';
 import { createElem, createImage } from '../../utils/utils';
 import AppController from '../app/app';
 import { trunkIconSvg } from '../../assets/svg-inline-icons/trunk-icon';
 import {
     ADD_TO_CART_BUTTON_TEXT,
+    AMPERSAND_SEPARATOR,
     BUY_NOW_BUTTON_TEXT,
     DELETE_FROM_CART_BUTTON_TEXT,
     DETAILS_BUTTON_TEXT,
+    QUERY_SEPARATOR,
 } from '../../constants/string-constants';
 import { ClassNames } from '../../constants/classnames-constants';
 import CheckoutPage from './CheckoutPage';
+import { LINKS } from '../../constants/route-constants';
 
 export default class ProductCard implements ProductCardInterface {
     public cardData: Product;
@@ -25,10 +28,40 @@ export default class ProductCard implements ProductCardInterface {
         this.activePreviewImage = null;
     }
 
+    private createBreadCrumps() {
+        const container = createElem(HTMLTags.DIV, ClassNames.BREADCRUMPS_CONTAINER, '');
+        const stepsLine = createElem(HTMLTags.DIV, ClassNames.STEPS_LINE, '');
+        const linksContainer = createElem(HTMLTags.DIV, ClassNames.BREADCRUMPS_LINKS_CONTAINER, '');
+        const initialLink = createElem(HTMLTags.LINK, '', 'Catalogue') as HTMLLinkElement;
+        initialLink.setAttribute('href', LINKS.Store);
+        initialLink.addEventListener('click', (e) => {
+            this.navigateByBreadCrump(e, LINKS.Store);
+        });
+        const initialSeparator = createElem(HTMLTags.SPAN, 'breadcrumps-separator', '');
+        const category = createElem(HTMLTags.LINK, 'breadcrumps-link', this.cardData.category) as HTMLLinkElement;
+        const categoryPath = `${LINKS.Store}${QUERY_SEPARATOR}${PossibleUrlParams.CATEGORY}=${this.cardData.category}`;
+        category.setAttribute('href', categoryPath);
+        category.addEventListener('click', (e) => {
+            this.navigateByBreadCrump(e, category.href);
+        });
+        const categorySeparator = createElem(HTMLTags.SPAN, 'breadcrumps-separator', '');
+        const faculty = createElem(HTMLTags.LINK, 'breadcrumps-link', this.cardData.faculty) as HTMLLinkElement;
+        const facultyPath = `${LINKS.Store}${QUERY_SEPARATOR}${PossibleUrlParams.CATEGORY}=${this.cardData.category}${AMPERSAND_SEPARATOR}${PossibleUrlParams.FACULTY}=${this.cardData.faculty}`;
+        faculty.setAttribute('href', facultyPath);
+        linksContainer.append(initialLink, initialSeparator, category, categorySeparator, faculty);
+        container.append(stepsLine, linksContainer);
+        return container;
+    }
+
+    private navigateByBreadCrump(e: MouseEvent, href: string) {
+        e.preventDefault();
+        this.appController.router.changeCurrentPage(href);
+    }
+
     public createFullCard() {
         const container = createElem(HTMLTags.SECTION, ClassNames.FULL_CARD_CONTAINER, '');
         const infoSection = createElem(HTMLTags.DIV, ClassNames.PRODUCT_CARD_INFO);
-
+        const breadcrumps = this.createBreadCrumps();
         const title = this.createTitle();
         const priceContainer = createElem(HTMLTags.DIV, 'card_product-params-container', '');
         const priceText = `Price: $ ${this.cardData.price}`;
@@ -64,7 +97,7 @@ export default class ProductCard implements ProductCardInterface {
 
         infoSection.append(priceContainer, description, btnsContainer);
         const checkoutPage = this.checkoutPage.createPayCard();
-        container.append(title, imagesSection, infoSection, checkoutPage);
+        container.append(breadcrumps, title, imagesSection, infoSection, checkoutPage);
         return container;
     }
 
