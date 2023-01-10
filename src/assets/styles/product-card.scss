@@ -11,7 +11,7 @@
     padding: 1rem;
 
     .card__title {
-        @include font-main($weight: 600);
+        @include font-main($size: 2.2rem, $weight: 600);
         overflow: hidden;
         display: -webkit-box;
         -webkit-line-clamp: 1;
@@ -19,9 +19,8 @@
         text-align: center;
     }
     .card__image {
-        max-width: 280px;
-        max-height: 200px;
-        margin: .5rem 0;
+        max-width: 100%;
+        max-height: 17rem;
     }
 }
 .card__price,

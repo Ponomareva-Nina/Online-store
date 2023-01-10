@@ -56,7 +56,12 @@ export default class StoreView implements ViewComponent {
         const priceSlider = this.createPriceDualSlider();
         const stockSlider = this.createStockDualSlider();
         const copyLinkBtn = this.createCopyLinkBtn();
+        const closeBtn = createElem(HTMLTags.BUTTON, 'side-panel-close-btn', 'x');
+        closeBtn.addEventListener('click', () => {
+            sidePanelContainer.classList.remove('open');
+        });
         sidePanelContainer.append(
+            closeBtn,
             searchInput,
             copyLinkBtn,
             resetAllBtn,
@@ -187,7 +192,7 @@ export default class StoreView implements ViewComponent {
     }
 
     private createCategoryFilters() {
-        const filterContainer = createElem(HTMLTags.DIV, ClassNames.FILTER_CONTAINER);
+        const filterContainer = createElem(HTMLTags.DIV, `${ClassNames.FILTER_CONTAINER} category-filters`);
         const FilterByCategoryTitle = createElem(HTMLTags.P, ClassNames.FILTER_CONTAINER_TITLE, 'Choose category');
         filterContainer.append(FilterByCategoryTitle);
         const checkboxName = 'faculty-filter';
@@ -309,6 +314,10 @@ export default class StoreView implements ViewComponent {
         const pageHeader = createElem(HTMLTags.PAGE_HEADER, ClassNames.PAGE_HEADER, STORE_VIEW_TITLE);
         const sidePanel = this.createSidePanel();
         const cards = this.createProductCards();
+        const openSidePanelBtn = createElem(HTMLTags.BUTTON, 'side-panel-open-btn', 'x');
+        openSidePanelBtn.addEventListener('click', () => {
+            sidePanel.classList.add('open');
+        });
         this.pageWrapper.append(pageHeader, sidePanel, cards);
         this.container.append(this.pageWrapper);
     }
