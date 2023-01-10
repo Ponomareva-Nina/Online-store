@@ -218,4 +218,15 @@ export default class CartModel {
         }
         return this.enteredPromocodes;
     }
+
+    public eraseAllAfterPurchaseg() {
+        this.productsInCart.length = 0;
+        this.activatedPromocodes.length = 0;
+        this.enteredPromocodes.length = 0;
+        this.totalSum = 0;
+        this.productsQuantity = 0;
+        this.totalSumWithDiscount = 0;
+        this.appController.cartView.updateCartInfo();
+        this.appController.cartView.updatePromoBlock();
+    }
 }

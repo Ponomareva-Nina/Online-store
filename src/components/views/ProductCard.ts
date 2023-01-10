@@ -21,7 +21,7 @@ export default class ProductCard implements ProductCardInterface {
     constructor(card: Product, controller: AppController) {
         this.cardData = card;
         this.appController = controller;
-        this.checkoutPage = new CheckoutPage();
+        this.checkoutPage = new CheckoutPage(this.appController);
         this.activePreviewImage = null;
     }
 
