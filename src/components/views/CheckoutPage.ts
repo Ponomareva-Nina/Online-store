@@ -24,7 +24,7 @@ import {
     ORDER_PLACEHOLDER_PHONE,
     ORDER_TITLE,
 } from '../../constants/string-constants';
-import { HTMLTags } from '../../types/types';
+import { HTMLTags, NullableElement } from '../../types/types';
 import { createElem } from '../../utils/utils';
 import AppController from '../app/app';
 
@@ -32,29 +32,27 @@ export default class CheckoutPage {
     public appController: AppController;
     public container: HTMLDivElement;
     private contactAgree: HTMLInputElement;
-    firstname: string;
-    lastname: string;
-    address: string;
-    phone: string;
-    mail: string;
-    agree: boolean;
-    cardNumber: string;
-    cardValidTime: string;
-    cvv: string;
+    firstname: NullableElement<HTMLInputElement>;
+    lastname: NullableElement<HTMLInputElement>;
+    address: NullableElement<HTMLInputElement>;
+    phone: NullableElement<HTMLInputElement>;
+    mail: NullableElement<HTMLInputElement>;
+    cardNumber: NullableElement<HTMLInputElement>;
+    cardValidTime: NullableElement<HTMLInputElement>;
+    cvv: NullableElement<HTMLInputElement>;
 
     constructor(controller: AppController) {
         this.appController = controller;
         this.container = createElem(HTMLTags.DIV, 'order-container') as HTMLDivElement;
         this.contactAgree = createElem(HTMLTags.INPUT, 'contact-input-argeement') as HTMLInputElement;
-        this.firstname = '';
-        this.lastname = '';
-        this.address = '';
-        this.phone = '';
-        this.mail = '';
-        this.agree = false;
-        this.cardNumber = '';
-        this.cardValidTime = '';
-        this.cvv = '';
+        this.firstname = null;
+        this.lastname = null;
+        this.address = null;
+        this.phone = null;
+        this.mail = null;
+        this.cardNumber = null;
+        this.cardValidTime = null;
+        this.cvv = null;
     }
 
     public createPayCard() {
@@ -70,7 +68,6 @@ export default class CheckoutPage {
         checkoutButton.setAttribute('type', 'submit');
         checkoutButton.setAttribute('value', CHECKOUT_BUTTON_CONTENT);
         checkoutButton.addEventListener('click', () => {
-            this.checkIsUserAgree();
             this.checkAllInputsFull();
         });
         checkoutButtonContainer.append(checkoutButton);
@@ -91,7 +88,7 @@ export default class CheckoutPage {
         personalInputFirstname.setAttribute('type', INPUT_TYPE_TEXT);
         personalInputFirstname.setAttribute('required', '');
         personalInputFirstname.setAttribute('pattern', INPUT_STRING_FIRSTNAME_LASTNAME_PATTERN);
-        personalInputFirstname.addEventListener('input', () => this.checkFirstName(personalInputFirstname.value));
+        personalInputFirstname.addEventListener('input', () => this.checkFirstName(personalInputFirstname));
 
         const personalInputLastname = createElem(
             HTMLTags.INPUT,
@@ -101,7 +98,7 @@ export default class CheckoutPage {
         personalInputLastname.setAttribute('type', INPUT_TYPE_TEXT);
         personalInputLastname.setAttribute('required', '');
         personalInputLastname.setAttribute('pattern', INPUT_STRING_FIRSTNAME_LASTNAME_PATTERN);
-        personalInputLastname.addEventListener('input', () => this.checkLastName(personalInputLastname.value));
+        personalInputLastname.addEventListener('input', () => this.checkLastName(personalInputLastname));
 
         const personalInputAddress = createElem(
             HTMLTags.INPUT,
@@ -111,7 +108,7 @@ export default class CheckoutPage {
         personalInputAddress.setAttribute('type', INPUT_TYPE_TEXT);
         personalInputAddress.setAttribute('required', '');
         personalInputAddress.setAttribute('pattern', INPUT_STRING_ADDRESS_PATTERN);
-        personalInputAddress.addEventListener('input', () => this.checkAddress(personalInputAddress.value));
+        personalInputAddress.addEventListener('input', () => this.checkAddress(personalInputAddress));
         personalInfoContent.append(personalInputFirstname, personalInputLastname, personalInputAddress);
         personalContainer.append(personalTitle, personalInfoContent);
         return personalContainer;
@@ -126,14 +123,14 @@ export default class CheckoutPage {
         contactPhone.setAttribute('type', INPUT_TYPE_TEXT);
         contactPhone.setAttribute('required', '');
         contactPhone.setAttribute('pattern', INPUT_TYPE_PHONE_PATTERN);
-        contactPhone.addEventListener('input', () => this.checkPhone(contactPhone.value));
+        contactPhone.addEventListener('input', () => this.checkPhone(contactPhone));
 
         const contactMail = createElem(HTMLTags.INPUT, 'contact-input-mail payment-input') as HTMLInputElement;
         contactMail.setAttribute('placeholder', ORDER_PLACEHOLDER_MAIL);
         contactMail.setAttribute('type', INPUT_TYPE_TEXT);
         contactMail.setAttribute('required', '');
         contactMail.setAttribute('pattern', INPUT_TYPE_MAIL_PATTERN);
-        contactMail.addEventListener('input', () => this.checkMail(contactMail.value));
+        contactMail.addEventListener('input', () => this.checkMail(contactMail));
 
         const contactAgreeContainer = createElem(HTMLTags.DIV, 'contact-agree-container');
 
@@ -170,9 +167,9 @@ export default class CheckoutPage {
         paymentInputCard.setAttribute('required', '');
         paymentInputCard.setAttribute('pattern', INPUT_TYPE_CARD_NUMBER_PATTERN);
         paymentInputCard.addEventListener('input', () => {
-            this.checkCardNumber(paymentInputCard.value);
+            this.checkCardNumber(paymentInputCard);
             paymentInputCard.value = paymentInputCard.value.slice(0, 16);
-            const paymentSstemLogoClass = this.checkCardNumber(paymentInputCard.value);
+            const paymentSstemLogoClass = this.checkCardNumber(paymentInputCard);
             if (paymentSstemLogoClass) {
                 paymentSystemLogo.classList.remove('visa-logo');
                 paymentSystemLogo.classList.remove('mastercard-logo');
@@ -201,7 +198,7 @@ export default class CheckoutPage {
         paymentInputCvv.setAttribute('pattern', INPUT_TYPE_CARD_CVV_PATTERN);
         paymentInputCvv.addEventListener('input', () => {
             paymentInputCvv.value = paymentInputCvv.value.slice(0, 3);
-            this.checkCardCVV(paymentInputCvv.value);
+            this.checkCardCVV(paymentInputCvv);
         });
 
         paymentlInfoContent.append(paymentInputCardContainer, paymentInputValid, paymentInputCvv);
@@ -222,6 +219,7 @@ export default class CheckoutPage {
         document.body.addEventListener('click', (e: MouseEvent) => {
             this.checkClickWhenOrderOpen(e);
         });
+        this.contactAgree.checked = false;
     }
 
     public hideModal() {
@@ -230,6 +228,7 @@ export default class CheckoutPage {
         document.body.removeEventListener('click', (e: MouseEvent) => {
             this.checkClickWhenOrderOpen(e);
         });
+        this.contactAgree.checked = false;
     }
 
     private checkClickWhenOrderOpen(e: MouseEvent) {
@@ -240,38 +239,41 @@ export default class CheckoutPage {
         }
     }
 
-    private checkIsUserAgree() {
-        if (this.contactAgree.checked) {
-            this.agree = true;
-            return true;
+    private checkFirstName(firstnameInput: HTMLInputElement) {
+        if (firstnameInput.validity.valid) {
+            this.firstname = firstnameInput;
         }
-        this.agree = false;
-        return false;
     }
 
-    private checkFirstName(firstname: string) {
-        this.firstname = firstname;
+    private checkLastName(personalInputLastname: HTMLInputElement) {
+        if (personalInputLastname.validity.valid) {
+            this.lastname = personalInputLastname;
+        }
     }
 
-    private checkLastName(lastname: string) {
-        this.lastname = lastname;
+    private checkAddress(personalInputAddress: HTMLInputElement) {
+        if (personalInputAddress.validity.valid) {
+            this.address = personalInputAddress;
+        }
     }
 
-    private checkAddress(address: string) {
-        this.address = address;
+    private checkPhone(contactPhone: HTMLInputElement) {
+        if (contactPhone.validity.valid) {
+            this.phone = contactPhone;
+        }
     }
 
-    private checkPhone(contactPhone: string) {
-        this.phone = contactPhone;
+    private checkMail(contactMail: HTMLInputElement) {
+        if (contactMail.validity.valid) {
+            this.mail = contactMail;
+        }
     }
 
-    private checkMail(contactMail: string) {
-        this.mail = contactMail;
-    }
-
-    private checkCardNumber(cardNumber: string) {
-        this.cardNumber = cardNumber;
-        const paymentSystemIdStr = cardNumber.slice(0, 1);
+    private checkCardNumber(cardNumber: HTMLInputElement) {
+        const paymentSystemIdStr = cardNumber.value.slice(0, 1);
+        if (cardNumber.validity.valid) {
+            this.cardNumber = cardNumber;
+        }
         const paymentSystemId = Number(paymentSystemIdStr);
         switch (paymentSystemId) {
             case 4:
@@ -308,38 +310,29 @@ export default class CheckoutPage {
         }
         if (paymentInputValid.value.length > 5) {
             paymentInputValid.value = paymentInputValid.value.substring(0, 5);
-            this.cardValidTime = paymentInputValid.value;
+        }
+        if (paymentInputValid.validity.valid) {
+            this.cardValidTime = paymentInputValid;
         }
     }
 
-    private checkCardCVV(paymentInputCvv: string) {
-        this.cvv = paymentInputCvv;
+    private checkCardCVV(paymentInputCvv: HTMLInputElement) {
+        if (paymentInputCvv.validity.valid) {
+            this.cvv = paymentInputCvv;
+        }
     }
 
     private checkAllInputsFull() {
         if (
-            this.firstname.length !== 0 &&
-            this.lastname.length !== 0 &&
-            this.address.length !== 0 &&
-            this.phone.length !== 0 &&
-            this.mail.length !== 0 &&
-            this.cardNumber.length !== 0 &&
-            this.cardValidTime.length !== 0 &&
-            this.cvv.length !== 0 &&
-            !this.agree
-        ) {
-            alert('Please checkout again and agree with Private Police');
-            this.eraseAllInputWithSavedInfo();
-        } else if (
-            this.firstname.length !== 0 &&
-            this.lastname.length !== 0 &&
-            this.address.length !== 0 &&
-            this.phone.length !== 0 &&
-            this.mail.length !== 0 &&
-            this.cardNumber.length !== 0 &&
-            this.cardValidTime.length !== 0 &&
-            this.cvv.length !== 0 &&
-            this.agree
+            this.firstname?.validity.valid &&
+            this.lastname?.validity.valid &&
+            this.address?.validity.valid &&
+            this.phone?.validity.valid &&
+            this.mail?.validity.valid &&
+            this.cardNumber?.validity.valid &&
+            this.cardValidTime?.validity.valid &&
+            this.cvv?.validity.valid &&
+            this.contactAgree.checked
         ) {
             setTimeout(() => {
                 this.appController.router.changeCurrentPage(LINKS.About);
@@ -347,21 +340,20 @@ export default class CheckoutPage {
             alert('Your order has been placed. Thank you!\nYou will be redirected to main page');
             this.appController.cartModel.eraseAllAfterPurchaseg();
             this.hideModal();
-            this.agree = false;
             this.eraseAllInputWithSavedInfo();
+        } else {
+            alert('Please check or fill all inputs');
         }
     }
 
     private eraseAllInputWithSavedInfo() {
-        this.firstname = '';
-        this.lastname = '';
-        this.address = '';
-        this.phone = '';
-        this.mail = '';
-        this.agree = false;
-        this.cardNumber = '';
-        this.cardValidTime = '';
-        this.cvv = '';
-        this.contactAgree.checked = false;
+        this.firstname = null;
+        this.lastname = null;
+        this.address = null;
+        this.phone = null;
+        this.mail = null;
+        this.cardNumber = null;
+        this.cardValidTime = null;
+        this.cvv = null;
     }
 }

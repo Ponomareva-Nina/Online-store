@@ -50,11 +50,11 @@
     @include font-main($size: 2rem, $weight: 400, $color: $color-aux, $height: 110%);
 
     &:valid {
-        border: 2px $color-inCart solid;
+        border: 1px $color-inCart solid;
     }
 
     &:invalid {
-        border: 2px $color-outCart solid;
+        border: 1px $color-outCart solid;
     }
 
     &:focus {
