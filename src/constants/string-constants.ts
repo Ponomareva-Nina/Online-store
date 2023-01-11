@@ -61,3 +61,4 @@ export const INPUT_TYPE_MAIL_PATTERN = '[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$
 export const INPUT_TYPE_CARD_NUMBER_PATTERN = '[0-9]{16}';
 export const INPUT_TYPE_CARD_VALID_TIME_PATTERN = '([0][1-9]|[1][0-2])/[0-9]{2}';
 export const INPUT_TYPE_CARD_CVV_PATTERN = '[0-9]{3}';
+export const RESET_BTN_TEXT = 'Show all products';

@@ -127,6 +127,7 @@
 .sort-container__title,
 .filter-container__title,
 .dual-slider-container__title {
+    width: 100%;
     @include font-main(2rem);
     color: $color-accent;
     text-align: center;
@@ -280,4 +281,30 @@
             gap: 1rem;
         }
     }
+}
+.card-view-btns {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+.card-view-btn {
+    width: 3rem;
+    height: 3rem;
+    background-color: transparent;
+    border: none;
+}
+.list-view-btn {
+    background-image: url('./assets/images/list-icon.svg');
+}
+.list-view-btn_active {
+    background-image: url('./assets/images/list-icon_active.svg');
+}
+.tile-view-btn {
+    background-image: url('./assets/images/tile-icon.svg');
+}
+.tile-view-btn_active {
+    background-image: url('./assets/images/tile-icon_active.svg');
 }

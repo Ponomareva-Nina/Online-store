@@ -17,7 +17,7 @@ export default class Route {
     public addParameter(name: PossibleUrlParams, value: string) {
         let paramsArr = this.parameters[name];
         if (paramsArr && Array.isArray(paramsArr)) {
-            if (name === PossibleUrlParams.SEARCH || name === PossibleUrlParams.SORT) {
+            if (name === PossibleUrlParams.SEARCH || name === PossibleUrlParams.SORT || PossibleUrlParams.VIEW) {
                 paramsArr = [value];
             } else {
                 paramsArr.push(value);

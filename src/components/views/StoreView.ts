@@ -3,11 +3,12 @@ import {
     FacultyFiltersOptions,
     HTMLTags,
     PossibleUrlParams,
+    PossibleViewValues,
     SortLabels,
     SortOptions,
 } from '../../types/types';
 import { createCheckbox, createElem, createLabel, createRadioButton, createRange } from '../../utils/utils';
-import { NO_PRODUCTS_MESSAGE, STORE_VIEW_TITLE } from '../../constants/string-constants';
+import { NO_PRODUCTS_MESSAGE, RESET_BTN_TEXT, STORE_VIEW_TITLE } from '../../constants/string-constants';
 import AppController from '../app/app';
 import StoreModel from '../models/StoreModel';
 import ProductCard from './ProductCard';
@@ -40,6 +41,11 @@ export default class StoreView implements ViewComponent {
             currentProducts.forEach((product) => {
                 const card = new ProductCard(product, this.appController);
                 const cardView = card.createBriefCard();
+                if (this.currentParams && this.currentParams[PossibleUrlParams.VIEW]) {
+                    if (this.currentParams[PossibleUrlParams.VIEW].join('') === PossibleViewValues.LIST) {
+                        cardView.classList.add(ClassNames.CARD_VIEW_LIST);
+                    }
+                }
                 productCardsContainer.append(cardView);
             });
         }
@@ -66,11 +72,12 @@ export default class StoreView implements ViewComponent {
                 openCloseBtn.textContent = 'Hide filters';
             }
         });
-
+        const changeViewBtns = this.createChangeCardsViewBtns();
         sidePanelContainer.append(
             openCloseBtn,
             searchInput,
             copyLinkBtn,
+            changeViewBtns,
             resetAllBtn,
             sorts,
             facultyFilters,
@@ -105,7 +112,7 @@ export default class StoreView implements ViewComponent {
             radioNameIdValue,
             radioNameIdValue
         );
-        const showAllLabel = createLabel(radioNameIdValue, ClassNames.FILTER_LABEL, 'Show all products');
+        const showAllLabel = createLabel(radioNameIdValue, ClassNames.FILTER_LABEL, RESET_BTN_TEXT);
 
         if (
             this.currentParams &&
@@ -288,6 +295,31 @@ export default class StoreView implements ViewComponent {
         if (elem.checked) {
             this.appController.router.addParameterToUrl(PossibleUrlParams.SORT, elem.value);
         }
+    }
+
+    private createChangeCardsViewBtns() {
+        const componentContainer = createElem(HTMLTags.DIV, ClassNames.CARD_VIEW_CONTAINER);
+        const tileBtn = createElem(HTMLTags.BUTTON, `${ClassNames.CHANGE_CARD_VIEW_BTN} ${ClassNames.TILE_VIEW_BTN}`);
+        const listBtn = createElem(HTMLTags.BUTTON, `${ClassNames.CHANGE_CARD_VIEW_BTN} ${ClassNames.LIST_VIEW_BTN}`);
+
+        if (this.currentParams && this.currentParams[PossibleUrlParams.VIEW]) {
+            if (this.currentParams[PossibleUrlParams.VIEW].join('') === PossibleViewValues.LIST) {
+                listBtn.classList.add(ClassNames.LIST_VIEW_BTN_ACTIVE);
+            } else {
+                tileBtn.classList.add(ClassNames.TILE_VIEW_BTN_ACTIVE);
+            }
+        } else {
+            tileBtn.classList.add(ClassNames.TILE_VIEW_BTN_ACTIVE);
+        }
+
+        tileBtn.addEventListener('click', () => {
+            this.appController.router.addParameterToUrl(PossibleUrlParams.VIEW, PossibleViewValues.TILE);
+        });
+        listBtn.addEventListener('click', () => {
+            this.appController.router.addParameterToUrl(PossibleUrlParams.VIEW, PossibleViewValues.LIST);
+        });
+        componentContainer.append(tileBtn, listBtn);
+        return componentContainer;
     }
 
     private createSearchInput() {

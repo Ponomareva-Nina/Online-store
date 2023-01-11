@@ -39,4 +39,11 @@ export enum ClassNames {
     BREADCRUMPS_CONTAINER = 'breadcrumps-container',
     STEPS_LINE = 'steps-line',
     BREADCRUMPS_LINKS_CONTAINER = 'breadcrumps-links',
+    CARD_VIEW_CONTAINER = 'card-view-btns',
+    CHANGE_CARD_VIEW_BTN = 'card-view-btn',
+    LIST_VIEW_BTN = 'list-view-btn',
+    LIST_VIEW_BTN_ACTIVE = 'list-view-btn_active',
+    TILE_VIEW_BTN = 'tile-view-btn',
+    TILE_VIEW_BTN_ACTIVE = 'tile-view-btn_active',
+    CARD_VIEW_LIST = 'card-view_list',
 }
