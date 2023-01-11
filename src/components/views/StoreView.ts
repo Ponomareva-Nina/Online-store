@@ -41,13 +41,13 @@ export default class StoreView implements ViewComponent {
             currentProducts.forEach((product) => {
                 const card = new ProductCard(product, this.appController);
                 const cardView = card.createBriefCard();
-                if (this.currentParams && this.currentParams[PossibleUrlParams.VIEW]) {
-                    if (this.currentParams[PossibleUrlParams.VIEW].join('') === PossibleViewValues.LIST) {
-                        cardView.classList.add(ClassNames.CARD_VIEW_LIST);
-                    }
-                }
                 productCardsContainer.append(cardView);
             });
+        }
+        if (this.currentParams && this.currentParams[PossibleUrlParams.VIEW]) {
+            if (this.currentParams[PossibleUrlParams.VIEW].join('') === PossibleViewValues.LIST) {
+                productCardsContainer.classList.add(ClassNames.CARD_VIEW_LIST);
+            }
         }
         return productCardsContainer;
     }
