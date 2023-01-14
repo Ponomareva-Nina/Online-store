@@ -8,6 +8,12 @@ export enum PossibleUrlParams {
     PRICE = 'price',
     STOCK = 'stock',
     SEARCH = 'search',
+    VIEW = 'view',
+}
+
+export enum PossibleViewValues {
+    TILE = 'tile',
+    LIST = 'list',
 }
 
 export type MethodVoid = () => void;

@@ -4,7 +4,7 @@ import CartView from '../components/views/CartView';
 import Header from '../components/views/HeaderView';
 import StartPageView from '../components/views/StartPageView';
 import StoreView from '../components/views/StoreView';
-import { MethodVoid, PossibleUrlParams } from './types';
+import { MethodVoid, PossibleUrlParams, PossibleViewValues } from './types';
 
 export interface RouterInterface {
     routes: Array<Route>;
@@ -76,4 +76,9 @@ export interface Promocode {
     title: string;
     discount: number;
     active?: boolean;
+}
+
+export interface PossibleUrlValues {
+    id: number;
+    view?: PossibleViewValues;
 }

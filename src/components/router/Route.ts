@@ -17,7 +17,11 @@ export default class Route {
     public addParameter(name: PossibleUrlParams, value: string) {
         let paramsArr = this.parameters[name];
         if (paramsArr && Array.isArray(paramsArr)) {
-            if (name === PossibleUrlParams.SEARCH || name === PossibleUrlParams.SORT) {
+            if (
+                name === PossibleUrlParams.SEARCH ||
+                name === PossibleUrlParams.SORT ||
+                name === PossibleUrlParams.VIEW
+            ) {
                 paramsArr = [value];
             } else {
                 paramsArr.push(value);
@@ -62,7 +66,7 @@ export default class Route {
 
     public clearFilters() {
         Object.keys(this.parameters).forEach((key) => {
-            if (key !== PossibleUrlParams.ID && key !== PossibleUrlParams.SORT) {
+            if (key !== PossibleUrlParams.ID && key !== PossibleUrlParams.SORT && key !== PossibleUrlParams.VIEW) {
                 delete this.parameters[key as keyof Props];
             }
         });

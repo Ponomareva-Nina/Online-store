@@ -125,10 +125,12 @@ class Router implements RouterInterface {
             if (pathSegments.length > 0) {
                 pathSegments.forEach((param) => {
                     const [key, values] = param.split('=');
-                    const valuesArr = values.split(PARAM_VALUES_SEPARATOR);
-                    valuesArr.forEach((value) => {
-                        matchedRoute.addParameter(key as PossibleUrlParams, value);
-                    });
+                    if (values) {
+                        const valuesArr = values.split(PARAM_VALUES_SEPARATOR);
+                        valuesArr.forEach((value) => {
+                            matchedRoute.addParameter(key as PossibleUrlParams, value);
+                        });
+                    }
                 });
             }
             return matchedRoute;
