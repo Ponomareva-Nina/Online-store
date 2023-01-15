@@ -1,6 +1,13 @@
 import { Product, Promocode } from '../../types/interfaces';
 import AppController from '../app/app';
 import promos from '../../promocodes.json';
+import {
+    LOCAL_STORAGE_ACTIVATED_PROMOCODES,
+    LOCAL_STORAGE_CART,
+    LOCAL_STORAGE_PRODUCTSQUANTITY,
+    LOCAL_STORAGE_TOTALSUM,
+    LOCAL_STORAGE_TOTAL_SUM_WITH_DISCOUNT,
+} from '../../constants/string-constants';
 
 export default class CartModel {
     public appController: AppController;
@@ -18,14 +25,14 @@ export default class CartModel {
         this.totalSum = this.checkTotalSumInLocalStorage();
         this.productsQuantity = this.checkProductQuantityInLocalStorage();
 
-        if (localStorage.getItem('cart')) {
-            this.productsInCart = JSON.parse(localStorage.getItem('cart') || '{}');
+        if (localStorage.getItem(LOCAL_STORAGE_CART)) {
+            this.productsInCart = JSON.parse(localStorage.getItem(LOCAL_STORAGE_CART) || '{}');
         } else {
             this.productsInCart = [];
         }
 
-        if (localStorage.getItem('activatedPromocodes')) {
-            this.activatedPromocodes = JSON.parse(localStorage.getItem('activatedPromocodes') || '{}');
+        if (localStorage.getItem(LOCAL_STORAGE_ACTIVATED_PROMOCODES)) {
+            this.activatedPromocodes = JSON.parse(localStorage.getItem(LOCAL_STORAGE_ACTIVATED_PROMOCODES) || '{}');
         } else {
             this.activatedPromocodes = [];
         }
@@ -36,7 +43,7 @@ export default class CartModel {
     }
 
     private checkTotalSumInLocalStorage(): number {
-        const totalSumInLocalStorage = window.localStorage.getItem('totalSum');
+        const totalSumInLocalStorage = window.localStorage.getItem(LOCAL_STORAGE_TOTALSUM);
         if (totalSumInLocalStorage) {
             this.totalSum = Number(totalSumInLocalStorage);
         } else {
@@ -46,7 +53,7 @@ export default class CartModel {
     }
 
     private checkTotalSumWithDiscountInLocalStorage(): number {
-        const totalSumWithDiscountInLocalStorage = window.localStorage.getItem('totalSumWithDiscount');
+        const totalSumWithDiscountInLocalStorage = window.localStorage.getItem(LOCAL_STORAGE_TOTAL_SUM_WITH_DISCOUNT);
         if (totalSumWithDiscountInLocalStorage) {
             this.totalSumWithDiscount = Number(totalSumWithDiscountInLocalStorage);
         } else {
@@ -56,7 +63,7 @@ export default class CartModel {
     }
 
     private checkProductQuantityInLocalStorage(): number {
-        const productQuantityInLocalStorage = localStorage.getItem('productsQuantity');
+        const productQuantityInLocalStorage = localStorage.getItem(LOCAL_STORAGE_PRODUCTSQUANTITY);
         if (productQuantityInLocalStorage) {
             this.productsQuantity = Number(productQuantityInLocalStorage);
         } else {
@@ -107,11 +114,15 @@ export default class CartModel {
             this.totalSum = Number((this.totalSum += product.price).toFixed(2));
             product.sum = Number((product.sum += product.price).toFixed(2));
             this.calculateAddingSumDiscoutDelete();
-            this.appController.cartView.updateCartInfo();
-            this.appController.cartView.updatePromoBlock();
-            this.appController.cartView.updatePage();
-            this.appController.cartView.updateDiscountInfo();
+            this.updateViewAfterDeleteProductFromCart();
         }
+    }
+
+    private updateViewAfterDeleteProductFromCart(): void {
+        this.appController.cartView.updateCartInfo();
+        this.appController.cartView.updatePromoBlock();
+        this.appController.cartView.updatePage();
+        this.appController.cartView.updateDiscountInfo();
     }
 
     public deleteOneProduct(product: Product): void {
@@ -122,11 +133,8 @@ export default class CartModel {
             product.sum = product.price;
             this.calculateAddingSumDiscoutDelete();
             this.deleteProduct(product);
-            this.appController.cartView.updateCartInfo();
-            this.appController.cartView.updatePage();
-            this.appController.cartView.updatePromoBlock();
+            this.updateViewAfterDeleteProductFromCart();
             this.appController.cartView.checkCartIsEmpty();
-            this.appController.cartView.updateDiscountInfo();
         }
 
         if (product.inCart && product.sum && product.inCart >= 2) {
@@ -135,11 +143,7 @@ export default class CartModel {
             this.totalSum = Number((this.totalSum -= product.price).toFixed(2));
             product.sum = Number((product.sum -= product.price).toFixed(2));
             this.calculateAddingSumDiscoutDelete();
-            this.appController.cartView.updateCartInfo();
-            this.appController.cartView.updatePromoBlock();
-            this.appController.cartView.updatePage();
-            this.appController.cartView.updatePromoBlock();
-            this.appController.cartView.updateDiscountInfo();
+            this.updateViewAfterDeleteProductFromCart();
         }
     }
 
@@ -174,7 +178,7 @@ export default class CartModel {
                 this.activatedPromocodes.push(promocode);
                 promocode.active = true;
                 this.totalSumWithDiscount = Number(
-                    (this.totalSumWithDiscount -= this.totalSum * (promocode.discount / 100)).toFixed(2)
+                    (this.totalSumWithDiscount -= this.calculateDiscount(promocode)).toFixed(2)
                 );
                 this.appController.cartView.createBlockWithDiscountSum();
             }
@@ -187,10 +191,14 @@ export default class CartModel {
             promocode.active = false;
             this.activatedPromocodes.splice(deletedPromocodeId, 1);
             this.totalSumWithDiscount = Number(
-                (this.totalSumWithDiscount += this.totalSum * (promocode.discount / 100)).toFixed(2)
+                (this.totalSumWithDiscount += this.calculateDiscount(promocode)).toFixed(2)
             );
             this.appController.cartView.createBlockWithDiscountSum();
         }
+    }
+
+    private calculateDiscount(promocode: Promocode): number {
+        return this.totalSum * (promocode.discount / 100);
     }
 
     public checkIsPromocodesAplied(): boolean {

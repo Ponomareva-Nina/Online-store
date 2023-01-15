@@ -14,6 +14,14 @@ import '../models/StoreModel';
 import StoreModel from '../models/StoreModel';
 import Footer from '../views/FooterVew';
 import CartModel from '../models/CartModel';
+import {
+    LOCAL_STORAGE_ACTIVATED_PROMOCODES,
+    LOCAL_STORAGE_CART,
+    LOCAL_STORAGE_PRODUCTSQUANTITY,
+    LOCAL_STORAGE_TOTALSUM,
+    LOCAL_STORAGE_TOTAL_SUM_WITH_DISCOUNT,
+    ZERO,
+} from '../../constants/string-constants';
 
 export default class AppController implements AppControllerInterface {
     private static instance: InstanceType<typeof AppController>;
@@ -81,15 +89,21 @@ export default class AppController implements AppControllerInterface {
 
     private addToLocalStorage() {
         window.addEventListener('beforeunload', () => {
-            localStorage.setItem('cart', JSON.stringify(this.cartModel.productsInCart));
-            localStorage.setItem('totalSum', this.cartModel.totalSum.toString());
-            localStorage.setItem('productsQuantity', this.cartModel.productsQuantity.toString());
-            localStorage.setItem('activatedPromocodes', JSON.stringify(this.cartModel.activatedPromocodes));
+            localStorage.setItem(LOCAL_STORAGE_CART, JSON.stringify(this.cartModel.productsInCart));
+            localStorage.setItem(LOCAL_STORAGE_TOTALSUM, this.cartModel.totalSum.toString());
+            localStorage.setItem(LOCAL_STORAGE_PRODUCTSQUANTITY, this.cartModel.productsQuantity.toString());
+            localStorage.setItem(
+                LOCAL_STORAGE_ACTIVATED_PROMOCODES,
+                JSON.stringify(this.cartModel.activatedPromocodes)
+            );
             if (this.cartModel.totalSumWithDiscount !== 0) {
                 if (this.cartModel.totalSum == 0) {
-                    localStorage.setItem('totalSumWithDiscount', '0');
+                    localStorage.setItem(LOCAL_STORAGE_TOTAL_SUM_WITH_DISCOUNT, ZERO);
                 }
-                localStorage.setItem('totalSumWithDiscount', this.cartModel.totalSumWithDiscount.toString());
+                localStorage.setItem(
+                    LOCAL_STORAGE_TOTAL_SUM_WITH_DISCOUNT,
+                    this.cartModel.totalSumWithDiscount.toString()
+                );
             }
         });
     }
