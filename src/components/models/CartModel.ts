@@ -3,14 +3,14 @@ import AppController from '../app/app';
 import promos from '../../promocodes.json';
 
 export default class CartModel {
-    appController: AppController;
-    productsInCart: Product[];
-    totalSum: number;
-    productsQuantity: number;
-    promocodes: Promocode[];
-    enteredPromocodes: Promocode[];
-    activatedPromocodes: Promocode[];
-    totalSumWithDiscount: number;
+    public appController: AppController;
+    public productsInCart: Product[];
+    public totalSum: number;
+    public productsQuantity: number;
+    private promocodes: Promocode[];
+    public enteredPromocodes: Promocode[];
+    public activatedPromocodes: Promocode[];
+    public totalSumWithDiscount: number;
 
     constructor(controller: AppController) {
         this.appController = controller;
@@ -35,7 +35,7 @@ export default class CartModel {
         this.enteredPromocodes = this.setEnteredPromocodesAfterReload();
     }
 
-    private checkTotalSumInLocalStorage() {
+    private checkTotalSumInLocalStorage(): number {
         const totalSumInLocalStorage = window.localStorage.getItem('totalSum');
         if (totalSumInLocalStorage) {
             this.totalSum = Number(totalSumInLocalStorage);
@@ -45,7 +45,7 @@ export default class CartModel {
         return this.totalSum;
     }
 
-    private checkTotalSumWithDiscountInLocalStorage() {
+    private checkTotalSumWithDiscountInLocalStorage(): number {
         const totalSumWithDiscountInLocalStorage = window.localStorage.getItem('totalSumWithDiscount');
         if (totalSumWithDiscountInLocalStorage) {
             this.totalSumWithDiscount = Number(totalSumWithDiscountInLocalStorage);
@@ -55,7 +55,7 @@ export default class CartModel {
         return this.totalSumWithDiscount;
     }
 
-    private checkProductQuantityInLocalStorage() {
+    private checkProductQuantityInLocalStorage(): number {
         const productQuantityInLocalStorage = localStorage.getItem('productsQuantity');
         if (productQuantityInLocalStorage) {
             this.productsQuantity = Number(productQuantityInLocalStorage);
@@ -65,7 +65,7 @@ export default class CartModel {
         return this.productsQuantity;
     }
 
-    addProduct(product: Product) {
+    public addProduct(product: Product): Product[] | undefined {
         const isInCart = this.checkProductInCart(product.id);
         if (!isInCart) {
             this.productsInCart.push(product);
@@ -80,7 +80,7 @@ export default class CartModel {
         }
     }
 
-    deleteProduct(product: Product) {
+    public deleteProduct(product: Product): Product[] | undefined {
         const isInCart = this.checkProductInCart(product.id);
         if (isInCart) {
             const deletedIndex = this.productsInCart.indexOf(product);
@@ -100,7 +100,7 @@ export default class CartModel {
         return this.productsInCart;
     }
 
-    public addOneProduct(product: Product) {
+    public addOneProduct(product: Product): void {
         if (product.inCart && product.sum && product.inCart < product.quantity) {
             product.inCart += 1;
             this.productsQuantity += 1;
@@ -114,7 +114,7 @@ export default class CartModel {
         }
     }
 
-    public deleteOneProduct(product: Product) {
+    public deleteOneProduct(product: Product): void {
         if (product.inCart === 1) {
             product.inCart -= 1;
             this.productsQuantity -= 1;
@@ -143,12 +143,12 @@ export default class CartModel {
         }
     }
 
-    private calculateAddingSumDiscoutDelete() {
+    private calculateAddingSumDiscoutDelete(): void {
         const currentTotalPercentDiscount = this.getCurrentTotalPercentDiscount();
         this.totalSumWithDiscount = Number((this.totalSum * (1 - currentTotalPercentDiscount / 100)).toFixed(2));
     }
 
-    public checkProductInCart(id: number) {
+    public checkProductInCart(id: number): boolean {
         const idProductInCart = this.productsInCart.find((product) => product.id === id);
         if (idProductInCart) {
             return this.productsInCart.includes(idProductInCart);
@@ -157,7 +157,7 @@ export default class CartModel {
         }
     }
 
-    public findEnteredPromoInPromocodes(enteredValue: string) {
+    public findEnteredPromoInPromocodes(enteredValue: string): void {
         this.promocodes.forEach((promocode) => {
             if (enteredValue.toLocaleUpperCase() === promocode.value) {
                 if (!this.enteredPromocodes.find((enteredPromocode) => enteredPromocode.id === promocode.id)) {
@@ -168,7 +168,7 @@ export default class CartModel {
         });
     }
 
-    public handleAddPromocode(promocode: Promocode) {
+    public handleAddPromocode(promocode: Promocode): void {
         if (this.productsInCart.length !== 0) {
             if (!this.activatedPromocodes.find((activatedPromocode) => activatedPromocode.id === promocode.id)) {
                 this.activatedPromocodes.push(promocode);
@@ -181,7 +181,7 @@ export default class CartModel {
         }
     }
 
-    public handleDeletePromocode(promocode: Promocode) {
+    public handleDeletePromocode(promocode: Promocode): void {
         if (this.productsInCart.length !== 0) {
             const deletedPromocodeId = this.activatedPromocodes.indexOf(promocode);
             promocode.active = false;
@@ -193,14 +193,11 @@ export default class CartModel {
         }
     }
 
-    public checkIsPromocodesAplied() {
-        if (this.totalSum !== this.totalSumWithDiscount) {
-            return true;
-        }
-        return false;
+    public checkIsPromocodesAplied(): boolean {
+        return this.totalSum !== this.totalSumWithDiscount;
     }
 
-    private getCurrentTotalPercentDiscount() {
+    private getCurrentTotalPercentDiscount(): number {
         let currentTotalPercentDiscount = 0;
         if (this.checkIsPromocodesAplied()) {
             this.activatedPromocodes.forEach((activatedPromocode) => {
@@ -210,7 +207,7 @@ export default class CartModel {
         return currentTotalPercentDiscount;
     }
 
-    private setEnteredPromocodesAfterReload() {
+    private setEnteredPromocodesAfterReload(): Promocode[] {
         if (this.activatedPromocodes.length !== 0) {
             this.enteredPromocodes = this.activatedPromocodes.slice();
         } else {
@@ -219,7 +216,7 @@ export default class CartModel {
         return this.enteredPromocodes;
     }
 
-    public eraseAllAfterPurchaseg() {
+    public eraseAllAfterPurchaseg(): void {
         this.productsInCart.length = 0;
         this.activatedPromocodes.length = 0;
         this.enteredPromocodes.length = 0;
