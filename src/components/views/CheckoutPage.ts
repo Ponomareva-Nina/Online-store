@@ -1,3 +1,4 @@
+import { ClassNames } from '../../constants/classnames-constants';
 import { LINKS } from '../../constants/route-constants';
 import {
     CHECKOUT_BUTTON_CONTENT,
@@ -7,6 +8,10 @@ import {
     CHECKOUT_PAYMENT_INFO_TITLE,
     CHECKOUT_PERSONAL_INFO_TITLE,
     CHECKOUT_SUCCESS_TEXT,
+    CREDIT_CARD_MAXIMUM_VALUE,
+    CREDIT_CARD_MINIMUM_VALUE,
+    CREDIT_CART_MAXIMUM_CVV,
+    CREDIT_CART_MINIMUM_CVV,
     INPUT_STRING_ADDRESS_PATTERN,
     INPUT_STRING_FIRSTNAME_LASTNAME_PATTERN,
     INPUT_TYPE_CARD_CVV_PATTERN,
@@ -25,6 +30,7 @@ import {
     ORDER_PLACEHOLDER_MAIL,
     ORDER_PLACEHOLDER_PHONE,
     ORDER_TITLE,
+    SLASH_SEPARATOR,
 } from '../../constants/string-constants';
 import { ICheckoutCard } from '../../types/interfaces';
 import { HTMLTags, NullableElement } from '../../types/types';
@@ -165,8 +171,8 @@ export default class CheckoutPage implements ICheckoutCard {
         ) as unknown) as HTMLInputElement;
         paymentInputCard.setAttribute('placeholder', ORDER_PLACEHOLDER_CARD);
         paymentInputCard.setAttribute('type', INPUT_TYPE_NUMBER);
-        paymentInputCard.setAttribute('min', '1000000000000000');
-        paymentInputCard.setAttribute('max', '9999999999999999');
+        paymentInputCard.setAttribute('min', CREDIT_CARD_MINIMUM_VALUE);
+        paymentInputCard.setAttribute('max', CREDIT_CARD_MAXIMUM_VALUE);
         paymentInputCard.setAttribute('required', '');
         paymentInputCard.setAttribute('pattern', INPUT_TYPE_CARD_NUMBER_PATTERN);
         paymentInputCard.addEventListener('input', () => {
@@ -174,10 +180,10 @@ export default class CheckoutPage implements ICheckoutCard {
             paymentInputCard.value = paymentInputCard.value.slice(0, 16);
             const paymentSstemLogoClass = this.checkCardNumber(paymentInputCard);
             if (paymentSstemLogoClass) {
-                paymentSystemLogo.classList.remove('visa-logo');
-                paymentSystemLogo.classList.remove('mastercard-logo');
-                paymentSystemLogo.classList.remove('a-express-logo');
-                paymentSystemLogo.classList.remove('nocard-logo');
+                paymentSystemLogo.classList.remove(ClassNames.CHECKOUT_CARD_VISA);
+                paymentSystemLogo.classList.remove(ClassNames.CHECKOUT_CARD_MASTERCARD);
+                paymentSystemLogo.classList.remove(ClassNames.CHECKOUT_CARD_A_EXPRESS);
+                paymentSystemLogo.classList.remove(ClassNames.CHECKOUT_CARD_NO_CARD);
                 paymentSystemLogo.classList.add(paymentSstemLogoClass);
             }
         });
@@ -195,8 +201,8 @@ export default class CheckoutPage implements ICheckoutCard {
         const paymentInputCvv = createElem(HTMLTags.INPUT, 'payment-input-cvv payment-input') as HTMLInputElement;
         paymentInputCvv.setAttribute('placeholder', ORDER_PLACEHOLDER_CARD_CVV);
         paymentInputCvv.setAttribute('type', INPUT_TYPE_NUMBER);
-        paymentInputCvv.setAttribute('min', '100');
-        paymentInputCvv.setAttribute('max', '999');
+        paymentInputCvv.setAttribute('min', CREDIT_CART_MINIMUM_CVV);
+        paymentInputCvv.setAttribute('max', CREDIT_CART_MAXIMUM_CVV);
         paymentInputCvv.setAttribute('required', '');
         paymentInputCvv.setAttribute('pattern', INPUT_TYPE_CARD_CVV_PATTERN);
         paymentInputCvv.addEventListener('input', () => {
@@ -274,13 +280,13 @@ export default class CheckoutPage implements ICheckoutCard {
         const paymentSystemId = Number(paymentSystemIdStr);
         switch (paymentSystemId) {
             case 4:
-                return 'visa-logo';
+                return ClassNames.CHECKOUT_CARD_VISA;
             case 5:
-                return 'mastercard-logo';
+                return ClassNames.CHECKOUT_CARD_MASTERCARD;
             case 3:
-                return 'a-express-logo';
+                return ClassNames.CHECKOUT_CARD_A_EXPRESS;
             default:
-                return 'nocard-logo';
+                return ClassNames.CHECKOUT_CARD_NO_CARD;
         }
     }
 
@@ -290,14 +296,14 @@ export default class CheckoutPage implements ICheckoutCard {
             return;
         }
         if (paymentInputValid.value.length === 3) {
-            if (paymentInputValid.value[2] === '/') {
+            if (paymentInputValid.value[2] === SLASH_SEPARATOR) {
                 return;
             } else {
                 paymentInputValid.value = paymentInputValid.value
                     .split('')
                     .map((item, index) => {
                         if (index === 2) {
-                            return (item = `/${item}`);
+                            return (item = `${SLASH_SEPARATOR}${item}`);
                         } else {
                             return item;
                         }

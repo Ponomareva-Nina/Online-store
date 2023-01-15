@@ -72,3 +72,7 @@ export const LOCAL_STORAGE_PRODUCTSQUANTITY = 'productsQuantity';
 export const LOCAL_STORAGE_ACTIVATED_PROMOCODES = 'activatedPromocodes';
 export const LOCAL_STORAGE_TOTAL_SUM_WITH_DISCOUNT = 'totalSumWithDiscount';
 export const ZERO = '0';
+export const CREDIT_CARD_MINIMUM_VALUE = '1000000000000000';
+export const CREDIT_CARD_MAXIMUM_VALUE = '9999999999999999';
+export const CREDIT_CART_MINIMUM_CVV = '100';
+export const CREDIT_CART_MAXIMUM_CVV = '999';

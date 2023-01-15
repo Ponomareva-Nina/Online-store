@@ -46,4 +46,8 @@ export enum ClassNames {
     TILE_VIEW_BTN = 'tile-view-btn',
     TILE_VIEW_BTN_ACTIVE = 'tile-view-btn_active',
     CARD_VIEW_LIST = 'card-view_list',
+    CHECKOUT_CARD_VISA = 'visa-logo',
+    CHECKOUT_CARD_MASTERCARD = 'mastercard-logo',
+    CHECKOUT_CARD_A_EXPRESS = 'a-express-logo',
+    CHECKOUT_CARD_NO_CARD = 'nocard-logo',
 }
