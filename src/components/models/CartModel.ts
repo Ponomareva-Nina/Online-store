@@ -89,7 +89,7 @@ export default class CartModel {
                 this.productsQuantity -= product.inCart;
                 this.totalSum = Number((this.totalSum -= product.inCart * product.price).toFixed(2));
                 product.inCart = 0;
-                this.appController.cartView.totalPerProduct = 0;
+                //this.appController.cartView.totalPerProduct = 0;
                 const currentTotalPercentDiscount = this.getCurrentTotalPercentDiscount();
                 this.totalSumWithDiscount = Number(
                     (this.totalSum * (1 - currentTotalPercentDiscount / 100)).toFixed(2)

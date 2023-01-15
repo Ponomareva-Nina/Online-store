@@ -64,3 +64,5 @@ export const INPUT_TYPE_CARD_CVV_PATTERN = '[0-9]{3}';
 export const RESET_BTN_TEXT = 'Show all';
 export const CHECKOUT_SUCCESS_TEXT = 'Your order has been placed. Thank you!\nYou will be redirected to main page';
 export const CHECKOUT_FILL_INPUTS_TEXT = 'Please check or fill all inputs';
+export const PRODUCT_DESCRIPTION_SIZE_TITLE = 'size: ';
+export const PRODUCT_DESCRIPTION_ONSTOCK_TITLE = 'Available in stock: ';
