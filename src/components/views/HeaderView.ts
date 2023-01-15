@@ -6,12 +6,11 @@ import { MAIN_LOGO_PART1, MAIN_LOGO_PART2 } from '../../constants/string-constan
 import { ViewComponent } from '../../types/interfaces';
 
 export default class Header implements ViewComponent {
-    container: DocumentFragment;
-    appController: AppController;
-    wrapper: HTMLDivElement;
-
-    headerContainer: HTMLDivElement;
-    links: Array<HTMLElement>;
+    public container: DocumentFragment;
+    public appController: AppController;
+    private wrapper: HTMLDivElement;
+    private headerContainer: HTMLDivElement;
+    private links: Array<HTMLElement>;
 
     constructor(controller: AppController) {
         this.appController = controller;
@@ -21,8 +20,8 @@ export default class Header implements ViewComponent {
         this.links = [];
     }
 
-    public createLogo() {
-        const logoContainer = createElem(HTMLTags.DIV, 'logo-container');
+    public createLogo(): HTMLDivElement {
+        const logoContainer = createElem(HTMLTags.DIV, 'logo-container') as HTMLDivElement;
         const title = createElem(HTMLTags.PAGE_HEADER, 'logo-title');
         const textTitle1 = createElem(HTMLTags.SPAN, 'text-title-first', MAIN_LOGO_PART1);
         const textTitle2 = createElem(HTMLTags.SPAN, 'text-title-second', MAIN_LOGO_PART2);
@@ -37,8 +36,8 @@ export default class Header implements ViewComponent {
         return logoContainer;
     }
 
-    public createNavigation() {
-        const navigation = createElem(HTMLTags.NAV, 'main-nav');
+    public createNavigation(): HTMLDivElement {
+        const navigation = createElem(HTMLTags.NAV, 'main-nav') as HTMLDivElement;
         const navList = createElem(HTMLTags.UL, 'main-nav__list');
 
         for (const link in LINKS) {
@@ -59,7 +58,7 @@ export default class Header implements ViewComponent {
         return navigation;
     }
 
-    public setActiveLink() {
+    public setActiveLink(): void {
         const activeRoute = this.appController.router.currentRoute?.path;
         this.links.forEach((link) => {
             if (link.getAttribute('href') === activeRoute) {
@@ -70,13 +69,13 @@ export default class Header implements ViewComponent {
         });
     }
 
-    public createContentHeader() {
+    private createContentHeader(): HTMLDivElement {
         this.appController.destroyAllChildNodes(this.wrapper);
         const centralContainer = createElem(HTMLTags.DIV, 'central-container');
         const logo = this.createLogo();
         const navigation = this.createNavigation();
         centralContainer.append(logo, navigation);
-        const container = createElem(HTMLTags.DIV, 'header-content');
+        const container = createElem(HTMLTags.DIV, 'header-content') as HTMLDivElement;
         const burger = this.appController.menu.getBurgerIcon();
         const menu = this.appController.menu.createMenu();
         this.wrapper.append(menu);
@@ -85,7 +84,7 @@ export default class Header implements ViewComponent {
         return container;
     }
 
-    public createHeader() {
+    public createHeader(): HTMLDivElement {
         this.appController.destroyAllChildNodes(this.headerContainer);
         const line = createWelcomeLine();
         const headerContent = this.createContentHeader();
@@ -94,7 +93,7 @@ export default class Header implements ViewComponent {
         return this.headerContainer;
     }
 
-    public render() {
+    public render(): DocumentFragment {
         this.createHeader();
         return this.container;
     }
