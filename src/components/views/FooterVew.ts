@@ -5,15 +5,15 @@ import { HTMLTags } from '../../types/types';
 import { createElem, createWelcomeLine } from '../../utils/utils';
 
 export default class Footer implements IFooter {
-    container: HTMLDivElement;
-    wrapper: HTMLDivElement;
+    public container: HTMLDivElement;
+    public wrapper: HTMLDivElement;
 
     constructor() {
         this.wrapper = createElem(HTMLTags.DIV, 'wrapper') as HTMLDivElement;
         this.container = createElem('footer', 'footer') as HTMLDivElement;
     }
 
-    private createFooterContent() {
+    private createFooterContent(): HTMLDivElement {
         const footerContainer = createElem(HTMLTags.DIV, 'footer-content');
         const authorsContainer = createElem(HTMLTags.DIV, 'authors-content');
         const authorFirst = this.createAuthorGithub(AUTHOR_FIRST, AUTHOR_FIRST_GIT_LINK);
@@ -25,8 +25,8 @@ export default class Footer implements IFooter {
         return this.wrapper;
     }
 
-    private createAuthorGithub(name: string, link: string) {
-        const autorContainer = createElem(HTMLTags.DIV, 'author-container');
+    private createAuthorGithub(name: string, link: string): HTMLDivElement {
+        const autorContainer = createElem(HTMLTags.DIV, 'author-container') as HTMLDivElement;
         const gitLink = createElem(HTMLTags.LINK, 'git__link');
         gitLink.setAttribute('href', link);
         gitLink.setAttribute('target', '_blank');
@@ -38,8 +38,8 @@ export default class Footer implements IFooter {
         return autorContainer;
     }
 
-    private createRsContainer() {
-        const rsContainer = createElem(HTMLTags.DIV, 'rs-container');
+    private createRsContainer(): HTMLDivElement {
+        const rsContainer = createElem(HTMLTags.DIV, 'rs-container') as HTMLDivElement;
         const taskLink = createElem(HTMLTags.LINK, 'course-link');
         taskLink.setAttribute('href', TASK_LINK);
         taskLink.setAttribute('target', '_blank');
@@ -51,7 +51,7 @@ export default class Footer implements IFooter {
         return rsContainer;
     }
 
-    public renderFooter() {
+    public renderFooter(): HTMLDivElement {
         const line = createWelcomeLine();
         const footer = this.createFooterContent();
         this.container.append(line, footer);
