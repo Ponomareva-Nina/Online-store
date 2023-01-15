@@ -9,8 +9,8 @@ export function createElem(tag = 'div', className = '', text = '') {
     return elem;
 }
 
-export function createWelcomeLine() {
-    const line = createElem(HTMLTags.DIV, 'line');
+export function createWelcomeLine(): HTMLDivElement {
+    const line = createElem(HTMLTags.DIV, 'line') as HTMLDivElement;
     const lineWelcome = createElem(HTMLTags.SPAN, 'line-welcome');
     const logo = createElem(HTMLTags.SPAN, 'line-logo');
     const welcomeText = createElem(HTMLTags.SPAN, 'welcome-text', LINE_WELCOME);
@@ -22,7 +22,7 @@ export function createWelcomeLine() {
     return line;
 }
 
-export function createAudio() {
+export function createAudio(): HTMLAudioElement {
     const audio = new Audio();
     audio.src = AUDIO_OST;
     audio.loop = true;
@@ -30,14 +30,14 @@ export function createAudio() {
     return audio;
 }
 
-export function createImage(className = '', src = '') {
+export function createImage(className = '', src = ''): HTMLImageElement {
     const img = document.createElement('img');
     img.className = className;
     img.setAttribute('src', src);
     return img;
 }
 
-export function createRadioButton(name = '', className = '', value = '', id = '') {
+export function createRadioButton(name = '', className = '', value = '', id = ''): HTMLInputElement {
     const input = document.createElement('input');
     input.setAttribute('type', 'radio');
     input.setAttribute('name', name);
@@ -47,7 +47,7 @@ export function createRadioButton(name = '', className = '', value = '', id = ''
     return input;
 }
 
-export function createCheckbox(name = '', className = '', value = '', id = '') {
+export function createCheckbox(name = '', className = '', value = '', id = ''): HTMLInputElement {
     const input = document.createElement('input');
     input.setAttribute('type', 'checkbox');
     input.setAttribute('name', name);
@@ -57,7 +57,7 @@ export function createCheckbox(name = '', className = '', value = '', id = '') {
     return input;
 }
 
-export function createLabel(relevantInputId = '', className = '', text = '') {
+export function createLabel(relevantInputId = '', className = '', text = ''): HTMLLabelElement {
     const label = document.createElement('label');
     label.setAttribute('for', relevantInputId);
     label.className = className;
@@ -65,7 +65,7 @@ export function createLabel(relevantInputId = '', className = '', text = '') {
     return label;
 }
 
-export function createRange(min = '0', max = '200', value = '', className = '') {
+export function createRange(min = '0', max = '200', value = '', className = ''): HTMLInputElement {
     const range = document.createElement('input');
     range.setAttribute('type', 'range');
     range.setAttribute('min', min);
