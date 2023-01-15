@@ -53,7 +53,7 @@ export default class CartView implements ViewComponent {
     }
 
     public createPage() {
-        this.destroyAllChildNodes(this.cartContainer);
+        this.appController.destroyAllChildNodes(this.cartContainer);
         const title = createElem(HTMLTags.H2, 'page-header', CART_TITLE);
 
         const productInCart = this.cartModel.productsInCart;
@@ -154,20 +154,14 @@ export default class CartView implements ViewComponent {
 
     public checkCartIsEmpty() {
         if (this.cartModel.productsInCart.length === 0) {
-            this.destroyAllChildNodes(this.cartContainer);
+            this.appController.destroyAllChildNodes(this.cartContainer);
             const emptyCart = createElem(HTMLTags.DIV, 'empty-cart', CART_EMPTY);
             this.cartContainer.append(emptyCart);
         }
     }
 
-    private destroyAllChildNodes(parent: Node) {
-        while (parent.firstChild) {
-            parent.removeChild(parent.firstChild);
-        }
-    }
-
     public updatePage() {
-        this.destroyAllChildNodes(this.cartContainer);
+        this.appController.destroyAllChildNodes(this.cartContainer);
         this.cartModel.productsInCart.forEach((card) => {
             const productContainer = createElem(HTMLTags.DIV, 'product-container');
             productContainer.append(this.createCard(card), this.createManagePanel(card));
@@ -199,8 +193,8 @@ export default class CartView implements ViewComponent {
     }
 
     public createPromoBlock() {
-        this.destroyAllChildNodes(this.promoContainer);
-        this.destroyAllChildNodes(this.promoCodesContainer);
+        this.appController.destroyAllChildNodes(this.promoContainer);
+        this.appController.destroyAllChildNodes(this.promoCodesContainer);
         const promoTitle = createElem(HTMLTags.P, 'page-header', PROMO_TITLE);
         const promoContentContainer = createElem(HTMLTags.DIV, 'content-container');
 
@@ -230,7 +224,7 @@ export default class CartView implements ViewComponent {
 
         totalSum.append(totalSumTitle, this.totalSumContent);
         const promoWithoutDiscountContainer = createElem(HTMLTags.P, 'promo-without-discount-container');
-        this.destroyAllChildNodes(promoWithoutDiscountContainer);
+        this.appController.destroyAllChildNodes(promoWithoutDiscountContainer);
         promoWithoutDiscountContainer.append(totalProducts, totalSum);
         promoTotalContainer.append(promoWithoutDiscountContainer, this.totalDiscountContainer);
 
@@ -305,10 +299,10 @@ export default class CartView implements ViewComponent {
     }
 
     public createBlockWithDiscountSum() {
-        this.destroyAllChildNodes(this.totalDiscountContainer);
+        this.appController.destroyAllChildNodes(this.totalDiscountContainer);
         const totalOneDiscountContainer = createElem(HTMLTags.P);
         this.cartModel.activatedPromocodes.forEach(() => {
-            this.destroyAllChildNodes(totalOneDiscountContainer);
+            this.appController.destroyAllChildNodes(totalOneDiscountContainer);
             const totalSumTitleDiscount = createElem(
                 HTMLTags.SPAN,
                 'sum-title-discount',
@@ -324,7 +318,7 @@ export default class CartView implements ViewComponent {
     public updateDiscountInfo() {
         this.totalSumDiscountContent.textContent = `${this.cartModel.totalSumWithDiscount}`;
         if (this.cartModel.productsInCart.length === 0) {
-            this.destroyAllChildNodes(this.promoContainer);
+            this.appController.destroyAllChildNodes(this.promoContainer);
         }
     }
 

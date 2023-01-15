@@ -71,7 +71,7 @@ export default class Header implements ViewComponent {
     }
 
     public createContentHeader() {
-        this.destroyAllChildNodes(this.wrapper);
+        this.appController.destroyAllChildNodes(this.wrapper);
         const centralContainer = createElem(HTMLTags.DIV, 'central-container');
         const logo = this.createLogo();
         const navigation = this.createNavigation();
@@ -86,18 +86,12 @@ export default class Header implements ViewComponent {
     }
 
     public createHeader() {
-        this.destroyAllChildNodes(this.headerContainer);
+        this.appController.destroyAllChildNodes(this.headerContainer);
         const line = createWelcomeLine();
         const headerContent = this.createContentHeader();
         this.wrapper.append(headerContent);
         this.headerContainer.append(line, this.wrapper);
         return this.headerContainer;
-    }
-
-    private destroyAllChildNodes(parent: Node) {
-        while (parent.firstChild) {
-            parent.removeChild(parent.firstChild);
-        }
     }
 
     public render() {

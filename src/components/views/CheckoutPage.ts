@@ -2,9 +2,11 @@ import { LINKS } from '../../constants/route-constants';
 import {
     CHECKOUT_BUTTON_CONTENT,
     CHECKOUT_CONTACT_INFO_TITLE,
+    CHECKOUT_FILL_INPUTS_TEXT,
     CHECKOUT_LICENSE_AGREEMENT_TEXT,
     CHECKOUT_PAYMENT_INFO_TITLE,
     CHECKOUT_PERSONAL_INFO_TITLE,
+    CHECKOUT_SUCCESS_TEXT,
     INPUT_STRING_ADDRESS_PATTERN,
     INPUT_STRING_FIRSTNAME_LASTNAME_PATTERN,
     INPUT_TYPE_CARD_CVV_PATTERN,
@@ -57,7 +59,7 @@ export default class CheckoutPage implements ICheckoutCard {
     }
 
     public createPayCard(): HTMLDivElement {
-        this.destroyAllChildNodes(this.container);
+        this.appController.destroyAllChildNodes(this.container);
         const form = createElem('form', 'ordere-form');
         const orderTitle = createElem(HTMLTags.P, 'page-header', ORDER_TITLE);
         const personalInfoBlock = this.createPersonalInfo();
@@ -208,12 +210,6 @@ export default class CheckoutPage implements ICheckoutCard {
         return paymentContainer;
     }
 
-    private destroyAllChildNodes(parent: Node) {
-        while (parent.firstChild) {
-            parent.removeChild(parent.firstChild);
-        }
-    }
-
     public showModal(): void {
         this.container.classList.add('popup_active');
         document.body.classList.add('inactive-order');
@@ -338,12 +334,12 @@ export default class CheckoutPage implements ICheckoutCard {
             setTimeout(() => {
                 this.appController.router.changeCurrentPage(LINKS.About);
             }, 3000);
-            alert('Your order has been placed. Thank you!\nYou will be redirected to main page');
+            alert(CHECKOUT_SUCCESS_TEXT);
             this.appController.cartModel.eraseAllAfterPurchaseg();
             this.hideModal();
             this.eraseAllInputWithSavedInfo();
         } else {
-            alert('Please check or fill all inputs');
+            alert(CHECKOUT_FILL_INPUTS_TEXT);
         }
     }
 
