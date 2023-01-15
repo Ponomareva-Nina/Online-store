@@ -36,7 +36,8 @@ export interface IMenu {
     appController: AppController;
     menuContainer: HTMLElement;
     burgerIcon: HTMLElement;
-    getBurgerIcon: () => HTMLElement;
+    getBurgerIcon: () => HTMLDivElement;
+    createMenu: () => HTMLDivElement;
 }
 export interface Product {
     inCart?: number;

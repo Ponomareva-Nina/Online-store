@@ -5,9 +5,9 @@ import { createAudio, createElem } from '../../utils/utils';
 import AppController from '../app/app';
 
 export default class Menu implements IMenu {
-    appController: AppController;
-    menuContainer: HTMLDivElement;
-    burgerIcon: HTMLDivElement;
+    public appController: AppController;
+    public menuContainer: HTMLDivElement;
+    public burgerIcon: HTMLDivElement;
 
     constructor(controller: AppController) {
         this.appController = controller;
@@ -15,12 +15,12 @@ export default class Menu implements IMenu {
         this.burgerIcon = createElem(HTMLTags.DIV, 'burger-menu') as HTMLDivElement;
     }
 
-    public getBurgerIcon() {
+    public getBurgerIcon(): HTMLDivElement {
         return this.burgerIcon;
     }
 
-    private createTheme() {
-        const themeContainer = createElem(HTMLTags.DIV, 'theme-container');
+    private createTheme(): HTMLDivElement {
+        const themeContainer = createElem(HTMLTags.DIV, 'theme-container') as HTMLDivElement;
         const themeTitle = createElem(HTMLTags.P, 'theme-title', MENU_THEME_TITLE);
         const input = this.createInput('checkbox checkbox-theme', 'theme');
         const label = createElem(HTMLTags.LABEL);
@@ -29,8 +29,8 @@ export default class Menu implements IMenu {
         return themeContainer;
     }
 
-    private createSound() {
-        const soundContainer = createElem(HTMLTags.DIV, 'sound-container');
+    private createSound(): HTMLDivElement {
+        const soundContainer = createElem(HTMLTags.DIV, 'sound-container') as HTMLDivElement;
         const soundTitle = createElem(HTMLTags.P, 'sound-title', MENU_SOUND_TITLE);
         const input = this.createInput('checkbox checkbox-sound', 'sound');
         const label = createElem(HTMLTags.LABEL);
@@ -43,14 +43,14 @@ export default class Menu implements IMenu {
         return soundContainer;
     }
 
-    private createInput(className: string, inputId: string) {
-        const input = createElem(HTMLTags.INPUT, className);
+    private createInput(className: string, inputId: string): HTMLInputElement {
+        const input = createElem(HTMLTags.INPUT, className) as HTMLInputElement;
         input.setAttribute('type', 'checkbox');
         input.setAttribute('id', inputId);
         return input;
     }
 
-    public createMenu() {
+    public createMenu(): HTMLDivElement {
         document.body.addEventListener('click', (e) => {
             this.handleClick(e);
         });
@@ -62,7 +62,7 @@ export default class Menu implements IMenu {
         return this.menuContainer;
     }
 
-    private handleClick(e: MouseEvent) {
+    private handleClick(e: MouseEvent): void {
         const target = e.target as Element;
 
         if (
@@ -84,7 +84,7 @@ export default class Menu implements IMenu {
         }
     }
 
-    private handlePlayAudio(audio: HTMLAudioElement) {
+    private handlePlayAudio(audio: HTMLAudioElement): void {
         if (audio.classList.contains('play')) {
             audio.classList.remove('play');
             audio.pause();
