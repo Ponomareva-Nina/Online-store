@@ -2,21 +2,21 @@ import { AUDIO_OST } from '../constants/source-constants';
 import { LINE_DESCRIPTION, LINE_WELCOME } from '../constants/string-constants';
 import { HTMLTags } from '../types/types';
 
-export function createElem(tag = 'div', className = '', text = '') {
+export function createElem<T>(tag = 'div', className = '', text = '') {
     const elem = document.createElement(tag);
     elem.className = className;
     elem.textContent = text;
-    return elem;
+    return elem as T;
 }
 
 export function createWelcomeLine(): HTMLDivElement {
     const line = createElem(HTMLTags.DIV, 'line') as HTMLDivElement;
-    const lineWelcome = createElem(HTMLTags.SPAN, 'line-welcome');
-    const logo = createElem(HTMLTags.SPAN, 'line-logo');
-    const welcomeText = createElem(HTMLTags.SPAN, 'welcome-text', LINE_WELCOME);
+    const lineWelcome = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'line-welcome');
+    const logo = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'line-logo');
+    const welcomeText = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'welcome-text', LINE_WELCOME);
     lineWelcome.append(logo, welcomeText);
-    const lineDescription = createElem(HTMLTags.SPAN, 'line-description', LINE_DESCRIPTION);
-    const wrapper = createElem(HTMLTags.DIV, 'wrapper line-wrapper');
+    const lineDescription = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'line-description', LINE_DESCRIPTION);
+    const wrapper = createElem<HTMLDivElement>(HTMLTags.DIV, 'wrapper line-wrapper');
     wrapper.append(lineWelcome, lineDescription);
     line.append(wrapper);
     return line;

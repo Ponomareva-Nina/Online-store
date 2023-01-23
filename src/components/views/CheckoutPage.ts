@@ -52,8 +52,8 @@ export default class CheckoutPage implements ICheckoutCard {
 
     constructor(controller: AppController) {
         this.appController = controller;
-        this.container = createElem(HTMLTags.DIV, 'order-container') as HTMLDivElement;
-        this.contactAgree = createElem(HTMLTags.INPUT, 'contact-input-argeement') as HTMLInputElement;
+        this.container = createElem<HTMLDivElement>(HTMLTags.DIV, 'order-container') as HTMLDivElement;
+        this.contactAgree = createElem<HTMLInputElement>(HTMLTags.INPUT, 'contact-input-argeement') as HTMLInputElement;
         this.firstname = null;
         this.lastname = null;
         this.address = null;
@@ -66,14 +66,14 @@ export default class CheckoutPage implements ICheckoutCard {
 
     public createPayCard(): HTMLDivElement {
         this.appController.destroyAllChildNodes(this.container);
-        const form = createElem('form', 'ordere-form');
-        const orderTitle = createElem(HTMLTags.P, 'page-header', ORDER_TITLE);
+        const form = createElem<HTMLFormElement>('form', 'ordere-form');
+        const orderTitle = createElem<HTMLElement>(HTMLTags.P, 'page-header', ORDER_TITLE);
         const personalInfoBlock = this.createPersonalInfo();
         const contactInfoBlock = this.createContactInfo();
         const paymentInfoBlock = this.createPaymentInfo();
 
-        const checkoutButtonContainer = createElem(HTMLTags.DIV, 'checkout-container');
-        const checkoutButton = createElem(HTMLTags.INPUT, 'btn checkout-button');
+        const checkoutButtonContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'checkout-container');
+        const checkoutButton = createElem<HTMLInputElement>(HTMLTags.INPUT, 'btn checkout-button');
         checkoutButton.setAttribute('type', 'submit');
         checkoutButton.setAttribute('value', CHECKOUT_BUTTON_CONTENT);
         checkoutButton.addEventListener('click', () => {
@@ -86,9 +86,13 @@ export default class CheckoutPage implements ICheckoutCard {
     }
 
     private createPersonalInfo(): HTMLDivElement {
-        const personalContainer = createElem(HTMLTags.DIV, 'personal-container') as HTMLDivElement;
-        const personalTitle = createElem(HTMLTags.P, 'personal-title payment-title', CHECKOUT_PERSONAL_INFO_TITLE);
-        const personalInfoContent = createElem(HTMLTags.DIV, 'personal-info-content');
+        const personalContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'personal-container') as HTMLDivElement;
+        const personalTitle = createElem<HTMLElement>(
+            HTMLTags.P,
+            'personal-title payment-title',
+            CHECKOUT_PERSONAL_INFO_TITLE
+        );
+        const personalInfoContent = createElem<HTMLDivElement>(HTMLTags.DIV, 'personal-info-content');
         const personalInputFirstname = createElem(
             HTMLTags.INPUT,
             'personal-input-firstname payment-input'
@@ -124,29 +128,39 @@ export default class CheckoutPage implements ICheckoutCard {
     }
 
     private createContactInfo(): HTMLDivElement {
-        const contactContainer = createElem(HTMLTags.DIV, 'contact-container') as HTMLDivElement;
-        const contactTitle = createElem(HTMLTags.P, 'contact-title payment-title', CHECKOUT_CONTACT_INFO_TITLE);
-        const contactInfoContent = createElem(HTMLTags.DIV, 'contact-info-content');
-        const contactPhone = createElem(HTMLTags.INPUT, 'contact-input-phone payment-input') as HTMLInputElement;
+        const contactContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'contact-container') as HTMLDivElement;
+        const contactTitle = createElem<HTMLElement>(
+            HTMLTags.P,
+            'contact-title payment-title',
+            CHECKOUT_CONTACT_INFO_TITLE
+        );
+        const contactInfoContent = createElem<HTMLDivElement>(HTMLTags.DIV, 'contact-info-content');
+        const contactPhone = createElem<HTMLInputElement>(
+            HTMLTags.INPUT,
+            'contact-input-phone payment-input'
+        ) as HTMLInputElement;
         contactPhone.setAttribute('placeholder', ORDER_PLACEHOLDER_PHONE);
         contactPhone.setAttribute('type', INPUT_TYPE_TEXT);
         contactPhone.setAttribute('required', '');
         contactPhone.setAttribute('pattern', INPUT_TYPE_PHONE_PATTERN);
         contactPhone.addEventListener('input', () => this.checkPhone(contactPhone));
 
-        const contactMail = createElem(HTMLTags.INPUT, 'contact-input-mail payment-input') as HTMLInputElement;
+        const contactMail = createElem<HTMLInputElement>(
+            HTMLTags.INPUT,
+            'contact-input-mail payment-input'
+        ) as HTMLInputElement;
         contactMail.setAttribute('placeholder', ORDER_PLACEHOLDER_MAIL);
         contactMail.setAttribute('type', INPUT_TYPE_TEXT);
         contactMail.setAttribute('required', '');
         contactMail.setAttribute('pattern', INPUT_TYPE_MAIL_PATTERN);
         contactMail.addEventListener('input', () => this.checkMail(contactMail));
 
-        const contactAgreeContainer = createElem(HTMLTags.DIV, 'contact-agree-container');
+        const contactAgreeContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'contact-agree-container');
 
         this.contactAgree.setAttribute('type', 'checkbox');
         this.contactAgree.setAttribute('required', '');
         this.contactAgree.setAttribute('id', 'license');
-        const contactAgreeLabel = createElem(
+        const contactAgreeLabel = createElem<HTMLLabelElement>(
             HTMLTags.LABEL,
             'contact-label-argeement',
             CHECKOUT_LICENSE_AGREEMENT_TEXT
@@ -160,12 +174,16 @@ export default class CheckoutPage implements ICheckoutCard {
     }
 
     private createPaymentInfo(): HTMLDivElement {
-        const paymentContainer = createElem(HTMLTags.DIV, 'payment-container') as HTMLDivElement;
-        const paymentTitle = createElem(HTMLTags.P, 'payment-title payment-title', CHECKOUT_PAYMENT_INFO_TITLE);
-        const paymentlInfoContent = createElem(HTMLTags.DIV, 'payment-info-content');
-        const paymentInputCardContainer = createElem(HTMLTags.DIV, 'payment-input-card-container');
-        const paymentSystemLogo = createElem(HTMLTags.SPAN, 'payment-system-logo logo');
-        const paymentInputCard = (createElem(
+        const paymentContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'payment-container') as HTMLDivElement;
+        const paymentTitle = createElem<HTMLElement>(
+            HTMLTags.P,
+            'payment-title payment-title',
+            CHECKOUT_PAYMENT_INFO_TITLE
+        );
+        const paymentlInfoContent = createElem<HTMLDivElement>(HTMLTags.DIV, 'payment-info-content');
+        const paymentInputCardContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'payment-input-card-container');
+        const paymentSystemLogo = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'payment-system-logo logo');
+        const paymentInputCard = (createElem<HTMLInputElement>(
             HTMLTags.INPUT,
             'payment-input-card payment-input'
         ) as unknown) as HTMLInputElement;
@@ -189,7 +207,10 @@ export default class CheckoutPage implements ICheckoutCard {
         });
         paymentInputCardContainer.append(paymentSystemLogo, paymentInputCard);
 
-        const paymentInputValid = createElem(HTMLTags.INPUT, 'payment-input-valid payment-input') as HTMLInputElement;
+        const paymentInputValid = createElem<HTMLInputElement>(
+            HTMLTags.INPUT,
+            'payment-input-valid payment-input'
+        ) as HTMLInputElement;
         paymentInputValid.setAttribute('placeholder', ORDER_PLACEHOLDER_CARD_VALID);
         paymentInputValid.setAttribute('type', INPUT_TYPE_TEXT);
         paymentInputValid.setAttribute('required', '');
@@ -198,7 +219,10 @@ export default class CheckoutPage implements ICheckoutCard {
             this.checkCardValid(paymentInputValid);
         });
 
-        const paymentInputCvv = createElem(HTMLTags.INPUT, 'payment-input-cvv payment-input') as HTMLInputElement;
+        const paymentInputCvv = createElem<HTMLInputElement>(
+            HTMLTags.INPUT,
+            'payment-input-cvv payment-input'
+        ) as HTMLInputElement;
         paymentInputCvv.setAttribute('placeholder', ORDER_PLACEHOLDER_CARD_CVV);
         paymentInputCvv.setAttribute('type', INPUT_TYPE_NUMBER);
         paymentInputCvv.setAttribute('min', CREDIT_CART_MINIMUM_CVV);

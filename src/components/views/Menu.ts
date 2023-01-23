@@ -11,8 +11,8 @@ export default class Menu implements IMenu {
 
     constructor(controller: AppController) {
         this.appController = controller;
-        this.menuContainer = createElem(HTMLTags.DIV, 'menu') as HTMLDivElement;
-        this.burgerIcon = createElem(HTMLTags.DIV, 'burger-menu') as HTMLDivElement;
+        this.menuContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'menu') as HTMLDivElement;
+        this.burgerIcon = createElem<HTMLDivElement>(HTMLTags.DIV, 'burger-menu') as HTMLDivElement;
     }
 
     public getBurgerIcon(): HTMLDivElement {
@@ -20,20 +20,20 @@ export default class Menu implements IMenu {
     }
 
     private createTheme(): HTMLDivElement {
-        const themeContainer = createElem(HTMLTags.DIV, 'theme-container') as HTMLDivElement;
-        const themeTitle = createElem(HTMLTags.P, 'theme-title', MENU_THEME_TITLE);
+        const themeContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'theme-container') as HTMLDivElement;
+        const themeTitle = createElem<HTMLElement>(HTMLTags.P, 'theme-title', MENU_THEME_TITLE);
         const input = this.createInput('checkbox checkbox-theme', 'theme');
-        const label = createElem(HTMLTags.LABEL);
+        const label = createElem<HTMLLabelElement>(HTMLTags.LABEL);
         label.setAttribute('for', 'theme');
         themeContainer.append(themeTitle, input, label);
         return themeContainer;
     }
 
     private createSound(): HTMLDivElement {
-        const soundContainer = createElem(HTMLTags.DIV, 'sound-container') as HTMLDivElement;
-        const soundTitle = createElem(HTMLTags.P, 'sound-title', MENU_SOUND_TITLE);
+        const soundContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'sound-container') as HTMLDivElement;
+        const soundTitle = createElem<HTMLElement>(HTMLTags.P, 'sound-title', MENU_SOUND_TITLE);
         const input = this.createInput('checkbox checkbox-sound', 'sound');
-        const label = createElem(HTMLTags.LABEL);
+        const label = createElem<HTMLLabelElement>(HTMLTags.LABEL);
         label.setAttribute('for', 'sound');
         const audio = createAudio();
         label.addEventListener('click', () => {
@@ -44,7 +44,7 @@ export default class Menu implements IMenu {
     }
 
     private createInput(className: string, inputId: string): HTMLInputElement {
-        const input = createElem(HTMLTags.INPUT, className) as HTMLInputElement;
+        const input = createElem<HTMLInputElement>(HTMLTags.INPUT, className) as HTMLInputElement;
         input.setAttribute('type', 'checkbox');
         input.setAttribute('id', inputId);
         return input;

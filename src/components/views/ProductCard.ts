@@ -26,24 +26,32 @@ export default class ProductCard implements ProductCardInterface {
         this.activePreviewImage = null;
     }
 
-    private createBreadCrumps() {
-        const container = createElem(HTMLTags.DIV, ClassNames.BREADCRUMPS_CONTAINER, '');
-        const stepsLine = createElem(HTMLTags.DIV, ClassNames.STEPS_LINE, '');
-        const linksContainer = createElem(HTMLTags.DIV, ClassNames.BREADCRUMPS_LINKS_CONTAINER, '');
-        const initialLink = createElem(HTMLTags.LINK, '', STORE_VIEW_TITLE) as HTMLLinkElement;
+    private createBreadCrumps(): HTMLDivElement {
+        const container = createElem<HTMLDivElement>(HTMLTags.DIV, ClassNames.BREADCRUMPS_CONTAINER, '');
+        const stepsLine = createElem<HTMLDivElement>(HTMLTags.DIV, ClassNames.STEPS_LINE, '');
+        const linksContainer = createElem<HTMLDivElement>(HTMLTags.DIV, ClassNames.BREADCRUMPS_LINKS_CONTAINER, '');
+        const initialLink = createElem<HTMLLinkElement>(HTMLTags.LINK, '', STORE_VIEW_TITLE) as HTMLLinkElement;
         initialLink.setAttribute('href', LINKS.Store);
         initialLink.addEventListener('click', (e) => {
             this.navigateByBreadCrump(e, LINKS.Store);
         });
-        const initialSeparator = createElem(HTMLTags.SPAN, 'breadcrumps-separator', '');
-        const category = createElem(HTMLTags.LINK, 'breadcrumps-link', this.cardData.category) as HTMLLinkElement;
+        const initialSeparator = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'breadcrumps-separator', '');
+        const category = createElem<HTMLLinkElement>(
+            HTMLTags.LINK,
+            'breadcrumps-link',
+            this.cardData.category
+        ) as HTMLLinkElement;
         const categoryPath = `${LINKS.Store}${QUERY_SEPARATOR}${PossibleUrlParams.CATEGORY}=${this.cardData.category}`;
         category.setAttribute('href', categoryPath);
         category.addEventListener('click', (e) => {
             this.navigateByBreadCrump(e, category.href);
         });
-        const categorySeparator = createElem(HTMLTags.SPAN, 'breadcrumps-separator', '');
-        const faculty = createElem(HTMLTags.LINK, 'breadcrumps-link', this.cardData.faculty) as HTMLLinkElement;
+        const categorySeparator = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'breadcrumps-separator', '');
+        const faculty = createElem<HTMLLinkElement>(
+            HTMLTags.LINK,
+            'breadcrumps-link',
+            this.cardData.faculty
+        ) as HTMLLinkElement;
         const facultyPath = `${LINKS.Store}${QUERY_SEPARATOR}${PossibleUrlParams.CATEGORY}=${this.cardData.category}${AMPERSAND_SEPARATOR}${PossibleUrlParams.FACULTY}=${this.cardData.faculty}`;
         faculty.setAttribute('href', facultyPath);
         linksContainer.append(initialLink, initialSeparator, category, categorySeparator, faculty);
@@ -51,28 +59,28 @@ export default class ProductCard implements ProductCardInterface {
         return container;
     }
 
-    private navigateByBreadCrump(e: MouseEvent, href: string) {
+    private navigateByBreadCrump(e: MouseEvent, href: string): void {
         e.preventDefault();
         this.appController.router.changeCurrentPage(href);
     }
 
-    public createFullCard() {
-        const container = createElem(HTMLTags.SECTION, ClassNames.FULL_CARD_CONTAINER, '');
-        const infoSection = createElem(HTMLTags.DIV, ClassNames.PRODUCT_CARD_INFO);
+    public createFullCard(): HTMLElement {
+        const container = createElem<HTMLElement>(HTMLTags.SECTION, ClassNames.FULL_CARD_CONTAINER, '');
+        const infoSection = createElem<HTMLDivElement>(HTMLTags.DIV, ClassNames.PRODUCT_CARD_INFO);
         const breadcrumps = this.createBreadCrumps();
         const title = this.createTitle();
-        const priceContainer = createElem(HTMLTags.DIV, 'card_product-params-container', '');
+        const priceContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'card_product-params-container', '');
         const priceText = `Price: $ ${this.cardData.price}`;
-        const cardPrice = createElem(HTMLTags.DIV, ClassNames.CARD_PRICE, priceText);
+        const cardPrice = createElem<HTMLDivElement>(HTMLTags.DIV, ClassNames.CARD_PRICE, priceText);
         const discountText = `Discount: ${this.cardData.discount} %`;
-        const cardDiscount = createElem(HTMLTags.DIV, ClassNames.CARD_DISCOUNT, discountText);
+        const cardDiscount = createElem<HTMLDivElement>(HTMLTags.DIV, ClassNames.CARD_DISCOUNT, discountText);
         priceContainer.append(cardPrice, cardDiscount);
         const descriptionText = this.cardData.description;
-        const description = createElem(HTMLTags.DIV, ClassNames.CARD_DESCRIPTION, descriptionText);
+        const description = createElem<HTMLDivElement>(HTMLTags.DIV, ClassNames.CARD_DESCRIPTION, descriptionText);
         const imagesSection = this.createProductImagesSection();
 
-        const btnsContainer = createElem(HTMLTags.DIV, ClassNames.PRODUCT_CARD_BTNS_CONTAINER);
-        const buyNowBtn = createElem(HTMLTags.BUTTON, ClassNames.BTN, BUY_NOW_BUTTON_TEXT);
+        const btnsContainer = createElem<HTMLDivElement>(HTMLTags.DIV, ClassNames.PRODUCT_CARD_BTNS_CONTAINER);
+        const buyNowBtn = createElem<HTMLButtonElement>(HTMLTags.BUTTON, ClassNames.BTN, BUY_NOW_BUTTON_TEXT);
         buyNowBtn.addEventListener('click', () => {
             if (this.appController.cartModel.checkProductInCart(this.cardData.id)) {
                 this.appController.router.changeCurrentPage(LINKS.Cart);
@@ -83,7 +91,11 @@ export default class ProductCard implements ProductCardInterface {
                 this.appController.cartView.checkoutPage.showModal();
             }
         });
-        const addDeleteProductBtn = createElem(HTMLTags.BUTTON, 'btn add-delete-btn btn_add', ADD_TO_CART_BUTTON_TEXT);
+        const addDeleteProductBtn = createElem<HTMLButtonElement>(
+            HTMLTags.BUTTON,
+            'btn add-delete-btn btn_add',
+            ADD_TO_CART_BUTTON_TEXT
+        );
         if (this.appController.cartModel.checkProductInCart(this.cardData.id)) {
             addDeleteProductBtn.textContent = DELETE_FROM_CART_BUTTON_TEXT;
         }
@@ -98,24 +110,24 @@ export default class ProductCard implements ProductCardInterface {
         return container;
     }
 
-    public createBriefCard() {
-        const container = createElem(HTMLTags.DIV, ClassNames.BRIEF_CARD_CONTAINER, '');
+    public createBriefCard(): HTMLDivElement {
+        const container = createElem<HTMLDivElement>(HTMLTags.DIV, ClassNames.BRIEF_CARD_CONTAINER, '');
 
         const cardTitle = this.createTitle();
         const price = `$ ${this.cardData.price}`;
         const priceClassName = ClassNames.CARD_PRICE;
-        const cardPrice = createElem(HTMLTags.DIV, priceClassName, price);
+        const cardPrice = createElem<HTMLDivElement>(HTMLTags.DIV, priceClassName, price);
 
         const thumbnailSrc = this.cardData.thumbnail;
         const cardThumbnail = createImage(ClassNames.PRODUCT_CARD_IMAGE, thumbnailSrc);
-        const btnsContainer = createElem(HTMLTags.DIV, ClassNames.PRODUCT_CARD_BTNS_CONTAINER);
+        const btnsContainer = createElem<HTMLDivElement>(HTMLTags.DIV, ClassNames.PRODUCT_CARD_BTNS_CONTAINER);
         const detailsBtnClassName = ClassNames.BTN;
-        const detailsBtn = createElem(HTMLTags.BUTTON, detailsBtnClassName, DETAILS_BUTTON_TEXT);
+        const detailsBtn = createElem<HTMLButtonElement>(HTMLTags.BUTTON, detailsBtnClassName, DETAILS_BUTTON_TEXT);
         detailsBtn.addEventListener('click', () => {
             const root = `#product/id=${this.cardData.id}`;
             this.appController.router.changeCurrentPage(root);
         });
-        const trunkBtn = createElem(HTMLTags.BUTTON, ClassNames.TRUNK_BTN, '');
+        const trunkBtn = createElem<HTMLButtonElement>(HTMLTags.BUTTON, ClassNames.TRUNK_BTN, '');
         if (this.appController.cartModel.checkProductInCart(this.cardData.id)) {
             trunkBtn.classList.add(ClassNames.TRUNK_BTN_CHECKED);
         }
@@ -129,11 +141,11 @@ export default class ProductCard implements ProductCardInterface {
         return container;
     }
 
-    private createProductImagesSection() {
+    private createProductImagesSection(): HTMLDivElement {
         const imageSources = [this.cardData.thumbnail].concat(this.cardData.images);
-        const container = createElem(HTMLTags.DIV, ClassNames.IMG_CONTAINER);
-        const previewsContainer = createElem(HTMLTags.DIV, ClassNames.PRODUCT_CARD_PREVIEWS_CONTAINER);
-        const fullImageContainer = createElem(HTMLTags.DIV, ClassNames.PRODUCT_CARD_IMAGE);
+        const container = createElem<HTMLDivElement>(HTMLTags.DIV, ClassNames.IMG_CONTAINER);
+        const previewsContainer = createElem<HTMLDivElement>(HTMLTags.DIV, ClassNames.PRODUCT_CARD_PREVIEWS_CONTAINER);
+        const fullImageContainer = createElem<HTMLDivElement>(HTMLTags.DIV, ClassNames.PRODUCT_CARD_IMAGE);
         const fullImage = createImage('', this.cardData.thumbnail);
         fullImageContainer.append(fullImage);
         const previewImagesNumber = 4;
@@ -154,7 +166,7 @@ export default class ProductCard implements ProductCardInterface {
         return container;
     }
 
-    private handleClickOnImagePreview(imagePreview: HTMLImageElement, fullImage: HTMLImageElement) {
+    private handleClickOnImagePreview(imagePreview: HTMLImageElement, fullImage: HTMLImageElement): void {
         if (this.activePreviewImage) {
             const newFullImageSrc = imagePreview.getAttribute('src');
             this.activePreviewImage.classList.remove(ClassNames.IMAGE_PREVIEW_ACTIVE);
@@ -166,14 +178,14 @@ export default class ProductCard implements ProductCardInterface {
         }
     }
 
-    private createTitle() {
+    private createTitle(): HTMLElement {
         const title = this.cardData.title;
         const titleClassName = ClassNames.PRODUCT_CARD_TITLE;
-        const cardTitle = createElem(HTMLTags.H2, titleClassName, title);
+        const cardTitle = createElem<HTMLElement>(HTMLTags.H2, titleClassName, title);
         return cardTitle;
     }
 
-    private handleClickOnTrunkBtn(btn: HTMLElement) {
+    private handleClickOnTrunkBtn(btn: HTMLButtonElement): void {
         if (btn.classList.contains(ClassNames.TRUNK_BTN_CHECKED)) {
             btn.classList.remove(ClassNames.TRUNK_BTN_CHECKED);
             this.appController.deleteProductFromCart(this.cardData);
@@ -183,7 +195,7 @@ export default class ProductCard implements ProductCardInterface {
         }
     }
 
-    private handleClickOnAddButton(addDeleteBtn: HTMLElement) {
+    private handleClickOnAddButton(addDeleteBtn: HTMLButtonElement): void {
         if (addDeleteBtn.textContent === ADD_TO_CART_BUTTON_TEXT) {
             addDeleteBtn.textContent = DELETE_FROM_CART_BUTTON_TEXT;
             this.appController.addProductToCart(this.cardData);

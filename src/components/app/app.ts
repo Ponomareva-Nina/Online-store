@@ -43,7 +43,7 @@ export default class AppController implements AppControllerInterface {
         this.header = new Header(this);
         this.cartModel = new CartModel(this);
         this.cartView = new CartView(this.cartModel, this);
-        this.mainContainer = createElem('main', 'main wrapper');
+        this.mainContainer = createElem<HTMLElement>('main', 'main wrapper');
         this.startPage = new StartPageView(this);
         this.storeModel = new StoreModel(this);
         this.storeView = new StoreView(this.storeModel, this);

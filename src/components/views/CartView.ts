@@ -26,7 +26,6 @@ export default class CartView implements ViewComponent {
     public appController: AppController;
     public cartModel: CartModel;
     private cartContainer: HTMLElement;
-    //public totalPerProduct: number;
     private quantity: HTMLSpanElement;
     private cartSum: HTMLSpanElement;
     private totalProductsContent: HTMLSpanElement;
@@ -40,29 +39,31 @@ export default class CartView implements ViewComponent {
     constructor(cart: CartModel, controller: AppController) {
         this.appController = controller;
         this.cartModel = cart;
-        //this.totalPerProduct = 0;
         this.container = document.createDocumentFragment();
-        this.cartContainer = createElem(HTMLTags.DIV, 'cart-wrapper');
-        this.quantity = createElem(HTMLTags.SPAN, 'cart-quantity');
-        this.cartSum = createElem(HTMLTags.SPAN, 'cart-sum');
-        this.totalProductsContent = createElem(HTMLTags.SPAN, 'products-content');
-        this.totalSumContent = createElem(HTMLTags.SPAN, 'sum-content');
-        this.promoCodesContainer = createElem(HTMLTags.DIV, 'promo-codes-container') as HTMLDivElement;
-        this.totalSumDiscountContent = createElem(HTMLTags.SPAN, 'sum-content-discount');
-        this.totalDiscountContainer = createElem(HTMLTags.P, 'total-discount-container') as HTMLParagraphElement;
-        this.promoContainer = createElem(HTMLTags.DIV, 'promo-container') as HTMLDivElement;
+        this.cartContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'cart-wrapper');
+        this.quantity = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'cart-quantity');
+        this.cartSum = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'cart-sum');
+        this.totalProductsContent = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'products-content');
+        this.totalSumContent = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'sum-content');
+        this.promoCodesContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'promo-codes-container') as HTMLDivElement;
+        this.totalSumDiscountContent = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'sum-content-discount');
+        this.totalDiscountContainer = createElem<HTMLElement>(
+            HTMLTags.P,
+            'total-discount-container'
+        ) as HTMLParagraphElement;
+        this.promoContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'promo-container') as HTMLDivElement;
         this.checkoutPage = new CheckoutPage(this.appController);
     }
 
     public createPage(): void {
         this.appController.destroyAllChildNodes(this.cartContainer);
-        const title = createElem(HTMLTags.H2, 'page-header', CART_TITLE);
+        const title = createElem<HTMLElement>(HTMLTags.H2, 'page-header', CART_TITLE);
 
         const productInCart = this.cartModel.productsInCart;
 
         if (productInCart.length !== 0) {
             productInCart.forEach((product) => {
-                const productContainer = createElem(HTMLTags.DIV, 'product-container');
+                const productContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'product-container');
                 const productContent = this.createCard(product);
                 const buttonsContainer = this.createManagePanel(product);
                 productContainer.append(productContent, buttonsContainer);
@@ -82,30 +83,38 @@ export default class CartView implements ViewComponent {
     }
 
     private createCard(card: Product): HTMLDivElement {
-        const productContent = createElem(HTMLTags.DIV, 'product-content') as HTMLDivElement;
-        const productCartImg = createElem(HTMLTags.IMG, 'product-image');
+        const productContent = createElem<HTMLDivElement>(HTMLTags.DIV, 'product-content') as HTMLDivElement;
+        const productCartImg = createElem<HTMLImageElement>(HTMLTags.IMG, 'product-image');
         productCartImg.setAttribute('src', card.thumbnail);
         productCartImg.setAttribute('alt', card.title);
 
-        const cardCartContent = createElem(HTMLTags.DIV, 'card-content');
-        const cardCartTitle = createElem(HTMLTags.H3, 'card-title', card.title);
-        const cardCartDescription = createElem(HTMLTags.DIV, 'card-description');
+        const cardCartContent = createElem<HTMLDivElement>(HTMLTags.DIV, 'card-content');
+        const cardCartTitle = createElem<HTMLElement>(HTMLTags.H3, 'card-title', card.title);
+        const cardCartDescription = createElem<HTMLDivElement>(HTMLTags.DIV, 'card-description');
 
-        const cardSize = createElem(HTMLTags.P, 'card-size');
-        const cardSizeSubtitle = createElem(HTMLTags.SPAN, 'subtitle-name', PRODUCT_DESCRIPTION_SIZE_TITLE);
-        const cardSizeDescription = createElem(HTMLTags.SPAN, 'subtitle-name-description', 'one size');
+        const cardSize = createElem<HTMLElement>(HTMLTags.P, 'card-size');
+        const cardSizeSubtitle = createElem<HTMLSpanElement>(
+            HTMLTags.SPAN,
+            'subtitle-name',
+            PRODUCT_DESCRIPTION_SIZE_TITLE
+        );
+        const cardSizeDescription = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'subtitle-name-description', 'one size');
         cardSize.append(cardSizeSubtitle, cardSizeDescription);
 
-        const cardStock = createElem(HTMLTags.P, 'card-stock');
-        const cardStockSubtitle = createElem(
+        const cardStock = createElem<HTMLElement>(HTMLTags.P, 'card-stock');
+        const cardStockSubtitle = createElem<HTMLSpanElement>(
             HTMLTags.SPAN,
             'subtitle-name subtitle-name_low',
             PRODUCT_DESCRIPTION_ONSTOCK_TITLE
         );
-        const cardStockDescription = createElem(HTMLTags.SPAN, 'subtitle-name-description', `${card.quantity}`);
+        const cardStockDescription = createElem<HTMLSpanElement>(
+            HTMLTags.SPAN,
+            'subtitle-name-description',
+            `${card.quantity}`
+        );
         cardStock.append(cardStockSubtitle, cardStockDescription);
 
-        const cardPrice = createElem(HTMLTags.P, 'card-price', `${card.price}`);
+        const cardPrice = createElem<HTMLElement>(HTMLTags.P, 'card-price', `${card.price}`);
 
         cardCartDescription.append(cardSize, cardStock, cardPrice);
 
@@ -117,8 +126,8 @@ export default class CartView implements ViewComponent {
     }
 
     private createManagePanel(card: Product): HTMLDivElement {
-        const buttonsContainer = createElem(HTMLTags.DIV, 'buttons-container') as HTMLDivElement;
-        const counterContainer = createElem(HTMLTags.DIV, 'counter-container');
+        const buttonsContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'buttons-container') as HTMLDivElement;
+        const counterContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'counter-container');
         counterContainer.addEventListener('click', (e: MouseEvent) => {
             const target = e.target as HTMLElement;
             const currentTarget = e.currentTarget as HTMLElement;
@@ -128,17 +137,17 @@ export default class CartView implements ViewComponent {
                 this.addProductToCart(card);
             }
         });
-        const countDown = createElem(HTMLTags.SPAN, 'count-down counter-button');
-        const productQuantity = createElem(HTMLTags.SPAN, 'product-quantity', `${card.inCart}`);
-        const countUp = createElem(HTMLTags.SPAN, 'count-up counter-button');
+        const countDown = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'count-down counter-button');
+        const productQuantity = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'product-quantity', `${card.inCart}`);
+        const countUp = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'count-up counter-button');
         counterContainer.append(countDown, productQuantity, countUp);
 
-        const counterPriceContainer = createElem(HTMLTags.DIV, 'price-counter-cont');
+        const counterPriceContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'price-counter-cont');
 
-        const productPriceContainer = createElem(HTMLTags.P, 'product-price', `Total: ${card.sum} $`);
+        const productPriceContainer = createElem<HTMLElement>(HTMLTags.P, 'product-price', `Total: ${card.sum} $`);
         counterPriceContainer.append(productPriceContainer, counterContainer);
 
-        const cartDeleteProduct = createElem(HTMLTags.BUTTON, 'btn button-all-delete', 'Delete');
+        const cartDeleteProduct = createElem<HTMLButtonElement>(HTMLTags.BUTTON, 'btn button-all-delete', 'Delete');
         cartDeleteProduct.addEventListener('click', () => {
             this.cartModel.deleteProduct(card);
             this.updateCartInfo();
@@ -161,7 +170,7 @@ export default class CartView implements ViewComponent {
     public checkCartIsEmpty(): void {
         if (this.cartModel.productsInCart.length === 0) {
             this.appController.destroyAllChildNodes(this.cartContainer);
-            const emptyCart = createElem(HTMLTags.DIV, 'empty-cart', CART_EMPTY);
+            const emptyCart = createElem<HTMLDivElement>(HTMLTags.DIV, 'empty-cart', CART_EMPTY);
             this.cartContainer.append(emptyCart);
         }
     }
@@ -169,7 +178,7 @@ export default class CartView implements ViewComponent {
     public updatePage(): void {
         this.appController.destroyAllChildNodes(this.cartContainer);
         this.cartModel.productsInCart.forEach((card) => {
-            const productContainer = createElem(HTMLTags.DIV, 'product-container');
+            const productContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'product-container');
             productContainer.append(this.createCard(card), this.createManagePanel(card));
             this.cartContainer.append(productContainer);
         });
@@ -177,9 +186,9 @@ export default class CartView implements ViewComponent {
     }
 
     public createCartIcon(): HTMLDivElement {
-        const cartContainer = createElem(HTMLTags.DIV, 'cart-container') as HTMLDivElement;
-        const link = createElem(HTMLTags.LINK, 'cart-link');
-        const cartIcon = createElem(HTMLTags.SPAN, 'cart-icon');
+        const cartContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'cart-container') as HTMLDivElement;
+        const link = createElem<HTMLLinkElement>(HTMLTags.LINK, 'cart-link');
+        const cartIcon = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'cart-icon');
         link.append(this.quantity, cartIcon, this.cartSum);
         cartContainer.append(link);
         this.updateCartInfo();
@@ -201,16 +210,20 @@ export default class CartView implements ViewComponent {
     private createPromoBlock(): void {
         this.appController.destroyAllChildNodes(this.promoContainer);
         this.appController.destroyAllChildNodes(this.promoCodesContainer);
-        const promoTitle = createElem(HTMLTags.P, 'page-header', PROMO_TITLE);
-        const promoContentContainer = createElem(HTMLTags.DIV, 'content-container');
+        const promoTitle = createElem<HTMLElement>(HTMLTags.P, 'page-header', PROMO_TITLE);
+        const promoContentContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'content-container');
 
-        const promoTotalContainer = createElem(HTMLTags.DIV, 'total-container');
-        const totalProducts = createElem(HTMLTags.P, 'total-products');
-        const totalProductsTitle = createElem(HTMLTags.SPAN, 'products-title', PROMO_TITLE_TOTAL_PRODUCTS);
+        const promoTotalContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'total-container');
+        const totalProducts = createElem<HTMLElement>(HTMLTags.P, 'total-products');
+        const totalProductsTitle = createElem<HTMLSpanElement>(
+            HTMLTags.SPAN,
+            'products-title',
+            PROMO_TITLE_TOTAL_PRODUCTS
+        );
         this.totalProductsContent.textContent = `${this.cartModel.productsQuantity}`;
         totalProducts.append(totalProductsTitle, this.totalProductsContent);
-        const totalSum = createElem(HTMLTags.P, 'total-promo-sum');
-        const totalSumTitle = createElem(HTMLTags.SPAN, 'sum-title', PROMO_TITLE_TOTAL_SUM);
+        const totalSum = createElem<HTMLElement>(HTMLTags.P, 'total-promo-sum');
+        const totalSumTitle = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'sum-title', PROMO_TITLE_TOTAL_SUM);
         this.totalSumContent.textContent = `${this.cartModel.totalSum}`;
         if (this.cartModel.activatedPromocodes.length !== 0) {
             this.createBlockWithDiscountSum();
@@ -229,12 +242,12 @@ export default class CartView implements ViewComponent {
         });
 
         totalSum.append(totalSumTitle, this.totalSumContent);
-        const promoWithoutDiscountContainer = createElem(HTMLTags.P, 'promo-without-discount-container');
+        const promoWithoutDiscountContainer = createElem<HTMLElement>(HTMLTags.P, 'promo-without-discount-container');
         this.appController.destroyAllChildNodes(promoWithoutDiscountContainer);
         promoWithoutDiscountContainer.append(totalProducts, totalSum);
         promoTotalContainer.append(promoWithoutDiscountContainer, this.totalDiscountContainer);
 
-        const promoInputContainer = createElem(HTMLTags.DIV, 'input-container');
+        const promoInputContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'input-container');
         const promoInput = createElem(HTMLTags.INPUT, 'promo-input') as HTMLInputElement;
         promoInput.placeholder = PROMO_CODES;
         promoInput.addEventListener('input', () => {
@@ -243,10 +256,10 @@ export default class CartView implements ViewComponent {
 
         promoInputContainer.append(promoInput);
 
-        const promoBuyContainer = createElem(HTMLTags.DIV, 'buy-container');
-        const promoBuyLeft = createElem(HTMLTags.SPAN, 'decor-buy decor_left');
-        const promoBuyButton = createElem(HTMLTags.BUTTON, 'btn buy-button', PROMO_BUY_BUTTON);
-        const promoBuyRight = createElem(HTMLTags.SPAN, 'decor-buy decor_right');
+        const promoBuyContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'buy-container');
+        const promoBuyLeft = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'decor-buy decor_left');
+        const promoBuyButton = createElem<HTMLButtonElement>(HTMLTags.BUTTON, 'btn buy-button', PROMO_BUY_BUTTON);
+        const promoBuyRight = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'decor-buy decor_right');
         promoBuyButton.addEventListener('click', () => {
             this.checkoutPage.showModal();
         });
@@ -271,12 +284,20 @@ export default class CartView implements ViewComponent {
     }
 
     public createPromoCodeView(promocode: Promocode): void {
-        const promoCodeContainer = createElem(HTMLTags.DIV, 'promo-code-container') as HTMLDivElement;
-        const promoCodesDescription = createElem(HTMLTags.P, 'promo-codes-description');
-        const promoCodesTitle = createElem(HTMLTags.SPAN, 'promo-codes-title', `${promocode.title}`);
-        const promoCodeDiscount = createElem(HTMLTags.SPAN, 'promo-codes-discout', `${promocode.discount}`);
+        const promoCodeContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'promo-code-container') as HTMLDivElement;
+        const promoCodesDescription = createElem<HTMLElement>(HTMLTags.P, 'promo-codes-description');
+        const promoCodesTitle = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'promo-codes-title', `${promocode.title}`);
+        const promoCodeDiscount = createElem<HTMLSpanElement>(
+            HTMLTags.SPAN,
+            'promo-codes-discout',
+            `${promocode.discount}`
+        );
         promoCodesDescription.append(promoCodesTitle, promoCodeDiscount);
-        const promoCodeButtom = createElem(HTMLTags.BUTTON, 'promo-code-button', ACTIVATE_PROMOCODE_BUTTON);
+        const promoCodeButtom = createElem<HTMLButtonElement>(
+            HTMLTags.BUTTON,
+            'promo-code-button',
+            ACTIVATE_PROMOCODE_BUTTON
+        );
         if (promocode.active) {
             promoCodeButtom.classList.add('promo-added');
             promoCodeButtom.textContent = DEACTIVATE_PROMOCODE_BUTTON;
@@ -306,10 +327,10 @@ export default class CartView implements ViewComponent {
 
     public createBlockWithDiscountSum(): void {
         this.appController.destroyAllChildNodes(this.totalDiscountContainer);
-        const totalOneDiscountContainer = createElem(HTMLTags.P);
+        const totalOneDiscountContainer = createElem<HTMLElement>(HTMLTags.P);
         this.cartModel.activatedPromocodes.forEach(() => {
             this.appController.destroyAllChildNodes(totalOneDiscountContainer);
-            const totalSumTitleDiscount = createElem(
+            const totalSumTitleDiscount = createElem<HTMLSpanElement>(
                 HTMLTags.SPAN,
                 'sum-title-discount',
                 PROMO_TITLE_TOTAL_SUM_DISCOUNT
@@ -318,7 +339,6 @@ export default class CartView implements ViewComponent {
             totalOneDiscountContainer.append(totalSumTitleDiscount, this.totalSumDiscountContent);
             this.totalDiscountContainer.append(totalOneDiscountContainer);
         });
-        //return this.totalDiscountContainer;
     }
 
     public updateDiscountInfo(): void {
