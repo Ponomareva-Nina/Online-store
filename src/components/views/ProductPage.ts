@@ -1,3 +1,4 @@
+import { LINK_TO_404_PAGE } from '../../constants/source-constants';
 import { Props, ViewComponent } from '../../types/interfaces';
 import AppController from '../app/app';
 import ProductCard from './ProductCard';
@@ -18,7 +19,7 @@ export default class ProductPage implements ViewComponent {
             const cardView = card.createFullCard();
             this.container.append(cardView);
         } else {
-            window.location.href = 'https://Ponomareva-Nina.github.io/Online-store/404.html';
+            window.location.href = LINK_TO_404_PAGE;
         }
     }
 

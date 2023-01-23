@@ -88,7 +88,7 @@ export default class AppController implements AppControllerInterface {
     }
 
     private addToLocalStorage(): void {
-        window.addEventListener('beforeunload', () => {
+        window.addEventListener('beforeunload', (): void => {
             localStorage.setItem(LOCAL_STORAGE_CART, JSON.stringify(this.cartModel.productsInCart));
             localStorage.setItem(LOCAL_STORAGE_TOTALSUM, this.cartModel.totalSum.toString());
             localStorage.setItem(LOCAL_STORAGE_PRODUCTSQUANTITY, this.cartModel.productsQuantity.toString());

@@ -61,11 +61,11 @@ export default class Route {
     }
 
     public clearParameters(): void {
-        Object.keys(this.parameters).forEach((key) => delete this.parameters[key as keyof Props]);
+        Object.keys(this.parameters).forEach((key): boolean => delete this.parameters[key as keyof Props]);
     }
 
     public clearFilters(): void {
-        Object.keys(this.parameters).forEach((key) => {
+        Object.keys(this.parameters).forEach((key): void => {
             if (key !== PossibleUrlParams.ID && key !== PossibleUrlParams.SORT && key !== PossibleUrlParams.VIEW) {
                 delete this.parameters[key as keyof Props];
             }

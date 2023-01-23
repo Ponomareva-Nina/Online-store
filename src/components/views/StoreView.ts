@@ -38,7 +38,7 @@ export default class StoreView implements ViewComponent {
             const noProductsMessage = createElem<HTMLElement>(HTMLTags.P, '', NO_PRODUCTS_MESSAGE);
             productCardsContainer.append(noProductsMessage);
         } else {
-            currentProducts.forEach((product) => {
+            currentProducts.forEach((product): void => {
                 const card = new ProductCard(product, this.appController);
                 const cardView = card.createBriefCard();
                 productCardsContainer.append(cardView);
@@ -63,7 +63,7 @@ export default class StoreView implements ViewComponent {
         const stockSlider = this.createStockDualSlider();
         const copyLinkBtn = this.createCopyLinkBtn();
         const openCloseBtn = createElem<HTMLButtonElement>(HTMLTags.BUTTON, 'side-panel-toggle-btn', 'Show filters');
-        openCloseBtn.addEventListener('click', () => {
+        openCloseBtn.addEventListener('click', (): void => {
             if (sidePanelContainer.classList.contains('side-panel_open')) {
                 sidePanelContainer.classList.remove('side-panel_open');
                 openCloseBtn.textContent = 'Show filters';
@@ -91,7 +91,7 @@ export default class StoreView implements ViewComponent {
     private createCopyLinkBtn(): HTMLDivElement {
         const container = createElem<HTMLDivElement>(HTMLTags.DIV, ClassNames.FILTER_BTNS_CONTAINER);
         const copyLinkBtn = createElem<HTMLButtonElement>(HTMLTags.BUTTON, 'side-panel-btn copy-link-btn', 'Copy link');
-        copyLinkBtn.addEventListener('click', () => {
+        copyLinkBtn.addEventListener('click', (): void => {
             const path = window.location.href;
             navigator.clipboard.writeText(path).then(function () {
                 copyLinkBtn.classList.add('disabled');
@@ -124,7 +124,7 @@ export default class StoreView implements ViewComponent {
             showAllButton.checked = true;
         }
 
-        showAllButton.addEventListener('click', () => {
+        showAllButton.addEventListener('click', (): void => {
             if (showAllButton.checked) {
                 this.appController.router.clearAllFilters();
             }
@@ -145,10 +145,10 @@ export default class StoreView implements ViewComponent {
         ];
         const inputMin = createRange(allProductsMinPrice, allProductsMaxPrice, minPrice, ClassNames.DUAL_SLIDER_INPUT);
         const inputMax = createRange(allProductsMinPrice, allProductsMaxPrice, maxPrice, ClassNames.DUAL_SLIDER_INPUT);
-        inputMin.addEventListener('change', () => {
+        inputMin.addEventListener('change', (): void => {
             this.handlePriceDualSlider(inputMin, inputMax);
         });
-        inputMax.addEventListener('change', () => {
+        inputMax.addEventListener('change', (): void => {
             this.handlePriceDualSlider(inputMin, inputMax);
         });
         RangeInputContainer.append(inputMin, inputMax);
@@ -181,10 +181,10 @@ export default class StoreView implements ViewComponent {
         ];
         const inputMin = createRange(allProductsMinStock, allProductsMaxStock, minStock, ClassNames.DUAL_SLIDER_INPUT);
         const inputMax = createRange(allProductsMinStock, allProductsMaxStock, maxStock, ClassNames.DUAL_SLIDER_INPUT);
-        inputMin.addEventListener('change', () => {
+        inputMin.addEventListener('change', (): void => {
             this.handleStockDualSlider(inputMin, inputMax);
         });
-        inputMax.addEventListener('change', () => {
+        inputMax.addEventListener('change', (): void => {
             this.handleStockDualSlider(inputMin, inputMax);
         });
         RangeInputContainer.append(inputMin, inputMax);
@@ -218,17 +218,17 @@ export default class StoreView implements ViewComponent {
             HTMLTags.DIV,
             `${ClassNames.FILTER_CONTAINER} category-filters`
         );
-        const FilterByCategoryTitle = createElem<HTMLElement>(
+        const FilterByCategoryTitle = createElem<HTMLParagraphElement>(
             HTMLTags.P,
             ClassNames.FILTER_CONTAINER_TITLE,
             'Choose category'
         );
         filterContainer.append(FilterByCategoryTitle);
         const checkboxName = 'faculty-filter';
-        Object.keys(CategoryFiltersOptions).forEach((key) => {
+        Object.keys(CategoryFiltersOptions).forEach((key): void => {
             const value = CategoryFiltersOptions[key as keyof typeof CategoryFiltersOptions];
             const checkbox = createCheckbox(checkboxName, ClassNames.FILTER_CHECKBOX, value, value);
-            checkbox.addEventListener('click', () => {
+            checkbox.addEventListener('click', (): void => {
                 this.handleCategoryFilter(checkbox);
             });
             const label = createLabel(value, ClassNames.FILTER_LABEL, value);
@@ -253,17 +253,17 @@ export default class StoreView implements ViewComponent {
 
     private createFacultyFilters(): HTMLDivElement {
         const filterContainer = createElem<HTMLDivElement>(HTMLTags.DIV, ClassNames.FILTER_CONTAINER);
-        const FilterByFacultyTitle = createElem<HTMLElement>(
+        const FilterByFacultyTitle = createElem<HTMLParagraphElement>(
             HTMLTags.P,
             ClassNames.FILTER_CONTAINER_TITLE,
             'Choose faculty'
         );
         filterContainer.append(FilterByFacultyTitle);
         const checkboxName = 'faculty-filter';
-        Object.keys(FacultyFiltersOptions).forEach((key) => {
+        Object.keys(FacultyFiltersOptions).forEach((key): void => {
             const value = FacultyFiltersOptions[key as keyof typeof FacultyFiltersOptions];
             const checkbox = createCheckbox(checkboxName, ClassNames.FILTER_CHECKBOX, value, value);
-            checkbox.addEventListener('click', () => {
+            checkbox.addEventListener('click', (): void => {
                 this.handleFacultyFilter(checkbox);
             });
             const label = createLabel(value, ClassNames.FILTER_LABEL, value);
@@ -288,13 +288,13 @@ export default class StoreView implements ViewComponent {
 
     private createSorts(): HTMLDivElement {
         const sortContainer = createElem<HTMLDivElement>(HTMLTags.DIV, ClassNames.SORT_CONTAINER);
-        const sortTitle = createElem<HTMLElement>(HTMLTags.P, 'sort-container__title', 'Sort by');
+        const sortTitle = createElem<HTMLParagraphElement>(HTMLTags.P, 'sort-container__title', 'Sort by');
         sortContainer.append(sortTitle);
         const radioBtnsName = 'sort';
-        Object.keys(SortOptions).forEach((key) => {
+        Object.keys(SortOptions).forEach((key): void => {
             const value = SortOptions[key as keyof typeof SortOptions];
             const radioBtn = createRadioButton(radioBtnsName, ClassNames.SORT_RADIO, value, value);
-            radioBtn.addEventListener('click', () => {
+            radioBtn.addEventListener('click', (): void => {
                 this.handleSort(radioBtn);
             });
             const label = createLabel(value, ClassNames.SORT_LABEL, SortLabels[key as keyof typeof SortLabels]);
@@ -337,10 +337,10 @@ export default class StoreView implements ViewComponent {
             tileBtn.classList.add(ClassNames.TILE_VIEW_BTN_ACTIVE);
         }
 
-        tileBtn.addEventListener('click', () => {
+        tileBtn.addEventListener('click', (): void => {
             this.appController.router.addParameterToUrl(PossibleUrlParams.VIEW, PossibleViewValues.TILE);
         });
-        listBtn.addEventListener('click', () => {
+        listBtn.addEventListener('click', (): void => {
             this.appController.router.addParameterToUrl(PossibleUrlParams.VIEW, PossibleViewValues.LIST);
         });
         componentContainer.append(tileBtn, listBtn);
@@ -349,7 +349,7 @@ export default class StoreView implements ViewComponent {
 
     private createSearchInput(): HTMLDivElement {
         const componentContainer = createElem<HTMLDivElement>(HTMLTags.DIV, ClassNames.SEARCH_INPUT_CONTAINER);
-        const inputEl = createElem<HTMLInputElement>(HTMLTags.INPUT, ClassNames.SEARCH_INPUT) as HTMLInputElement;
+        const inputEl = createElem<HTMLInputElement>(HTMLTags.INPUT, ClassNames.SEARCH_INPUT);
         inputEl.setAttribute('type', 'text');
         inputEl.setAttribute('id', 'search');
         inputEl.setAttribute('placeholder', SEARCH_INPUT_PLACEHOLDER);
@@ -360,7 +360,7 @@ export default class StoreView implements ViewComponent {
             const searchValue = this.currentParams[PossibleUrlParams.SEARCH].join(' ');
             inputEl.value = searchValue;
         }
-        inputEl.addEventListener('change', (e) => {
+        inputEl.addEventListener('change', (e): void => {
             const target = e.target as HTMLInputElement;
             const value = target.value.toLowerCase();
             this.handleSearchInput(value);

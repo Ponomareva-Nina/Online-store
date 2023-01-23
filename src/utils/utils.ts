@@ -10,7 +10,7 @@ export function createElem<T>(tag = 'div', className = '', text = '') {
 }
 
 export function createWelcomeLine(): HTMLDivElement {
-    const line = createElem(HTMLTags.DIV, 'line') as HTMLDivElement;
+    const line = createElem<HTMLDivElement>(HTMLTags.DIV, 'line');
     const lineWelcome = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'line-welcome');
     const logo = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'line-logo');
     const welcomeText = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'welcome-text', LINE_WELCOME);

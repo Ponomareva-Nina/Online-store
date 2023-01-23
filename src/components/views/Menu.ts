@@ -11,8 +11,8 @@ export default class Menu implements IMenu {
 
     constructor(controller: AppController) {
         this.appController = controller;
-        this.menuContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'menu') as HTMLDivElement;
-        this.burgerIcon = createElem<HTMLDivElement>(HTMLTags.DIV, 'burger-menu') as HTMLDivElement;
+        this.menuContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'menu');
+        this.burgerIcon = createElem<HTMLDivElement>(HTMLTags.DIV, 'burger-menu');
     }
 
     public getBurgerIcon(): HTMLDivElement {
@@ -20,7 +20,7 @@ export default class Menu implements IMenu {
     }
 
     private createTheme(): HTMLDivElement {
-        const themeContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'theme-container') as HTMLDivElement;
+        const themeContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'theme-container');
         const themeTitle = createElem<HTMLElement>(HTMLTags.P, 'theme-title', MENU_THEME_TITLE);
         const input = this.createInput('checkbox checkbox-theme', 'theme');
         const label = createElem<HTMLLabelElement>(HTMLTags.LABEL);
@@ -30,13 +30,13 @@ export default class Menu implements IMenu {
     }
 
     private createSound(): HTMLDivElement {
-        const soundContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'sound-container') as HTMLDivElement;
+        const soundContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'sound-container');
         const soundTitle = createElem<HTMLElement>(HTMLTags.P, 'sound-title', MENU_SOUND_TITLE);
         const input = this.createInput('checkbox checkbox-sound', 'sound');
         const label = createElem<HTMLLabelElement>(HTMLTags.LABEL);
         label.setAttribute('for', 'sound');
         const audio = createAudio();
-        label.addEventListener('click', () => {
+        label.addEventListener('click', (): void => {
             this.handlePlayAudio(audio);
         });
         soundContainer.append(soundTitle, input, label, audio);
@@ -44,14 +44,14 @@ export default class Menu implements IMenu {
     }
 
     private createInput(className: string, inputId: string): HTMLInputElement {
-        const input = createElem<HTMLInputElement>(HTMLTags.INPUT, className) as HTMLInputElement;
+        const input = createElem<HTMLInputElement>(HTMLTags.INPUT, className);
         input.setAttribute('type', 'checkbox');
         input.setAttribute('id', inputId);
         return input;
     }
 
     public createMenu(): HTMLDivElement {
-        document.body.addEventListener('click', (e) => {
+        document.body.addEventListener('click', (e: MouseEvent): void => {
             this.handleClick(e);
         });
         const logo = this.appController.header.createLogo();
