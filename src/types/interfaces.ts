@@ -1,4 +1,3 @@
-import { LOCAL_STORAGE_TOTALSUM, LOCAL_STORAGE_PRODUCTSQUANTITY } from './../constants/string-constants';
 import AppController from '../components/app/app';
 import Route from '../components/router/Route';
 import CartView from '../components/views/CartView';

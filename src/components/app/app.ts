@@ -76,7 +76,6 @@ export default class AppController implements AppControllerInterface {
         this.cartView.updatePromoBlock();
     }
 
-<<<<<<< HEAD
     private getStateFromLocalStorage(): StateInterface {
         const data = window.localStorage.getItem(STATE);
         if (data) {
@@ -102,27 +101,6 @@ export default class AppController implements AppControllerInterface {
             TOTAL_SUM_WITH_DISCOUNT: this.cartModel.totalSumWithDiscount || 0,
         };
         localStorage.setItem(STATE, JSON.stringify(localState));
-=======
-    private addToLocalStorage(): void {
-        window.addEventListener('beforeunload', (): void => {
-            localStorage.setItem(LOCAL_STORAGE_CART, JSON.stringify(this.cartModel.productsInCart));
-            localStorage.setItem(LOCAL_STORAGE_TOTALSUM, this.cartModel.totalSum.toString());
-            localStorage.setItem(LOCAL_STORAGE_PRODUCTSQUANTITY, this.cartModel.productsQuantity.toString());
-            localStorage.setItem(
-                LOCAL_STORAGE_ACTIVATED_PROMOCODES,
-                JSON.stringify(this.cartModel.activatedPromocodes)
-            );
-            if (this.cartModel.totalSumWithDiscount !== 0) {
-                if (this.cartModel.totalSum == 0) {
-                    localStorage.setItem(LOCAL_STORAGE_TOTAL_SUM_WITH_DISCOUNT, ZERO);
-                }
-                localStorage.setItem(
-                    LOCAL_STORAGE_TOTAL_SUM_WITH_DISCOUNT,
-                    this.cartModel.totalSumWithDiscount.toString()
-                );
-            }
-        });
->>>>>>> c7a7f7c67d570aea0dae35b523538d8739ff05ef
     }
 
     public destroyAllChildNodes(parent: Node): void {
