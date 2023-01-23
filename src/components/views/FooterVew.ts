@@ -9,8 +9,8 @@ export default class Footer implements IFooter {
     public wrapper: HTMLDivElement;
 
     constructor() {
-        this.wrapper = createElem<HTMLDivElement>(HTMLTags.DIV, 'wrapper') as HTMLDivElement;
-        this.container = createElem('footer', 'footer') as HTMLDivElement;
+        this.wrapper = createElem<HTMLDivElement>(HTMLTags.DIV, 'wrapper');
+        this.container = createElem<HTMLDivElement>('footer', 'footer');
     }
 
     private createFooterContent(): HTMLDivElement {
@@ -26,7 +26,7 @@ export default class Footer implements IFooter {
     }
 
     private createAuthorGithub(name: string, link: string): HTMLDivElement {
-        const autorContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'author-container') as HTMLDivElement;
+        const autorContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'author-container');
         const gitLink = createElem<HTMLLinkElement>(HTMLTags.LINK, 'git__link');
         gitLink.setAttribute('href', link);
         gitLink.setAttribute('target', '_blank');
@@ -39,7 +39,7 @@ export default class Footer implements IFooter {
     }
 
     private createRsContainer(): HTMLDivElement {
-        const rsContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'rs-container') as HTMLDivElement;
+        const rsContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'rs-container');
         const taskLink = createElem<HTMLLinkElement>(HTMLTags.LINK, 'course-link');
         taskLink.setAttribute('href', TASK_LINK);
         taskLink.setAttribute('target', '_blank');

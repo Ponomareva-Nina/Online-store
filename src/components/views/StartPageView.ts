@@ -21,7 +21,11 @@ export default class StartPageView {
     private createAboutContainer(): HTMLDivElement {
         const aboutContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'about-container');
         const titleAbout = createElem<HTMLElement>(HTMLTags.H2, 'page-header', START_PAGE_TITLE_ABOUT);
-        const descriptionAbout = createElem<HTMLElement>(HTMLTags.P, 'text-description', START_PAGE_ABOUT_DESCR);
+        const descriptionAbout = createElem<HTMLParagraphElement>(
+            HTMLTags.P,
+            'text-description',
+            START_PAGE_ABOUT_DESCR
+        );
         const imgAbout = createElem<HTMLDivElement>(HTMLTags.DIV, 'img-description');
         imgAbout.append(descriptionAbout);
         aboutContainer.append(titleAbout, imgAbout);
@@ -40,7 +44,7 @@ export default class StartPageView {
         const buttonStart = createElem<HTMLButtonElement>(HTMLTags.BUTTON, 'btn button-start', START_PAGE_BUTTON);
         const linkButton = createElem<HTMLLinkElement>(HTMLTags.LINK, 'link-button');
         linkButton.setAttribute('href', LINKS.Store);
-        linkButton.addEventListener('click', () => {
+        linkButton.addEventListener('click', (): void => {
             this.appController.router.changeCurrentPage(LINKS.Store);
         });
         linkButton.append(buttonStart);

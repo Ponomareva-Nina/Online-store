@@ -104,7 +104,7 @@ class Router implements RouterInterface {
         ];
 
         const validationExp = new RegExp(params.join(PARAM_VALUES_SEPARATOR));
-        const isCorrect = paramsArr.every((param) => {
+        const isCorrect = paramsArr.every((param): boolean => {
             return validationExp.test(param);
         });
         return isCorrect;
@@ -117,14 +117,14 @@ class Router implements RouterInterface {
             return null;
         }
 
-        const matchedRoute = this.routes.find((route: Route) => {
+        const matchedRoute = this.routes.find((route: Route): boolean => {
             return route.pageName === pageRoute;
         });
 
         if (matchedRoute) {
             matchedRoute.clearParameters();
             if (pathSegments.length > 0) {
-                pathSegments.forEach((param) => {
+                pathSegments.forEach((param): void => {
                     const [key, values] = param.split('=');
                     if (values) {
                         const valuesArr = values.split(PARAM_VALUES_SEPARATOR);
@@ -156,7 +156,7 @@ class Router implements RouterInterface {
     public init(): void {
         this.navigate();
 
-        window.addEventListener('popstate', () => {
+        window.addEventListener('popstate', (): void => {
             this.navigate();
         });
     }
