@@ -7,11 +7,11 @@ export default class StoreModel {
     public appController: AppController;
     private products: Product[];
     public currentProducts: Product[];
-    absoluteMinPrice: number;
-    absoluteMaxPrice: number;
-    absoluteMinStock: number;
-    absoluteMaxStock: number;
-    firstIndexInArr = 0;
+    private absoluteMinPrice: number;
+    private absoluteMaxPrice: number;
+    private absoluteMinStock: number;
+    private absoluteMaxStock: number;
+    private firstIndexInArr = 0;
 
     constructor(controller: AppController) {
         this.appController = controller;
@@ -23,7 +23,7 @@ export default class StoreModel {
         this.absoluteMaxStock = 123;
     }
 
-    public getCurrentMinPrice() {
+    public getCurrentMinPrice(): number {
         if (this.currentProducts.length > 0) {
             let minPrice = this.currentProducts[this.firstIndexInArr].price;
             this.currentProducts.forEach((product) => {
@@ -37,7 +37,7 @@ export default class StoreModel {
         }
     }
 
-    public getCurrentMaxPrice() {
+    public getCurrentMaxPrice(): number {
         if (this.currentProducts.length > 0) {
             let maxPrice = this.currentProducts[this.firstIndexInArr].price;
             this.currentProducts.forEach((product) => {
@@ -51,7 +51,7 @@ export default class StoreModel {
         }
     }
 
-    public getCurrentMinStock() {
+    public getCurrentMinStock(): number {
         if (this.currentProducts.length > 0) {
             let minStock = this.currentProducts[this.firstIndexInArr].quantity;
             this.currentProducts.forEach((product) => {
@@ -65,7 +65,7 @@ export default class StoreModel {
         }
     }
 
-    public getCurrentMaxStock() {
+    public getCurrentMaxStock(): number {
         if (this.currentProducts.length > 0) {
             let maxStock = this.currentProducts[this.firstIndexInArr].quantity;
             this.currentProducts.forEach((product) => {
@@ -79,15 +79,15 @@ export default class StoreModel {
         }
     }
 
-    public getProductById(id: number) {
+    public getProductById(id: number): Product | undefined {
         return this.products.find((product) => product.id === id);
     }
 
-    public getCurrentProducts() {
+    public getCurrentProducts(): Array<Product> {
         return this.currentProducts;
     }
 
-    public handleParams(params: Props) {
+    public handleParams(params: Props): void {
         this.currentProducts = this.products;
 
         if (params.faculty) {
@@ -119,35 +119,35 @@ export default class StoreModel {
         }
     }
 
-    private filterByStockRange(minValue: number, maxValue: number, arr: Array<Product>) {
+    private filterByStockRange(minValue: number, maxValue: number, arr: Array<Product>): Array<Product> {
         const filteredArr = arr.filter((product) => {
             return product.quantity >= minValue && product.quantity <= maxValue;
         });
         return filteredArr;
     }
 
-    private filterByPriceRange(minValue: number, maxValue: number, arr: Array<Product>) {
+    private filterByPriceRange(minValue: number, maxValue: number, arr: Array<Product>): Array<Product> {
         const filteredArr = arr.filter((product) => {
             return product.price >= minValue && product.price <= maxValue;
         });
         return filteredArr;
     }
 
-    private filterByCategory(valuesArr: string[], arr: Array<Product>) {
+    private filterByCategory(valuesArr: string[], arr: Array<Product>): Array<Product> {
         const filteredArr = arr.filter((product) => {
             return valuesArr.includes(product.category);
         });
         return filteredArr;
     }
 
-    private filterByFaculty(valuesArr: string[], arr: Array<Product>) {
+    private filterByFaculty(valuesArr: string[], arr: Array<Product>): Array<Product> {
         const filteredArr = arr.filter((product) => {
             return valuesArr.includes(product.faculty);
         });
         return filteredArr;
     }
 
-    private filterCardsByKeyword(value: string, arr: Array<Product>) {
+    private filterCardsByKeyword(value: string, arr: Array<Product>): Array<Product> {
         const filteredProducts: Array<Product> = [];
         arr.forEach((product) => {
             if (
@@ -164,7 +164,7 @@ export default class StoreModel {
         return filteredProducts;
     }
 
-    private sortProducts(value: string, arr: Array<Product>) {
+    private sortProducts(value: string, arr: Array<Product>): Array<Product> {
         let sortedProducts: Array<Product> = [];
         if (value === SortOptions.MAX_PRICE) {
             sortedProducts = arr.sort((a, b) => {

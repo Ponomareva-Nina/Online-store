@@ -11,7 +11,7 @@ export default class ProductPage implements ViewComponent {
         this.container = document.createDocumentFragment();
     }
 
-    private createPage(productId: number) {
+    private createPage(productId: number): void {
         const data = this.appController.storeModel.getProductById(productId);
         if (data) {
             const card = new ProductCard(data, this.appController);
@@ -22,7 +22,7 @@ export default class ProductPage implements ViewComponent {
         }
     }
 
-    public render(props?: Props) {
+    public render(props?: Props): DocumentFragment {
         if (props && props['id']) {
             const id = Number(props['id']);
             this.createPage(id);
