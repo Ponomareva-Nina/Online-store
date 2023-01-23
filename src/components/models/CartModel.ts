@@ -103,7 +103,7 @@ export default class CartModel {
     }
 
     public checkProductInCart(id: number): boolean {
-        const idProductInCart = this.productsInCart.find((product) => product.id === id);
+        const idProductInCart = this.productsInCart.find((product): boolean => product.id === id);
         if (idProductInCart) {
             return this.productsInCart.includes(idProductInCart);
         } else {
@@ -114,7 +114,7 @@ export default class CartModel {
     public findEnteredPromoInPromocodes(enteredValue: string): void {
         this.promocodes.forEach((promocode) => {
             if (enteredValue.toLocaleUpperCase() === promocode.value) {
-                if (!this.enteredPromocodes.find((enteredPromocode) => enteredPromocode.id === promocode.id)) {
+                if (!this.enteredPromocodes.find((enteredPromocode): boolean => enteredPromocode.id === promocode.id)) {
                     this.enteredPromocodes.push(promocode);
                     this.appController.cartView.createPromoCodeView(promocode);
                 }
@@ -124,7 +124,9 @@ export default class CartModel {
 
     public handleAddPromocode(promocode: Promocode): void {
         if (this.productsInCart.length !== 0) {
-            if (!this.activatedPromocodes.find((activatedPromocode) => activatedPromocode.id === promocode.id)) {
+            if (
+                !this.activatedPromocodes.find((activatedPromocode): boolean => activatedPromocode.id === promocode.id)
+            ) {
                 this.activatedPromocodes.push(promocode);
                 promocode.active = true;
                 this.totalSumWithDiscount = Number(
@@ -158,7 +160,7 @@ export default class CartModel {
     private getCurrentTotalPercentDiscount(): number {
         let currentTotalPercentDiscount = 0;
         if (this.checkIsPromocodesAplied()) {
-            this.activatedPromocodes.forEach((activatedPromocode) => {
+            this.activatedPromocodes.forEach((activatedPromocode): void => {
                 currentTotalPercentDiscount += activatedPromocode.discount;
             });
         }

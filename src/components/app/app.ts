@@ -113,7 +113,7 @@ export default class AppController implements AppControllerInterface {
         document.body.append(this.header.createHeader(), this.mainContainer, this.footer.renderFooter());
         this.router.init();
         this.getStateFromLocalStorage();
-        window.addEventListener('beforeunload', () => {
+        window.addEventListener('beforeunload', (): void => {
             this.setStateToLocalStorage();
         });
     }
