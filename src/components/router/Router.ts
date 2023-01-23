@@ -1,3 +1,4 @@
+import { NullableElement } from './../../types/types';
 import {
     AMPERSAND_SEPARATOR,
     HASHTAG,
@@ -11,11 +12,11 @@ import AppController from '../app/app';
 import Route from './Route';
 
 class Router implements RouterInterface {
-    routes: Array<Route>;
-    appController: AppController;
-    UrlSeparator: RegExp;
-    currentPagePath: string;
-    currentRoute: Route | null;
+    public routes: Array<Route>;
+    private appController: AppController;
+    private UrlSeparator: RegExp;
+    private currentPagePath: string;
+    public currentRoute: Route | null;
 
     constructor(controller: AppController, routes: Array<Route>) {
         this.appController = controller;
@@ -25,25 +26,25 @@ class Router implements RouterInterface {
         this.currentRoute = null;
     }
 
-    private updateCurrentPath() {
+    private updateCurrentPath(): void {
         const route = window.location.href.split(HASHTAG);
         const [, path] = route;
         this.currentPagePath = route.length === 1 ? '' : path;
     }
 
-    public changeCurrentPage(path: string) {
+    public changeCurrentPage(path: string): void {
         window.history.pushState({}, '', path);
         this.navigate();
     }
 
-    public clearAllFilters() {
+    public clearAllFilters(): void {
         if (this.currentRoute) {
             this.currentRoute.clearFilters();
             this.updatePageUrl(this.currentRoute);
         }
     }
 
-    private updatePageUrl(route: Route) {
+    private updatePageUrl(route: Route): void {
         const newParams = route.getParameters();
         let newPath = route.path;
 
@@ -90,8 +91,8 @@ class Router implements RouterInterface {
             this.updatePageUrl(this.currentRoute);
         }
     }
-    /* temporary turn off validation (according to the task description)
-    private isCorrectParameters(paramsArr: string[]) {
+
+    private isCorrectParameters(paramsArr: string[]): boolean {
         const params = [
             PossibleUrlParams.ID,
             PossibleUrlParams.CATEGORY,
@@ -108,14 +109,14 @@ class Router implements RouterInterface {
         });
         return isCorrect;
     }
-    */
-    private matchUrl(path: string) {
+
+    private matchUrl(path: string): NullableElement<Route> {
         const [pageRoute, ...pathSegments] = path.split(this.UrlSeparator);
-        /*
+
         if (!this.isCorrectParameters(pathSegments)) {
             return null;
         }
-        */
+
         const matchedRoute = this.routes.find((route: Route) => {
             return route.pageName === pageRoute;
         });
@@ -135,9 +136,10 @@ class Router implements RouterInterface {
             }
             return matchedRoute;
         }
+        return null;
     }
 
-    public navigate() {
+    public navigate(): void {
         this.updateCurrentPath();
         const path = this.currentPagePath;
         const matchedRoute = this.matchUrl(path);
@@ -151,7 +153,7 @@ class Router implements RouterInterface {
         }
     }
 
-    public init() {
+    public init(): void {
         this.navigate();
 
         window.addEventListener('popstate', () => {

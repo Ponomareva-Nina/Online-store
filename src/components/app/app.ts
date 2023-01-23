@@ -63,31 +63,31 @@ export default class AppController implements AppControllerInterface {
         AppController.instance = this;
     }
 
-    public start() {
+    public start(): void {
         document.body.append(this.header.createHeader(), this.mainContainer, this.footer.renderFooter());
         this.router.init();
         this.addToLocalStorage();
     }
 
-    public updatePage(view: ViewComponent, params?: Props) {
+    public updatePage(view: ViewComponent, params?: Props): void {
         this.destroyAllChildNodes(this.mainContainer);
         this.mainContainer.append(view.render(params));
         this.header.setActiveLink();
     }
 
-    public addProductToCart(product: Product) {
+    public addProductToCart(product: Product): void {
         this.cartModel.addProduct(product);
         this.cartView.updateCartInfo();
         this.cartView.updatePromoBlock();
     }
 
-    public deleteProductFromCart(product: Product) {
+    public deleteProductFromCart(product: Product): void {
         this.cartModel.deleteProduct(product);
         this.cartView.updateCartInfo();
         this.cartView.updatePromoBlock();
     }
 
-    private addToLocalStorage() {
+    private addToLocalStorage(): void {
         window.addEventListener('beforeunload', () => {
             localStorage.setItem(LOCAL_STORAGE_CART, JSON.stringify(this.cartModel.productsInCart));
             localStorage.setItem(LOCAL_STORAGE_TOTALSUM, this.cartModel.totalSum.toString());
@@ -108,7 +108,7 @@ export default class AppController implements AppControllerInterface {
         });
     }
 
-    public destroyAllChildNodes(parent: Node) {
+    public destroyAllChildNodes(parent: Node): void {
         while (parent.firstChild) {
             parent.removeChild(parent.firstChild);
         }
