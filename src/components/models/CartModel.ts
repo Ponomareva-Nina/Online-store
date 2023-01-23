@@ -1,13 +1,6 @@
 import { Product, Promocode } from '../../types/interfaces';
 import AppController from '../app/app';
 import promos from '../../promocodes.json';
-import {
-    LOCAL_STORAGE_ACTIVATED_PROMOCODES,
-    LOCAL_STORAGE_CART,
-    LOCAL_STORAGE_PRODUCTSQUANTITY,
-    LOCAL_STORAGE_TOTALSUM,
-    LOCAL_STORAGE_TOTAL_SUM_WITH_DISCOUNT,
-} from '../../constants/string-constants';
 
 export default class CartModel {
     public appController: AppController;
@@ -22,54 +15,12 @@ export default class CartModel {
     constructor(controller: AppController) {
         this.appController = controller;
         this.promocodes = promos.promocodes;
-        this.totalSum = this.checkTotalSumInLocalStorage();
-        this.productsQuantity = this.checkProductQuantityInLocalStorage();
-
-        if (localStorage.getItem(LOCAL_STORAGE_CART)) {
-            this.productsInCart = JSON.parse(localStorage.getItem(LOCAL_STORAGE_CART) || '{}');
-        } else {
-            this.productsInCart = [];
-        }
-
-        if (localStorage.getItem(LOCAL_STORAGE_ACTIVATED_PROMOCODES)) {
-            this.activatedPromocodes = JSON.parse(localStorage.getItem(LOCAL_STORAGE_ACTIVATED_PROMOCODES) || '{}');
-        } else {
-            this.activatedPromocodes = [];
-        }
-
-        this.totalSumWithDiscount = this.checkTotalSumWithDiscountInLocalStorage();
-
-        this.enteredPromocodes = this.setEnteredPromocodesAfterReload();
-    }
-
-    private checkTotalSumInLocalStorage(): number {
-        const totalSumInLocalStorage = window.localStorage.getItem(LOCAL_STORAGE_TOTALSUM);
-        if (totalSumInLocalStorage) {
-            this.totalSum = Number(totalSumInLocalStorage);
-        } else {
-            this.totalSum = 0;
-        }
-        return this.totalSum;
-    }
-
-    private checkTotalSumWithDiscountInLocalStorage(): number {
-        const totalSumWithDiscountInLocalStorage = window.localStorage.getItem(LOCAL_STORAGE_TOTAL_SUM_WITH_DISCOUNT);
-        if (totalSumWithDiscountInLocalStorage) {
-            this.totalSumWithDiscount = Number(totalSumWithDiscountInLocalStorage);
-        } else {
-            this.totalSumWithDiscount = this.totalSum;
-        }
-        return this.totalSumWithDiscount;
-    }
-
-    private checkProductQuantityInLocalStorage(): number {
-        const productQuantityInLocalStorage = localStorage.getItem(LOCAL_STORAGE_PRODUCTSQUANTITY);
-        if (productQuantityInLocalStorage) {
-            this.productsQuantity = Number(productQuantityInLocalStorage);
-        } else {
-            this.productsQuantity = 0;
-        }
-        return this.productsQuantity;
+        this.productsInCart = this.appController.localState.CART;
+        this.totalSum = this.appController.localState.TOTALSUM;
+        this.productsQuantity = this.appController.localState.PRODUCTSQUANTITY;
+        this.activatedPromocodes = this.appController.localState.ACTIVATED_PROMOCODES;
+        this.totalSumWithDiscount = this.appController.localState.TOTAL_SUM_WITH_DISCOUNT;
+        this.enteredPromocodes = [];
     }
 
     public addProduct(product: Product): Product[] | undefined {
@@ -96,7 +47,6 @@ export default class CartModel {
                 this.productsQuantity -= product.inCart;
                 this.totalSum = Number((this.totalSum -= product.inCart * product.price).toFixed(2));
                 product.inCart = 0;
-                //this.appController.cartView.totalPerProduct = 0;
                 const currentTotalPercentDiscount = this.getCurrentTotalPercentDiscount();
                 this.totalSumWithDiscount = Number(
                     (this.totalSum * (1 - currentTotalPercentDiscount / 100)).toFixed(2)
@@ -213,15 +163,6 @@ export default class CartModel {
             });
         }
         return currentTotalPercentDiscount;
-    }
-
-    private setEnteredPromocodesAfterReload(): Promocode[] {
-        if (this.activatedPromocodes.length !== 0) {
-            this.enteredPromocodes = this.activatedPromocodes.slice();
-        } else {
-            this.enteredPromocodes = [];
-        }
-        return this.enteredPromocodes;
     }
 
     public eraseAllAfterPurchaseg(): void {

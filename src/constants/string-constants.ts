@@ -76,3 +76,4 @@ export const CREDIT_CARD_MINIMUM_VALUE = '1000000000000000';
 export const CREDIT_CARD_MAXIMUM_VALUE = '9999999999999999';
 export const CREDIT_CART_MINIMUM_CVV = '100';
 export const CREDIT_CART_MAXIMUM_CVV = '999';
+export const STATE = 'state';

@@ -1,3 +1,4 @@
+import { LOCAL_STORAGE_TOTALSUM, LOCAL_STORAGE_PRODUCTSQUANTITY } from './../constants/string-constants';
 import AppController from '../components/app/app';
 import Route from '../components/router/Route';
 import CartView from '../components/views/CartView';
@@ -84,4 +85,12 @@ export interface Promocode {
 export interface PossibleUrlValues {
     id: number;
     view?: PossibleViewValues;
+}
+
+export interface StateInterface {
+    CART: Array<Product>;
+    TOTALSUM: number;
+    PRODUCTSQUANTITY: number;
+    ACTIVATED_PROMOCODES: Promocode[];
+    TOTAL_SUM_WITH_DISCOUNT: number;
 }

@@ -7,10 +7,10 @@ export default class StoreModel {
     public appController: AppController;
     private products: Product[];
     public currentProducts: Product[];
-    private absoluteMinPrice: number;
-    private absoluteMaxPrice: number;
-    private absoluteMinStock: number;
-    private absoluteMaxStock: number;
+    public absoluteMinPrice: number;
+    public absoluteMaxPrice: number;
+    public absoluteMinStock: number;
+    public absoluteMaxStock: number;
     private firstIndexInArr = 0;
 
     constructor(controller: AppController) {
