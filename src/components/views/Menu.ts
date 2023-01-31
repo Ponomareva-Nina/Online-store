@@ -5,53 +5,53 @@ import { createAudio, createElem } from '../../utils/utils';
 import AppController from '../app/app';
 
 export default class Menu implements IMenu {
-    appController: AppController;
-    menuContainer: HTMLDivElement;
-    burgerIcon: HTMLDivElement;
+    public appController: AppController;
+    public menuContainer: HTMLDivElement;
+    public burgerIcon: HTMLDivElement;
 
     constructor(controller: AppController) {
         this.appController = controller;
-        this.menuContainer = createElem(HTMLTags.DIV, 'menu') as HTMLDivElement;
-        this.burgerIcon = createElem(HTMLTags.DIV, 'burger-menu') as HTMLDivElement;
+        this.menuContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'menu');
+        this.burgerIcon = createElem<HTMLDivElement>(HTMLTags.DIV, 'burger-menu');
     }
 
-    public getBurgerIcon() {
+    public getBurgerIcon(): HTMLDivElement {
         return this.burgerIcon;
     }
 
-    private createTheme() {
-        const themeContainer = createElem(HTMLTags.DIV, 'theme-container');
-        const themeTitle = createElem(HTMLTags.P, 'theme-title', MENU_THEME_TITLE);
+    private createTheme(): HTMLDivElement {
+        const themeContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'theme-container');
+        const themeTitle = createElem<HTMLElement>(HTMLTags.P, 'theme-title', MENU_THEME_TITLE);
         const input = this.createInput('checkbox checkbox-theme', 'theme');
-        const label = createElem(HTMLTags.LABEL);
+        const label = createElem<HTMLLabelElement>(HTMLTags.LABEL);
         label.setAttribute('for', 'theme');
         themeContainer.append(themeTitle, input, label);
         return themeContainer;
     }
 
-    private createSound() {
-        const soundContainer = createElem(HTMLTags.DIV, 'sound-container');
-        const soundTitle = createElem(HTMLTags.P, 'sound-title', MENU_SOUND_TITLE);
+    private createSound(): HTMLDivElement {
+        const soundContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'sound-container');
+        const soundTitle = createElem<HTMLElement>(HTMLTags.P, 'sound-title', MENU_SOUND_TITLE);
         const input = this.createInput('checkbox checkbox-sound', 'sound');
-        const label = createElem(HTMLTags.LABEL);
+        const label = createElem<HTMLLabelElement>(HTMLTags.LABEL);
         label.setAttribute('for', 'sound');
         const audio = createAudio();
-        label.addEventListener('click', () => {
+        label.addEventListener('click', (): void => {
             this.handlePlayAudio(audio);
         });
         soundContainer.append(soundTitle, input, label, audio);
         return soundContainer;
     }
 
-    private createInput(className: string, inputId: string) {
-        const input = createElem(HTMLTags.INPUT, className);
+    private createInput(className: string, inputId: string): HTMLInputElement {
+        const input = createElem<HTMLInputElement>(HTMLTags.INPUT, className);
         input.setAttribute('type', 'checkbox');
         input.setAttribute('id', inputId);
         return input;
     }
 
-    public createMenu() {
-        document.body.addEventListener('click', (e) => {
+    public createMenu(): HTMLDivElement {
+        document.body.addEventListener('click', (e: MouseEvent): void => {
             this.handleClick(e);
         });
         const logo = this.appController.header.createLogo();
@@ -62,7 +62,7 @@ export default class Menu implements IMenu {
         return this.menuContainer;
     }
 
-    private handleClick(e: MouseEvent) {
+    private handleClick(e: MouseEvent): void {
         const target = e.target as Element;
 
         if (
@@ -84,7 +84,7 @@ export default class Menu implements IMenu {
         }
     }
 
-    private handlePlayAudio(audio: HTMLAudioElement) {
+    private handlePlayAudio(audio: HTMLAudioElement): void {
         if (audio.classList.contains('play')) {
             audio.classList.remove('play');
             audio.pause();

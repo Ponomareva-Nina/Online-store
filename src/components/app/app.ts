@@ -6,7 +6,7 @@ import { createElem } from '../../utils/utils';
 
 import Menu from '../views/Menu';
 import { LINKS } from '../../constants/route-constants';
-import { AppControllerInterface, Product, Props, ViewComponent } from '../../types/interfaces';
+import { AppControllerInterface, Product, Props, StateInterface, ViewComponent } from '../../types/interfaces';
 import Route from '../router/Route';
 import Router from '../router/Router';
 import ProductPage from '../views/ProductPage';
@@ -14,6 +14,7 @@ import '../models/StoreModel';
 import StoreModel from '../models/StoreModel';
 import Footer from '../views/FooterVew';
 import CartModel from '../models/CartModel';
+import { STATE } from '../../constants/string-constants';
 
 export default class AppController implements AppControllerInterface {
     private static instance: InstanceType<typeof AppController>;
@@ -29,13 +30,15 @@ export default class AppController implements AppControllerInterface {
     public storeModel: StoreModel;
     public footer: Footer;
     public cartModel: CartModel;
+    localState: StateInterface;
 
     constructor() {
+        this.localState = this.getStateFromLocalStorage();
         this.menu = new Menu(this);
         this.header = new Header(this);
         this.cartModel = new CartModel(this);
         this.cartView = new CartView(this.cartModel, this);
-        this.mainContainer = createElem('main', 'main wrapper');
+        this.mainContainer = createElem<HTMLElement>('main', 'main wrapper');
         this.startPage = new StartPageView(this);
         this.storeModel = new StoreModel(this);
         this.storeView = new StoreView(this.storeModel, this);
@@ -55,48 +58,63 @@ export default class AppController implements AppControllerInterface {
         AppController.instance = this;
     }
 
-    public start() {
-        document.body.append(this.header.createHeader(), this.mainContainer, this.footer.renderFooter());
-        this.router.init();
-        this.addToLocalStorage();
-    }
-
-    public updatePage(view: ViewComponent, params?: Props) {
+    public updatePage(view: ViewComponent, params?: Props): void {
         this.destroyAllChildNodes(this.mainContainer);
         this.mainContainer.append(view.render(params));
         this.header.setActiveLink();
     }
 
-    public addProductToCart(product: Product) {
+    public addProductToCart(product: Product): void {
         this.cartModel.addProduct(product);
         this.cartView.updateCartInfo();
         this.cartView.updatePromoBlock();
     }
 
-    public deleteProductFromCart(product: Product) {
+    public deleteProductFromCart(product: Product): void {
         this.cartModel.deleteProduct(product);
         this.cartView.updateCartInfo();
         this.cartView.updatePromoBlock();
     }
 
-    private addToLocalStorage() {
-        window.addEventListener('beforeunload', () => {
-            localStorage.setItem('cart', JSON.stringify(this.cartModel.productsInCart));
-            localStorage.setItem('totalSum', this.cartModel.totalSum.toString());
-            localStorage.setItem('productsQuantity', this.cartModel.productsQuantity.toString());
-            localStorage.setItem('activatedPromocodes', JSON.stringify(this.cartModel.activatedPromocodes));
-            if (this.cartModel.totalSumWithDiscount !== 0) {
-                if (this.cartModel.totalSum == 0) {
-                    localStorage.setItem('totalSumWithDiscount', '0');
-                }
-                localStorage.setItem('totalSumWithDiscount', this.cartModel.totalSumWithDiscount.toString());
-            }
-        });
+    private getStateFromLocalStorage(): StateInterface {
+        const data = window.localStorage.getItem(STATE);
+        if (data) {
+            return JSON.parse(data);
+        } else {
+            const state = {
+                TOTALSUM: 0,
+                PRODUCTSQUANTITY: 0,
+                CART: [],
+                ACTIVATED_PROMOCODES: [],
+                TOTAL_SUM_WITH_DISCOUNT: 0,
+            };
+            return state;
+        }
     }
 
-    public destroyAllChildNodes(parent: Node) {
+    private setStateToLocalStorage(): void {
+        const localState: StateInterface = {
+            CART: this.cartModel.productsInCart || [],
+            TOTALSUM: this.cartModel.totalSum || 0,
+            PRODUCTSQUANTITY: this.cartModel.productsQuantity || 0,
+            ACTIVATED_PROMOCODES: this.cartModel.activatedPromocodes || [],
+            TOTAL_SUM_WITH_DISCOUNT: this.cartModel.totalSumWithDiscount || 0,
+        };
+        localStorage.setItem(STATE, JSON.stringify(localState));
+    }
+
+    public destroyAllChildNodes(parent: Node): void {
         while (parent.firstChild) {
             parent.removeChild(parent.firstChild);
         }
+    }
+
+    public start(): void {
+        document.body.append(this.header.createHeader(), this.mainContainer, this.footer.renderFooter());
+        this.router.init();
+        this.getStateFromLocalStorage();
+        window.addEventListener('beforeunload', (): void => {
+            this.setStateToLocalStorage();
+        });
     }
 }

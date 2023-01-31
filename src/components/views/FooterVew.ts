@@ -5,17 +5,17 @@ import { HTMLTags } from '../../types/types';
 import { createElem, createWelcomeLine } from '../../utils/utils';
 
 export default class Footer implements IFooter {
-    container: HTMLDivElement;
-    wrapper: HTMLDivElement;
+    public container: HTMLDivElement;
+    public wrapper: HTMLDivElement;
 
     constructor() {
-        this.wrapper = createElem(HTMLTags.DIV, 'wrapper') as HTMLDivElement;
-        this.container = createElem('footer', 'footer') as HTMLDivElement;
+        this.wrapper = createElem<HTMLDivElement>(HTMLTags.DIV, 'wrapper');
+        this.container = createElem<HTMLDivElement>('footer', 'footer');
     }
 
-    private createFooterContent() {
-        const footerContainer = createElem(HTMLTags.DIV, 'footer-content');
-        const authorsContainer = createElem(HTMLTags.DIV, 'authors-content');
+    private createFooterContent(): HTMLDivElement {
+        const footerContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'footer-content');
+        const authorsContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'authors-content');
         const authorFirst = this.createAuthorGithub(AUTHOR_FIRST, AUTHOR_FIRST_GIT_LINK);
         const authorSecond = this.createAuthorGithub(AUTHOR_SECOND, AUTHOR_SECOND_GIT_LINK);
         const rsContainer = this.createRsContainer();
@@ -25,33 +25,33 @@ export default class Footer implements IFooter {
         return this.wrapper;
     }
 
-    private createAuthorGithub(name: string, link: string) {
-        const autorContainer = createElem(HTMLTags.DIV, 'author-container');
-        const gitLink = createElem(HTMLTags.LINK, 'git__link');
+    private createAuthorGithub(name: string, link: string): HTMLDivElement {
+        const autorContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'author-container');
+        const gitLink = createElem<HTMLLinkElement>(HTMLTags.LINK, 'git__link');
         gitLink.setAttribute('href', link);
         gitLink.setAttribute('target', '_blank');
-        const gitLogo = createElem(HTMLTags.SPAN, 'git-logo');
-        const gitUsername = createElem(HTMLTags.SPAN, 'git-username');
+        const gitLogo = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'git-logo');
+        const gitUsername = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'git-username');
         gitUsername.textContent = name;
         gitLink.append(gitLogo, gitUsername);
         autorContainer.append(gitLink);
         return autorContainer;
     }
 
-    private createRsContainer() {
-        const rsContainer = createElem(HTMLTags.DIV, 'rs-container');
-        const taskLink = createElem(HTMLTags.LINK, 'course-link');
+    private createRsContainer(): HTMLDivElement {
+        const rsContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'rs-container');
+        const taskLink = createElem<HTMLLinkElement>(HTMLTags.LINK, 'course-link');
         taskLink.setAttribute('href', TASK_LINK);
         taskLink.setAttribute('target', '_blank');
-        const rsLogo = createElem(HTMLTags.SPAN, 'rs-logo');
-        const flash = createElem(HTMLTags.SPAN, 'flash');
-        const year = createElem(HTMLTags.SPAN, 'year', YEAR);
+        const rsLogo = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'rs-logo');
+        const flash = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'flash');
+        const year = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'year', YEAR);
         taskLink.append(rsLogo);
         rsContainer.append(taskLink, flash, year);
         return rsContainer;
     }
 
-    public renderFooter() {
+    public renderFooter(): HTMLDivElement {
         const line = createWelcomeLine();
         const footer = this.createFooterContent();
         this.container.append(line, footer);

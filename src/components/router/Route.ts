@@ -14,7 +14,7 @@ export default class Route {
         this.parameters = {};
     }
 
-    public addParameter(name: PossibleUrlParams, value: string) {
+    public addParameter(name: PossibleUrlParams, value: string): void {
         let paramsArr = this.parameters[name];
         if (paramsArr && Array.isArray(paramsArr)) {
             if (
@@ -33,17 +33,17 @@ export default class Route {
         }
     }
 
-    public updatePriceParameter(minValue: string, maxValue: string) {
+    public updatePriceParameter(minValue: string, maxValue: string): void {
         this.parameters.stock = [];
         this.parameters.price = [minValue, maxValue];
     }
 
-    public updateStockParameter(minValue: string, maxValue: string) {
+    public updateStockParameter(minValue: string, maxValue: string): void {
         this.parameters.price = [];
         this.parameters.stock = [minValue, maxValue];
     }
 
-    public deleteParameter(name: PossibleUrlParams, value: string) {
+    public deleteParameter(name: PossibleUrlParams, value: string): void {
         const parameters = this.parameters[name];
 
         if (parameters) {
@@ -52,20 +52,20 @@ export default class Route {
         }
     }
 
-    public getParameters() {
+    public getParameters(): Props {
         return this.parameters;
     }
 
-    public getView() {
+    public getView(): ViewComponent {
         return this.view;
     }
 
-    public clearParameters() {
-        Object.keys(this.parameters).forEach((key) => delete this.parameters[key as keyof Props]);
+    public clearParameters(): void {
+        Object.keys(this.parameters).forEach((key): boolean => delete this.parameters[key as keyof Props]);
     }
 
-    public clearFilters() {
-        Object.keys(this.parameters).forEach((key) => {
+    public clearFilters(): void {
+        Object.keys(this.parameters).forEach((key): void => {
             if (key !== PossibleUrlParams.ID && key !== PossibleUrlParams.SORT && key !== PossibleUrlParams.VIEW) {
                 delete this.parameters[key as keyof Props];
             }

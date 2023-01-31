@@ -7,11 +7,11 @@ export default class StoreModel {
     public appController: AppController;
     private products: Product[];
     public currentProducts: Product[];
-    absoluteMinPrice: number;
-    absoluteMaxPrice: number;
-    absoluteMinStock: number;
-    absoluteMaxStock: number;
-    firstIndexInArr = 0;
+    public absoluteMinPrice: number;
+    public absoluteMaxPrice: number;
+    public absoluteMinStock: number;
+    public absoluteMaxStock: number;
+    private firstIndexInArr = 0;
 
     constructor(controller: AppController) {
         this.appController = controller;
@@ -23,10 +23,10 @@ export default class StoreModel {
         this.absoluteMaxStock = 123;
     }
 
-    public getCurrentMinPrice() {
+    public getCurrentMinPrice(): number {
         if (this.currentProducts.length > 0) {
             let minPrice = this.currentProducts[this.firstIndexInArr].price;
-            this.currentProducts.forEach((product) => {
+            this.currentProducts.forEach((product): void => {
                 if (product.price < minPrice) {
                     minPrice = product.price;
                 }
@@ -37,10 +37,10 @@ export default class StoreModel {
         }
     }
 
-    public getCurrentMaxPrice() {
+    public getCurrentMaxPrice(): number {
         if (this.currentProducts.length > 0) {
             let maxPrice = this.currentProducts[this.firstIndexInArr].price;
-            this.currentProducts.forEach((product) => {
+            this.currentProducts.forEach((product): void => {
                 if (product.price > maxPrice) {
                     maxPrice = product.price;
                 }
@@ -51,10 +51,10 @@ export default class StoreModel {
         }
     }
 
-    public getCurrentMinStock() {
+    public getCurrentMinStock(): number {
         if (this.currentProducts.length > 0) {
             let minStock = this.currentProducts[this.firstIndexInArr].quantity;
-            this.currentProducts.forEach((product) => {
+            this.currentProducts.forEach((product): void => {
                 if (product.quantity < minStock) {
                     minStock = product.quantity;
                 }
@@ -65,10 +65,10 @@ export default class StoreModel {
         }
     }
 
-    public getCurrentMaxStock() {
+    public getCurrentMaxStock(): number {
         if (this.currentProducts.length > 0) {
             let maxStock = this.currentProducts[this.firstIndexInArr].quantity;
-            this.currentProducts.forEach((product) => {
+            this.currentProducts.forEach((product): void => {
                 if (product.quantity > maxStock) {
                     maxStock = product.quantity;
                 }
@@ -79,15 +79,15 @@ export default class StoreModel {
         }
     }
 
-    public getProductById(id: number) {
-        return this.products.find((product) => product.id === id);
+    public getProductById(id: number): Product | undefined {
+        return this.products.find((product): boolean => product.id === id);
     }
 
-    public getCurrentProducts() {
+    public getCurrentProducts(): Array<Product> {
         return this.currentProducts;
     }
 
-    public handleParams(params: Props) {
+    public handleParams(params: Props): void {
         this.currentProducts = this.products;
 
         if (params.faculty) {
@@ -119,37 +119,37 @@ export default class StoreModel {
         }
     }
 
-    private filterByStockRange(minValue: number, maxValue: number, arr: Array<Product>) {
-        const filteredArr = arr.filter((product) => {
+    private filterByStockRange(minValue: number, maxValue: number, arr: Array<Product>): Array<Product> {
+        const filteredArr = arr.filter((product): boolean => {
             return product.quantity >= minValue && product.quantity <= maxValue;
         });
         return filteredArr;
     }
 
-    private filterByPriceRange(minValue: number, maxValue: number, arr: Array<Product>) {
-        const filteredArr = arr.filter((product) => {
+    private filterByPriceRange(minValue: number, maxValue: number, arr: Array<Product>): Array<Product> {
+        const filteredArr = arr.filter((product): boolean => {
             return product.price >= minValue && product.price <= maxValue;
         });
         return filteredArr;
     }
 
-    private filterByCategory(valuesArr: string[], arr: Array<Product>) {
-        const filteredArr = arr.filter((product) => {
+    private filterByCategory(valuesArr: string[], arr: Array<Product>): Array<Product> {
+        const filteredArr = arr.filter((product): boolean => {
             return valuesArr.includes(product.category);
         });
         return filteredArr;
     }
 
-    private filterByFaculty(valuesArr: string[], arr: Array<Product>) {
-        const filteredArr = arr.filter((product) => {
+    private filterByFaculty(valuesArr: string[], arr: Array<Product>): Array<Product> {
+        const filteredArr = arr.filter((product): boolean => {
             return valuesArr.includes(product.faculty);
         });
         return filteredArr;
     }
 
-    private filterCardsByKeyword(value: string, arr: Array<Product>) {
+    private filterCardsByKeyword(value: string, arr: Array<Product>): Array<Product> {
         const filteredProducts: Array<Product> = [];
-        arr.forEach((product) => {
+        arr.forEach((product): void => {
             if (
                 product.category.toLowerCase().includes(value) ||
                 product.description.toLowerCase().includes(value) ||
@@ -164,20 +164,20 @@ export default class StoreModel {
         return filteredProducts;
     }
 
-    private sortProducts(value: string, arr: Array<Product>) {
+    private sortProducts(value: string, arr: Array<Product>): Array<Product> {
         let sortedProducts: Array<Product> = [];
         if (value === SortOptions.MAX_PRICE) {
-            sortedProducts = arr.sort((a, b) => {
+            sortedProducts = arr.sort((a, b): number => {
                 return b.price - a.price;
             });
         }
         if (value === SortOptions.MIN_PRICE) {
-            sortedProducts = arr.sort((a, b) => {
+            sortedProducts = arr.sort((a, b): number => {
                 return a.price - b.price;
             });
         }
         if (value === SortOptions.DISCOUNT) {
-            sortedProducts = arr.sort((a, b) => {
+            sortedProducts = arr.sort((a, b): number => {
                 return b.discount - a.discount;
             });
         }

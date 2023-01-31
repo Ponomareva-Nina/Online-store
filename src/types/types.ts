@@ -34,6 +34,8 @@ export enum HTMLTags {
     P = 'p',
     IMG = 'img',
     H3 = 'h3',
+    FORM = 'form',
+    HEADER = 'header',
 }
 
 export enum SortOptions {

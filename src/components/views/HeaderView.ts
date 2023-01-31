@@ -6,47 +6,46 @@ import { MAIN_LOGO_PART1, MAIN_LOGO_PART2 } from '../../constants/string-constan
 import { ViewComponent } from '../../types/interfaces';
 
 export default class Header implements ViewComponent {
-    container: DocumentFragment;
-    appController: AppController;
-    wrapper: HTMLDivElement;
-
-    headerContainer: HTMLDivElement;
-    links: Array<HTMLElement>;
+    public container: DocumentFragment;
+    public appController: AppController;
+    private wrapper: HTMLDivElement;
+    private headerContainer: HTMLDivElement;
+    private links: Array<HTMLElement>;
 
     constructor(controller: AppController) {
         this.appController = controller;
-        this.wrapper = createElem(HTMLTags.DIV, 'wrapper') as HTMLDivElement;
-        this.headerContainer = createElem('header', 'header') as HTMLDivElement;
+        this.wrapper = createElem<HTMLDivElement>(HTMLTags.DIV, 'wrapper');
+        this.headerContainer = createElem<HTMLDivElement>(HTMLTags.HEADER, 'header');
         this.container = document.createDocumentFragment();
         this.links = [];
     }
 
-    public createLogo() {
-        const logoContainer = createElem(HTMLTags.DIV, 'logo-container');
-        const title = createElem(HTMLTags.PAGE_HEADER, 'logo-title');
-        const textTitle1 = createElem(HTMLTags.SPAN, 'text-title-first', MAIN_LOGO_PART1);
-        const textTitle2 = createElem(HTMLTags.SPAN, 'text-title-second', MAIN_LOGO_PART2);
+    public createLogo(): HTMLDivElement {
+        const logoContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'logo-container');
+        const title = createElem<HTMLElement>(HTMLTags.PAGE_HEADER, 'logo-title');
+        const textTitle1 = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'text-title-first', MAIN_LOGO_PART1);
+        const textTitle2 = createElem<HTMLSpanElement>(HTMLTags.SPAN, 'text-title-second', MAIN_LOGO_PART2);
         title.append(textTitle1, textTitle2);
-        const link = createElem(HTMLTags.LINK, 'logo-link');
+        const link = createElem<HTMLLinkElement>(HTMLTags.LINK, 'logo-link');
         link.setAttribute('href', LINKS.About);
         link.append(title);
-        logoContainer.addEventListener('click', () => {
+        logoContainer.addEventListener('click', (): void => {
             this.appController.router.changeCurrentPage(LINKS.About);
         });
         logoContainer.append(link);
         return logoContainer;
     }
 
-    public createNavigation() {
-        const navigation = createElem(HTMLTags.NAV, 'main-nav');
-        const navList = createElem(HTMLTags.UL, 'main-nav__list');
+    public createNavigation(): HTMLDivElement {
+        const navigation = createElem<HTMLElement>(HTMLTags.NAV, 'main-nav') as HTMLDivElement;
+        const navList = createElem<HTMLUListElement>(HTMLTags.UL, 'main-nav__list');
 
         for (const link in LINKS) {
-            const li = createElem(HTMLTags.LIST, 'main-nav__list_item');
-            const navLink = createElem(HTMLTags.LINK, 'nav-link', link) as HTMLLinkElement;
+            const li = createElem<HTMLLIElement>(HTMLTags.LIST, 'main-nav__list_item');
+            const navLink = createElem<HTMLLinkElement>(HTMLTags.LINK, 'nav-link', link);
             navLink.setAttribute('href', LINKS[link as keyof typeof LINKS]);
 
-            navLink.addEventListener('click', (e) => {
+            navLink.addEventListener('click', (e): void => {
                 e.preventDefault();
                 this.appController.router.changeCurrentPage(navLink.href);
             });
@@ -59,9 +58,9 @@ export default class Header implements ViewComponent {
         return navigation;
     }
 
-    public setActiveLink() {
+    public setActiveLink(): void {
         const activeRoute = this.appController.router.currentRoute?.path;
-        this.links.forEach((link) => {
+        this.links.forEach((link): void => {
             if (link.getAttribute('href') === activeRoute) {
                 link.classList.add('nav-link_active');
             } else {
@@ -70,13 +69,13 @@ export default class Header implements ViewComponent {
         });
     }
 
-    public createContentHeader() {
-        this.destroyAllChildNodes(this.wrapper);
-        const centralContainer = createElem(HTMLTags.DIV, 'central-container');
+    private createContentHeader(): HTMLDivElement {
+        this.appController.destroyAllChildNodes(this.wrapper);
+        const centralContainer = createElem<HTMLDivElement>(HTMLTags.DIV, 'central-container');
         const logo = this.createLogo();
         const navigation = this.createNavigation();
         centralContainer.append(logo, navigation);
-        const container = createElem(HTMLTags.DIV, 'header-content');
+        const container = createElem<HTMLDivElement>(HTMLTags.DIV, 'header-content');
         const burger = this.appController.menu.getBurgerIcon();
         const menu = this.appController.menu.createMenu();
         this.wrapper.append(menu);
@@ -85,8 +84,8 @@ export default class Header implements ViewComponent {
         return container;
     }
 
-    public createHeader() {
-        this.destroyAllChildNodes(this.headerContainer);
+    public createHeader(): HTMLDivElement {
+        this.appController.destroyAllChildNodes(this.headerContainer);
         const line = createWelcomeLine();
         const headerContent = this.createContentHeader();
         this.wrapper.append(headerContent);
@@ -94,13 +93,7 @@ export default class Header implements ViewComponent {
         return this.headerContainer;
     }
 
-    private destroyAllChildNodes(parent: Node) {
-        while (parent.firstChild) {
-            parent.removeChild(parent.firstChild);
-        }
-    }
-
-    public render() {
+    public render(): DocumentFragment {
         this.createHeader();
         return this.container;
     }

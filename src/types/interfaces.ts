@@ -36,7 +36,8 @@ export interface IMenu {
     appController: AppController;
     menuContainer: HTMLElement;
     burgerIcon: HTMLElement;
-    getBurgerIcon: () => HTMLElement;
+    getBurgerIcon: () => HTMLDivElement;
+    createMenu: () => HTMLDivElement;
 }
 export interface Product {
     inCart?: number;
@@ -66,9 +67,11 @@ export interface IFooter {
 }
 
 export interface ICheckoutCard {
-    container: DocumentFragment;
-    //appController: AppController;
-    createPayCard: () => DocumentFragment;
+    container: HTMLDivElement;
+    appController: AppController;
+    createPayCard: () => HTMLDivElement;
+    showModal: () => void;
+    hideModal: () => void;
 }
 export interface Promocode {
     id: number;
@@ -81,4 +84,12 @@ export interface Promocode {
 export interface PossibleUrlValues {
     id: number;
     view?: PossibleViewValues;
+}
+
+export interface StateInterface {
+    CART: Array<Product>;
+    TOTALSUM: number;
+    PRODUCTSQUANTITY: number;
+    ACTIVATED_PROMOCODES: Promocode[];
+    TOTAL_SUM_WITH_DISCOUNT: number;
 }
