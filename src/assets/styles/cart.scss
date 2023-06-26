@@ -1,0 +1,449 @@
+.page-header {
+    @include font-logo-title();
+}
+
+.wrapper {
+    width: -webkit-fill-available;
+}
+
+.cart-wrapper {
+    padding: 1.6rem 0 3rem;
+}
+
+
+.cart-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    flex-direction: column-reverse
+}
+
+.cart-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    @include font-main($size: 1.8rem, $weight: 400, $color: $color-main, $height: 113%);
+}
+
+.cart-sum {
+    display: inline-flex;
+    color: #4A2B10;
+    line-height: 112%;
+    justify-content: center;
+
+    &::after {
+        content: '$';
+        padding-left: 0.5rem;
+    }
+}
+
+.cart-icon {
+    width: 45px;
+    height: 30px;
+    content: "";
+    display: inline-flex;
+    background-image: url('./assets/images/cart-img.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    @media screen and (max-width: 550px) {
+        width: 40px;
+        height: 27px;
+    }
+}
+
+.cart-quantity {
+    display: inline-flex;
+    justify-content: center;
+}
+
+
+.product-container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-top: 1px $color-main solid;
+    padding-bottom: 0.7rem;
+
+    &:last-child {
+        border-bottom: 1px $color-main solid;
+    }
+
+    @media screen and (max-width: 600px) {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+.product-content {
+    display: flex;
+    gap: 2rem;
+}
+
+.product-image {
+    width: 14.5rem;
+
+    @media screen and (max-width: 750px) {
+        width: 13rem;
+    }
+
+    @media screen and (max-width: 550px) {
+        width: 11rem;
+    }
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.card-title {
+    @include font-main($size: 2.4rem, $weight: 600, $color: $color-main, $height: 113%);
+    text-transform: uppercase;
+
+    @media screen and (max-width: 750px) {
+        font-size: 1.9rem;
+    }
+}
+
+.card-price {
+    color: $color-accent;
+
+    &::before {
+        content: '$';
+        padding-right: 0.5rem;
+    }
+}
+
+
+.counter-button {
+    width: 3rem;
+    height: 3rem;
+    content: '';
+    display: inline-flex;
+    background-size: contain;
+    background-repeat: no-repeat;
+    cursor: pointer;
+
+    @media screen and (max-width: 600px) {
+        width: 2.3rem;
+        height: 2.3rem;
+    }
+}
+
+.card-description {
+    @include font-main($size: 2.4rem, $weight: 400, $color: $color-main, $height: 113%);
+    @media screen and (max-width: 750px) {
+        font-size: 1.8rem;
+    }
+}
+
+.subtitle-name {
+    color: $color-accent;
+    text-transform: uppercase;
+}
+
+.subtitle-name_low {
+    text-transform: initial;
+}
+
+.buttons-container {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+
+    @media screen and (max-width: 750px) {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    @media screen and (max-width: 600px) {
+        flex-direction: row;
+        align-self: flex-end;
+    }
+}
+
+.price-counter-cont {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @media screen and (max-width: 600px) {
+        font-size: 2rem;
+
+    @media screen and (max-width: 550px) {
+        flex-direction: row;
+        gap: 0.5rem;
+        }
+    }
+}
+
+.product-price {
+    width: 11rem;
+    font-size: 2rem;
+    display: inline-flex;
+    justify-content: center;
+}
+
+.button-all-delete {
+
+    @media screen and (max-width: 750px) {
+        width: 13rem;
+    }
+
+    @media screen and (max-width: 600px) {
+        width: 11rem;
+        font-size: 2rem;
+    }
+}
+
+.counter-container {
+    display: flex;
+    align-items: center;
+}
+
+.count-down {
+    background-image: url('./assets/images/counter_delete.svg');
+}
+
+.count-up {
+    background-image: url('./assets/images/counter_add.svg');
+}
+
+.product-quantity {
+    width: 4rem;
+    text-align: center;
+
+    @media screen and (max-width: 600px) {
+        width: 3rem;
+    }
+}
+
+.empty-cart {
+    @include font-main($size: 4rem, $weight: 600, $color: $color-main, $height: 150%);
+    margin-top: 5rem;
+    text-align: center;
+
+    @media screen and (max-width: 550px) {
+        font-size: 3rem;
+    }
+}
+
+
+
+.promo-container {
+    width: 33rem;
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.4rem;
+
+    @media screen and (max-width: 750px) {
+        gap: 1rem;
+        width: 27rem;
+    }
+
+    @media screen and (max-width: 550px) {
+        gap: 0.2rem;
+    }
+
+    @media screen and (max-width: 450px) {
+        margin: 0 auto;
+    }
+}
+
+.content-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+
+    @media screen and (max-width: 750px) {
+        gap: 1.1rem;
+        @include font-main($size: 2rem, $weight: 400, $color: $color-main, $height: 110%);
+    }
+
+    @media screen and (max-width: 550px) {
+        gap: 0.5rem;
+    }
+}
+
+.total-container {
+    display: flex;
+    flex-direction: column;
+    @include font-main($size: 2.2rem, $weight: 600, $color: $color-main, $height: 110%);
+
+    @media screen and (max-width: 750px) {
+        font-size: 2.1rem;
+    }
+
+    @media screen and (max-width: 750px) {
+        font-size: 1.8rem;
+    }
+}
+
+.promo-without-discount-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.total-discount-container {
+    display: inline-flex;
+    justify-content: center;
+    @include font-main($size: 2.2rem, $weight: 600, $color: $color-main, $height: 110%);
+
+    @media screen and (max-width: 750px) {
+        font-size: 2.1rem;
+    }
+
+    @media screen and (max-width: 750px) {
+        font-size: 1.8rem;
+    }
+}
+
+.sum-content-discount {
+    width: 10rem;
+    display: inline-flex;
+    justify-content: center;
+
+    &::after {
+        content: '$';
+        padding-left: 0.5rem;
+    }
+}
+
+.total-products {
+    font-weight: 600;
+}
+
+.products-content {
+    width: 3rem;
+    display: inline-flex;
+    justify-content: center;
+}
+
+.total-promo-sum {
+    font-weight: 600;
+}
+
+.sum-content {
+    width: 8rem;
+    display: inline-flex;
+    justify-content: center;
+
+    &::after {
+        content: '$';
+        padding-left: 0.5rem;
+    }
+}
+
+.promo-codes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    @media screen and (max-width: 750px) {
+        font-size: 1.8rem;
+    }
+}
+
+.promo-code-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.promo-codes-discout {
+    &::after {
+        content: '%';
+        padding-left: 0.5rem;
+    }
+}
+
+.promo-code-button {
+    width: 5.5rem;
+    background: none;
+    @include font-main($size: 2rem, $weight: 400, $color: $color-main, $height: 110%);
+    border: 1px #4A2B10 solid;
+    border-radius: 5px;
+    text-transform: uppercase;
+
+    @media screen and (max-width: 750px) {
+        width: 5rem;
+        @include font-main($size: 1.8rem, $weight: 400, $color: $color-main, $height: 110%);
+    }
+}
+
+.promo-added {
+    background-color: $color-accent;
+}
+
+.input-container {
+    display: flex;
+    justify-content: center;
+}
+
+.buy-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.buy-button {
+
+    @media screen and (max-width: 750px) {
+        width: 13rem;
+        font-size: 2rem;
+    }
+}
+
+.promo-input {
+    width: 25rem;
+    padding: 5px 7px;
+    border: 1px $color-main solid;
+    border-radius: 5px;
+    @include font-main($size: 2rem, $weight: 400, $color: $color-aux, $height: 110%);
+    text-align: center;
+
+    @media screen and (max-width: 750px) {
+        padding: 3px 5px;
+        @include font-main($size: 1.8rem, $weight: 400, $color: $color-main, $height: 110%);
+        width: 17rem;
+    }
+}
+
+.promo-apply-btn {
+    padding: 0.2rem 1.2rem;
+    background: none;
+    font: inherit;
+    border: 1px $color-main solid;
+    border-radius: 5px;
+    text-transform: uppercase;
+
+    &:hover {
+        background-color: $color-aux;
+    }
+}
+
+.decor-buy {
+    width: 8rem;
+    height: 0.7rem;
+    background: url('./assets/images/wand_underline.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+
+    @media screen and (max-width: 750px) {
+        width: 6rem;
+    }
+
+}
+
+.decor_right {
+    transform: rotateY(180deg);
+}
+
+.crossline {
+    text-decoration: line-through;
+}

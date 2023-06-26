@@ -1,0 +1,120 @@
+import CartView from '../views/CartView';
+import StartPageView from '../views/StartPageView';
+import StoreView from '../views/StoreView';
+import Header from '../views/HeaderView';
+import { createElem } from '../../utils/utils';
+
+import Menu from '../views/Menu';
+import { LINKS } from '../../constants/route-constants';
+import { AppControllerInterface, Product, Props, StateInterface, ViewComponent } from '../../types/interfaces';
+import Route from '../router/Route';
+import Router from '../router/Router';
+import ProductPage from '../views/ProductPage';
+import '../models/StoreModel';
+import StoreModel from '../models/StoreModel';
+import Footer from '../views/FooterVew';
+import CartModel from '../models/CartModel';
+import { STATE } from '../../constants/string-constants';
+
+export default class AppController implements AppControllerInterface {
+    private static instance: InstanceType<typeof AppController>;
+    public mainContainer: HTMLElement;
+    public header: Header;
+    public routes: Route[];
+    public router: Router;
+    public cartView: CartView;
+    public storeView: StoreView;
+    public startPage: StartPageView;
+    public menu: Menu;
+    public productPage: ProductPage;
+    public storeModel: StoreModel;
+    public footer: Footer;
+    public cartModel: CartModel;
+    localState: StateInterface;
+
+    constructor() {
+        this.localState = this.getStateFromLocalStorage();
+        this.menu = new Menu(this);
+        this.header = new Header(this);
+        this.cartModel = new CartModel(this);
+        this.cartView = new CartView(this.cartModel, this);
+        this.mainContainer = createElem<HTMLElement>('main', 'main wrapper');
+        this.startPage = new StartPageView(this);
+        this.storeModel = new StoreModel(this);
+        this.storeView = new StoreView(this.storeModel, this);
+        this.productPage = new ProductPage(this);
+        this.footer = new Footer();
+        this.routes = [
+            new Route('', LINKS.About, this.startPage),
+            new Route('store', LINKS.Store, this.storeView),
+            new Route('cart', LINKS.Cart, this.cartView),
+            new Route('product', '#product', this.productPage),
+        ];
+        this.router = new Router(this, this.routes);
+
+        if (AppController.instance) {
+            return AppController.instance;
+        }
+        AppController.instance = this;
+    }
+
+    public updatePage(view: ViewComponent, params?: Props): void {
+        this.destroyAllChildNodes(this.mainContainer);
+        this.mainContainer.append(view.render(params));
+        this.header.setActiveLink();
+    }
+
+    public addProductToCart(product: Product): void {
+        this.cartModel.addProduct(product);
+        this.cartView.updateCartInfo();
+        this.cartView.updatePromoBlock();
+    }
+
+    public deleteProductFromCart(product: Product): void {
+        this.cartModel.deleteProduct(product);
+        this.cartView.updateCartInfo();
+        this.cartView.updatePromoBlock();
+    }
+
+    private getStateFromLocalStorage(): StateInterface {
+        const data = window.localStorage.getItem(STATE);
+        if (data) {
+            return JSON.parse(data);
+        } else {
+            const state = {
+                TOTALSUM: 0,
+                PRODUCTSQUANTITY: 0,
+                CART: [],
+                ACTIVATED_PROMOCODES: [],
+                TOTAL_SUM_WITH_DISCOUNT: 0,
+            };
+            return state;
+        }
+    }
+
+    private setStateToLocalStorage(): void {
+        const localState: StateInterface = {
+            CART: this.cartModel.productsInCart || [],
+            TOTALSUM: this.cartModel.totalSum || 0,
+            PRODUCTSQUANTITY: this.cartModel.productsQuantity || 0,
+            ACTIVATED_PROMOCODES: this.cartModel.activatedPromocodes || [],
+            TOTAL_SUM_WITH_DISCOUNT: this.cartModel.totalSumWithDiscount || 0,
+        };
+        localStorage.setItem(STATE, JSON.stringify(localState));
+    }
+
+    public destroyAllChildNodes(parent: Node): void {
+        while (parent.firstChild) {
+            parent.removeChild(parent.firstChild);
+        }
+    }
+
+    public start(): void {
+        document.body.append(this.header.createHeader(), this.mainContainer, this.footer.renderFooter());
+        this.router.init();
+        this.getStateFromLocalStorage();
+        window.addEventListener('beforeunload', (): void => {
+            this.setStateToLocalStorage();
+        });
+    }
+}

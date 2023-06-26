@@ -1,0 +1,118 @@
+.footer {
+    background-image: url('./assets/images/bg-header-footer.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.footer-content {
+    display: flex;
+    padding: 1rem 0;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    @media screen and (max-width: 700px) {
+        padding: 0.7rem 0;
+    }
+    @media screen and (max-width: 550px) {
+        padding: 0.5rem 0;
+    }
+}
+
+.authors-content {
+    display: flex;
+    align-items: center;
+    gap: 1.8rem;
+
+    @media screen and (max-width: 700px) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    @media screen and (max-width: 550px) {
+        gap: 0rem;
+    }
+
+}
+
+.git__link {
+    display: flex;
+    align-items: center;
+    @include font-main(2rem, 400, $color-main, 165%);
+
+    @media screen and (max-width: 700px) {
+        font-size: 1.5rem;
+    }
+}
+
+.git-logo {
+    width: 3.5rem;
+    height: 3.5rem;
+    display: inline-flex;
+    background-image: url('./assets/images/git_logo.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    @media screen and (max-width: 700px) {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+}
+
+.rs-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    @include font-main(2rem, 700, $color-main, 90%);
+
+    @media screen and (max-width: 550px) {
+        gap: 0.5rem;
+    }
+
+    @media screen and (max-width: 400px) {
+        gap: 0.2rem;
+    }
+}
+
+.course-link {
+    display: inline-flex;
+}
+
+.rs-logo {
+    width: 8rem;
+    height: 3.2rem;
+    display: inline-flex;
+    background-image: url('./assets/images/rs_school_logo.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    @media screen and (max-width: 700px) {
+        width: 6.5rem;
+        height: 2.8rem;
+    }
+
+    @media screen and (max-width: 400px) {
+        width: 5rem;
+        height: 2rem;
+    }
+}
+
+.flash {
+    width: 1.5rem;
+    height: 2.5rem;
+    display: inline-flex;
+    background-image: url('./assets/images/flash_footer.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    @media screen and (max-width: 700px) {
+        height: 1.95rem;
+    }
+}
+
+.year {
+    @media screen and (max-width: 700px) {
+        font-size: 1.5rem;
+    }
+}
